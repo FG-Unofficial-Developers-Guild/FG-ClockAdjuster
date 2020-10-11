@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+
+<!-- Please see the LICENSE.md file included with this distribution for attribution and copyright information. -->
+
+<root version="3.0">	
+	<!-- MoreCore Tab graphic -->
+	<icon name="6AM_Dark" file="graphics/icons/Dark/12/20x20/button_clock_12_6am_dark_sunrise.png" />
+	<icon name="6AM_Dark_down" file="graphics/icons/Dark/12/20x20/button_clock_12_6am_dark_sunrise_down.png" />
+	<icon name="12PM_Dark" file="graphics/icons/Dark/12/20x20/button_clock_24_12_00_dark.png" />
+	<icon name="12PM_Dark_down" file="graphics/icons/Dark/12/20x20/button_clock_24_12_00_dark_down.png" />
+	<icon name="6PM_Dark" file="graphics/icons/Dark/12/20x20/button_clock_12_06pm_dark.png" />
+	<icon name="6PM_Dark_down" file="graphics/icons/Dark/12/20x20/button_clock_12_06pm_dark_down.png" />
+	<icon name="12AM_Dark" file="graphics/icons/Dark/12/20x20/button_clock_24_24_00_dark.png" />
+	<icon name="12AM_Dark_down" file="graphics/icons/Dark/12/20x20/button_clock_24_24_00_dark_down.png" />
+	<icon name="add_logentry" file="graphics/icons/Dark/12/20x20/button_clock_AddEntry_dark.png" />
+	<icon name="add_logentry_down" file="graphics/icons/Dark/12/20x20/button_clock_AddEntry_dark_down.png" />
+	<icon name="atob_button" file="graphics/icons/atob.png" />
+	<icon name="atob_button_down" file="graphics/icons/atob_down.png" />
+	<icon name="reminder_button" file="graphics/icons/reminder.png" />
+	<icon name="reminder_button_down" file="graphics/icons/reminder_down.png" />
+</root>
