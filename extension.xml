@@ -21,5 +21,6 @@
 		<includefile source="strings/strings_timedevents.xml" />
 		<script name="TimeManager" file="scripts/manager_time.lua" />
 		<script name="ClockAdjuster" file="scripts/clock_adjuster.lua" />
+		<script name="LongTermEffects" file="scripts/longtermeffects.lua" />
 	</base>
 </root>
