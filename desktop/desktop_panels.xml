@@ -274,9 +274,12 @@
 						DB.setValue(getDatabaseNode(), "addhour", "number", (getValue() or 0));
 					end
 					function onDoubleClick()
-						Hour = (window.addhour.getValue() or 0);
+						local nHour = (window.addhour.getValue() or 0);
+
+						local nRounds = (nHour * 600)
+						LongTermEffects.advanceRoundsOnTimeChanged(nRounds)
 						
-						CalendarManager.adjustHours(Hour);
+						CalendarManager.adjustHours(nHour);
 						if window.checkweather.getValue() == 1 then
 							local WeatherWind = "Weather - Wind";
 							local WeatherTemp = "Weather - Temperature";
@@ -289,12 +292,12 @@
 							CalendarManager.outputDate();
 							DB.setValue("calendar.check.day", "number", DB.getValue("calendar.current.day"));
 						end
-						if Hour &gt; 0 then 
+						if nHour &gt; 0 then 
 							CalendarManager.outputTime(); 
 						end
 						onUpdate();
 					end
-					bTimeStep = false;
+					local bTimeStep = false;
 					function onUpdate()
 						bTimeStep = true;
 						local nDateinMinutes = TimeManager.getCurrentDateinMinutes();
@@ -322,19 +325,22 @@
 						DB.setValue(getDatabaseNode(), "addminute", "number", (getValue() or 0));
 					end
 					function onDoubleClick()
-						Minute = (window.addminute.getValue() or 0);
+						local nMinute = (window.addminute.getValue() or 0);
+
+						local nRounds = (nMinute * 10)
+						LongTermEffects.advanceRoundsOnTimeChanged(nRounds)
 						
-						CalendarManager.adjustMinutes(Minute);
+						CalendarManager.adjustMinutes(nMinute);
 						if DB.getValue("calendar.check.day") == nil or DB.getValue("calendar.check.day") ~= DB.getValue("calendar.current.day") then
 							CalendarManager.outputDate();
 							DB.setValue("calendar.check.day", "number", DB.getValue("calendar.current.day"));
 						end
-						if Minute &gt; 0 then 
+						if nMinute &gt; 0 then 
 							CalendarManager.outputTime(); 
 						end
 						onUpdate();
 					end
-					bTimeStep = false;
+					local bTimeStep = false;
 					function onUpdate()
 						bTimeStep = true;
 						local nDateinMinutes = TimeManager.getCurrentDateinMinutes();
@@ -358,8 +364,12 @@
 					end
 					
 					function onDoubleClick()
-						Day = (window.addday.getValue() or 0);
-						CalendarManager.adjustDays(Day);
+						local nDay = (window.addday.getValue() or 0);
+
+						local nRounds = (nDay * 14400)
+						LongTermEffects.advanceRoundsOnTimeChanged(nRounds)
+
+						CalendarManager.adjustDays(nDay);
 						if window.checkweather.getValue() == 1 then
 							local WeatherWind = "Weather - Wind";
 							local WeatherTemp = "Weather - Temperature";
@@ -372,12 +382,12 @@
 							CalendarManager.outputDate();
 							DB.setValue("calendar.check.day", "number", DB.getValue("calendar.current.day"));
 						end
-						if Day &gt; 0 then 
+						if nDay &gt; 0 then 
 							CalendarManager.outputDate(); 
 						end
 						onUpdate();
 					end
-					bTimeStep = false;
+					local bTimeStep = false;
 					function onUpdate()
 						bTimeStep = true;
 						local nDateinMinutes = TimeManager.getCurrentDateinMinutes();
@@ -399,9 +409,12 @@
 						DB.setValue(getDatabaseNode(), "addmonth", "number", (getValue() or 0));
 					end
 					function onDoubleClick()
-						Month = (window.addmonth.getValue() or 0);
+						local nMonth = (window.addmonth.getValue() or 0);
+
+						local nRounds = (nDay * 403200)
+						LongTermEffects.advanceRoundsOnTimeChanged(nRounds)
 						
-						CalendarManager.adjustMonths(Month);
+						CalendarManager.adjustMonths(nMonth);
 						if window.checkweather.getValue() == 1 then
 							local WeatherWind = "Weather - Wind";
 							local WeatherTemp = "Weather - Temperature";
@@ -410,12 +423,12 @@
 							TableManager.processTableRoll("", "Weather Temperature");
 							TableManager.processTableRoll("", "Weather Precipitation");
 						end
-						if Month &gt; 0 then 
+						if nMonth &gt; 0 then 
 							CalendarManager.outputDate(); 
 						end
 						onUpdate();
 					end
-					bTimeStep = false;
+					local bTimeStep = false;
 					function onUpdate()
 						bTimeStep = true;
 						local nDateinMinutes = TimeManager.getCurrentDateinMinutes();
@@ -437,9 +450,9 @@
 						DB.setValue(getDatabaseNode(), "addyear", "number", (getValue() or 0));
 					end
 					function onDoubleClick()
-						Year = (window.addyear.getValue() or 0);
+						local nYear = (window.addyear.getValue() or 0);
 						
-						CalendarManager.adjustYears(Year);
+						CalendarManager.adjustYears(nYear);
 						if window.checkweather.getValue() == 1 then
 							local WeatherWind = "Weather - Wind";
 							local WeatherTemp = "Weather - Temperature";
@@ -448,12 +461,12 @@
 							TableManager.processTableRoll("", "Weather Temperature");
 							TableManager.processTableRoll("", "Weather Precipitation");
 						end
-						if Year &gt; 0 then 
+						if nYear &gt; 0 then 
 							CalendarManager.outputDate(); 
 						end
 						onUpdate();
 					end
-					bTimeStep = false;
+					local bTimeStep = false;
 					function onUpdate()
 						bTimeStep = true;
 						local nDateinMinutes = TimeManager.getCurrentDateinMinutes();
@@ -468,11 +481,14 @@
 				<tooltip textres="desktop_addall_tooltip" />
 				<script>
 					function onDoubleClick()
-						Minute = (window.addminute.getValue() or 0);
-						Hour = (window.addhour.getValue() or 0);
-						Day = (window.addday.getValue() or 0);
-						Month = (window.addmonth.getValue() or 0);
-						Year = (window.addyear.getValue() or 0);
+						local nMinute = (window.addminute.getValue() or 0);
+						local nHour = (window.addhour.getValue() or 0);
+						local nDay = (window.addday.getValue() or 0);
+						local nMonth = (window.addmonth.getValue() or 0);
+						local nYear = (window.addyear.getValue() or 0);
+
+						local nRounds = (nHour * 600) + (nMinute * 10) + (nDay * 14400) + (nDay * 403200)
+						LongTermEffects.advanceRoundsOnTimeChanged(nRounds)
 						
 						if window.checkweather.getValue() == 1 then
 							local WeatherWind = "Weather - Wind";
@@ -482,16 +498,16 @@
 							TableManager.processTableRoll("", "Weather Temperature");
 							TableManager.processTableRoll("", "Weather Precipitation");
 						end
-						CalendarManager.adjustMinutes(Minute);
-						CalendarManager.adjustHours(Hour);
-						CalendarManager.adjustDays(Day);
-						CalendarManager.adjustMonths(Month);
-						CalendarManager.adjustYears(Year);
+						CalendarManager.adjustMinutes(nMinute);
+						CalendarManager.adjustHours(nHour);
+						CalendarManager.adjustDays(nDay);
+						CalendarManager.adjustMonths(nMonth);
+						CalendarManager.adjustYears(nYear);
 						CalendarManager.outputDate();
 						CalendarManager.outputTime();
 						onUpdate();
 					end
-					bTimeStep = false;
+					local bTimeStep = false;
 					function onUpdate()
 						bTimeStep = true;
 						local nDateinMinutes = TimeManager.getCurrentDateinMinutes();

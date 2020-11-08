@@ -95,3 +95,19 @@ function nextRound_new(nRounds)
 		end
 	end
 end
+
+---	This function compiles all effects and decrements their durations when time is advanced
+function advanceRoundsOnTimeChanged(nRounds)
+	if nRounds and nRounds > 0 then
+		for _,nodeCT in pairs(DB.getChildren('combattracker.list')) do
+			for _,nodeEffect in pairs(DB.getChildren(nodeCT, 'effects')) do
+				local nDuration = DB.getValue(nodeEffect, 'duration')
+				if nDuration < nRounds then
+					nodeEffect.delete()
+				else
+					DB.setValue(nodeEffect, 'duration', 'number', nDuration - nRounds)
+				end
+			end
+		end
+	end
+end
