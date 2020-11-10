@@ -14,4 +14,4 @@ The 3.5E ruleset and all included files are copyright 2004-2013, Smiteworks USA 
 
 The PFRPG ruleset and all included files are copyright 2004-2013, Smiteworks USA LLC.
 
-Rights to original code sections carried-over from the original [Clock Adjuster by pr6i6e6st]https://www.fantasygrounds.com/forums/showthread.php?57561-Utility-Clock-Adjuster) remain as specified in that release.
+Rights to original code sections carried-over from the original [Clock Adjuster by pr6i6e6st](https://www.fantasygrounds.com/forums/showthread.php?57561-Utility-Clock-Adjuster) remain as specified in that release.
