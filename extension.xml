@@ -6,9 +6,14 @@
 	<properties>
 		<name>Clock-Adjuster-bmos</name>
 		<version>2.6b-beta2</version>
-		<author>Pr6i6e6st</author>
+		<author>Pr6i6e6st with modifications by bmos</author>
 		<description>Provides a clock for easier time management</description>
-		<ruleset>PFRPG</ruleset>
+		<ruleset>
+			<name>PFRPG</name>
+		</ruleset>
+		<ruleset>
+			<name>3.5E</name>
+		</ruleset>
 	</properties>
 	
 	<announcement text="Clock Adjuster is a GM tool which provides easy access to the Calendar, along with various buttons for easy time adjustment and management, including an event planner with ties to the calendar logs and capability to roll on tables, a reminder feature for repetitive events with capability to roll on tables, a travel manager for easy distance vs. time calculations, and an option to roll tables for random weather.\nThis v2.6b-beta2 version is modified by bmos." font="emotefont" />
