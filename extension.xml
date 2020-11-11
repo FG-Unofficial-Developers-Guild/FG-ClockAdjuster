@@ -4,10 +4,10 @@
 
 <root version="3.0">	
 	<properties>
-		<name>Clock-Adjuster-bmos</name>
-		<version>2.6b-beta2</version>
-		<author>Pr6i6e6st with modifications by bmos</author>
-		<description>Provides a clock for easier time management</description>
+		<name>Time Manager</name>
+		<version>2.6b</version>
+		<author>bmos</author>
+		<description>Provides an interface for easier time management</description>
 		<ruleset>
 			<name>PFRPG</name>
 		</ruleset>
@@ -16,7 +16,7 @@
 		</ruleset>
 	</properties>
 	
-	<announcement text="Clock Adjuster is a GM tool which provides easy access to the Calendar, along with various buttons for easy time adjustment and management, including an event planner with ties to the calendar logs and capability to roll on tables, a reminder feature for repetitive events with capability to roll on tables, a travel manager for easy distance vs. time calculations, and an option to roll tables for random weather.\nThis v2.6b-beta2 version is modified by bmos." font="emotefont" />
+	<announcement text="Time Manager is a GM tool which provides an interface for easy time tracking and management.\nThis extension is heavily-based on Clock Adjuster which is the work of pr6i6e6st." font="emotefont" />
 	
 	<base>
 		<includefile source="desktop/desktop_panels.xml" />
