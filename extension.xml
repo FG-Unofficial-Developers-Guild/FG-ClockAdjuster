@@ -5,7 +5,7 @@
 <root version="3.0">	
 	<properties>
 		<name>Time Manager</name>
-		<version>v1.0</version>
+		<version>1.0</version>
 		<author>bmos</author>
 		<description>Provides an interface for easier time management</description>
 		<ruleset>
