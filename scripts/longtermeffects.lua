@@ -103,7 +103,6 @@ function advanceRoundsOnTimeChanged(nRounds)
 			for _,nodeEffect in pairs(DB.getChildren(nodeCT, 'effects')) do
 				local nDuration = DB.getValue(nodeEffect, 'duration')
 				local bHasDuration = (nDuration and (nDuration ~= 0))
-				Debug.chat(bHasDuration, nDuration, nRounds)
 				if bHasDuration and (nDuration < nRounds) then
 					nodeEffect.delete()
 				elseif bHasDuration then
