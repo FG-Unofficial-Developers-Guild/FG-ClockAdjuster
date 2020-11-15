@@ -78,6 +78,7 @@ function nextRound_new(nRounds)
 			local nMinutes = math.floor(nCurrent / 10)
 			nCurrent = nCurrent - (nMinutes * 10)
 			CalendarManager.adjustMinutes(nMinutes)
+			CalendarManager.outputTime()
 		end
 		
 		local msg = {font = "narratorfont", icon = "turn_flag"};
