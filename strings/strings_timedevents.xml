@@ -1,8 +1,13 @@
 <?xml version="1.0" encoding="iso-8859-1"?>
 
-<!-- Please see the LICENSE.md file included with this distribution for attribution and copyright information. -->
+<!-- 
+  Please see the license.html file included with this distribution for 
+  attribution and copyright information.
+-->
 
-<root version="3.0">	
+<root>
+
+
 	<string name="library_recordtype_label_timedevent">Timed Events</string>
 	<string name="timed_events_header">Timed Events</string>
 	<string name="hour_tooltip">Hour of Event</string>
@@ -11,4 +16,5 @@
 	<string name="month_tooltip">Month of Event</string>
 	<string name="year_tooltip">Year of Event</string>
 	<string name="desktop_openlog_tooltip">Creates a Calendar Log</string>
+	
 </root>

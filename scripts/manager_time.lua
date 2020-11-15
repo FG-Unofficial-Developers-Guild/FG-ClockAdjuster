@@ -1,12 +1,15 @@
---
--- Please see the LICENSE.md file included with this distribution for attribution and copyright information.
+-- 
+-- Please see the license.html file included with this distribution for 
+-- attribution and copyright information.
 --
 
 function onInit()
+	
+	
 	DB.addHandler("calendar.log", "onChildUpdate", onEventsChanged);
 end
 
---- Timer Functions
+         --Timer Functions--
 function setStartTime(rActor, sFirst)
 	--Debug.console("setStartTime called; " .. sFirst .."");
 	local sActorType, nodeActor = ActorManager.getTypeAndNode(rActor);
@@ -57,10 +60,6 @@ function getCurrentDate()
 	local nMonths = DB.getValue("calendar.current.month");
 	--Debug.console("getCurrentDateinMinutes; nMonths =", nMonths);
 	local nYears = DB.getValue("calendar.current.year");
-
-	if not nMinutes and not nHours and not nDays and not nMonths and not nYears then
-		ChatManager.Message("Error getting current date and time. Has your campaign calendar been configured?");
-	end
 
 	return nMinutes, nHours, nDays, nMonths, nYears;
 end
@@ -153,7 +152,7 @@ function getCurrentDateinMinutes(rActor)
 	
 	return nDateinMinutes;
 end
---- Compare times
+         --Compare times --
 function isTimeGreaterThan(rActor, sFirst, nCompareBy)
 	--Debug.console("isTimeGreaterThan called, sFirst = " .. sFirst .. ", nCompareBy = " .. nCompareBy .. ";");
 	local sActorType, nodeActor = ActorManager.getTypeAndNode(rActor);
@@ -193,7 +192,8 @@ function isXbiggerThanY(x, y)
 	end
 end
 
---- Time conversion functions
+         --convert time functions --
+
 function convertSecondstoMinutes(nNumber)
 	--Debug.console("convertRoundstoMinutes called, nNumber = " .. nNumber .. "");
 	local nMinutesTotaled = nNumber / 60;
@@ -310,7 +310,7 @@ function convertMonthssnowtoMinutes(nMonth, nYear)
 	return nMinutes;
 end
 
---- Extra calculations
+        --extra calculations --
 function getDaysInMonth(nMonth, nYear)
 	local nVar = 0;
 	local nDays = DB.getValue("calendar.data.periods.period" .. nMonth .. ".days", 0);
@@ -333,9 +333,15 @@ function isLeapYear(nYear)
 	return nYear%4==0 and (nYear%100~=0 or nYear%400==0)
 end
 
+-- 
+-- Please see the license.html file included with this distribution for 
+-- attribution and copyright information.
+--
+
 local aEvents = {};
 local nSelMonth = 0;
 local nSelDay = 0;
+						
 
 function onClose()
 end
@@ -380,6 +386,7 @@ function addLogEntryToSelected()
 end
 
 function addLogEntry(nMonth, nDay, nYear, bGMVisible, nString)
+	
 	local nodeEvent;
 	if aEvents[nYear] and aEvents[nYear][nMonth] and aEvents[nYear][nMonth][nDay] then
 		nodeEvent = aEvents[nYear][nMonth][nDay];
@@ -445,3 +452,8 @@ function onCalendarChanged()
 	list.rebuildCalendarWindows();
 	setSelectedDate(currentmonth.getValue(), currentday.getValue());
 end
+
+
+
+
+

@@ -1,31 +1,23 @@
-<?xml version="1.0" encoding="iso-8859-1"?>
-
-<!-- Please see the LICENSE.md file included with this distribution for attribution and copyright information. -->
-
-<root version="3.0">	
+<root version="3.0">
 	<properties>
-		<name>Time Manager</name>
-		<version>1.2</version>
-		<author>bmos</author>
-		<description>Provides an interface for easier time management</description>
-		<ruleset>
-			<name>PFRPG</name>
-		</ruleset>
-		<ruleset>
-			<name>3.5E</name>
-		</ruleset>
+		<name>Clock Adjuster</name>
+		<version>2.4</version>
+		<author>Pr6i6e6st</author>
+		<description>Provides a clock for easier time management</description>
 	</properties>
-	
-	<announcement text="https://github.com/bmos/FG-PFRPG-Time-Manager\rPFRPG Time Manager v1.2:\rThis extension is a GM tool which provides an interface for easy time tracking and management.\nThis extension is heavily-based on Clock Adjuster which is the work of pr6i6e6st." font="emotefont" />
+	<announcement text="Clock Adjuster Loaded" font="emotefont" icon="TattooIcon" />
+	<announcement text="The Clock Adjuster Extension is a GM tool which provides easy access to the Calendar, along with various buttons for easy time adjustment and management, including an event planner with ties to the calendar logs and capability to roll on tables, a reminder feature for repetitive events with capability to roll on tables, a travel manager for easy distance vs. time calculations, and an option to roll tables for random weather." font="emotefont" />
 	
 	<base>
-		<includefile source="desktop/desktop_panels.xml" />
-		<includefile source="graphics/graphics_frames.xml" />
-		<includefile source="graphics/graphics_icons.xml" />
-		<includefile source="strings/strings_clock.xml" />
-		<includefile source="strings/strings_timedevents.xml" />
+		
+		<icon name="TattooIcon" file="tattooicon.png" />
+		<includefile source="desktop/desktop_panels.xml"/>
+		<includefile source="desktop/desktop_panels_classes.xml"/>
+		<includefile source="graphics/graphics_frames.xml"/>
+		<includefile source="graphics/graphics_icons.xml"/>
+		<includefile source="strings/strings_clock.xml"/>
+		<includefile source="strings/strings_timedevents.xml"/>
 		<script name="TimeManager" file="scripts/manager_time.lua" />
-		<script name="ClockAdjuster" file="scripts/clock_adjuster.lua" />
-		<script name="LongTermEffects" file="scripts/longtermeffects.lua" />
+		<script name="ClockAdjuster" file="scripts/Clock_adjuster.lua" />
 	</base>
 </root>
