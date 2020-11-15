@@ -3,15 +3,19 @@
 --
 
 local nextRound_old = nil
+local resetInit_old = nil
 
 -- Function Overrides
 function onInit()
 	nextRound_old = CombatManager.nextRound;
 	CombatManager.nextRound = nextRound_new;
+	resetInit_old = CombatManager.resetInit;
+	CombatManager.resetInit = resetInit_new;
 end
 
 function onClose()
 	CombatManager.nextRound = nextRound_old;
+	CombatManager.resetInit = resetInit_old;
 end
 
 function nextRound_new(nRounds)
@@ -94,6 +98,21 @@ function nextRound_new(nRounds)
 			CombatManager.nextActor(bSkipBell, true);
 		end
 	end
+end
+
+function resetInit_new()
+	-- De-activate all entries
+	for _,v in pairs(CombatManager.getCombatantNodes()) do
+		DB.setValue(v, "active", "number", 0);
+	end
+	
+	-- Clear GM identity additions (based on option)
+	CombatManager.clearGMIdentity();
+
+	-- Reset the round counter
+	DB.setValue(CombatManager.CT_ROUND, "number", 0);
+	
+	CombatManager.onCombatResetEvent();
 end
 
 ---	This function compiles all effects and decrements their durations when time is advanced
