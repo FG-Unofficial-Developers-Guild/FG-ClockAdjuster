@@ -102,10 +102,11 @@ function advanceRoundsOnTimeChanged(nRounds)
 		for _,nodeCT in pairs(DB.getChildren('combattracker.list')) do
 			for _,nodeEffect in pairs(DB.getChildren(nodeCT, 'effects')) do
 				local nDuration = DB.getValue(nodeEffect, 'duration')
-				local bHasDuration = (nDuration ~= 0)
-				if bHasDuration and nDuration < nRounds then
+				local bHasDuration = (nDuration and (nDuration ~= 0))
+				Debug.chat(bHasDuration, nDuration, nRounds)
+				if bHasDuration and (nDuration < nRounds) then
 					nodeEffect.delete()
-				else
+				elseif bHasDuration then
 					DB.setValue(nodeEffect, 'duration', 'number', nDuration - nRounds)
 				end
 			end
