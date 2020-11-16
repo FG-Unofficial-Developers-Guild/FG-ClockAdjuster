@@ -59,7 +59,7 @@ function getCurrentDate()
 	local nYears = DB.getValue("calendar.current.year");
 
 	if not nMinutes and not nHours and not nDays and not nMonths and not nYears then
-		ChatManager.Message("Error getting current date and time. Has your campaign calendar been configured?");
+		ChatManager.Message(Interface.getString('error_calendar_not_configured'));
 	end
 
 	return nMinutes, nHours, nDays, nMonths, nYears;
