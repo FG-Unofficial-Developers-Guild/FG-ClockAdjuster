@@ -580,36 +580,38 @@
 				<tooltip textres="desktop_adv6am_tooltip" />
 				<script>
 					function onButtonPress()
-						local CurrentHour = DB.getValue("calendar.current.hour");
-						local CurrentMinute = DB.getValue("calendar.current.minute");
+						local nCurrentHour = DB.getValue("calendar.current.hour");
+						local nCurrentMinute = DB.getValue("calendar.current.minute");
 						
-						if CurrentHour &gt;= 6 then
-							DB.setValue("calendar.current.hour", "number", 6);
-							CalendarManager.adjustDays(1);
-							if CurrentMinute &gt;= 1 then
-								DB.setValue("calendar.current.minute", "number", 0);
+						if TimeManager.getCurrentDate() then
+							if nCurrentHour &gt;= 6 then
+								DB.setValue("calendar.current.hour", "number", 6);
+								CalendarManager.adjustDays(1);
+								if nCurrentMinute &gt;= 1 then
+									DB.setValue("calendar.current.minute", "number", 0);
+								end
+							elseif nCurrentHour &lt; 6 then
+								DB.setValue("calendar.current.hour", "number", 6);
+								if nCurrentMinute &gt;= 1 then
+									DB.setValue("calendar.current.minute", "number", 0);
+								end
 							end
-						elseif CurrentHour &lt; 6 then
-							DB.setValue("calendar.current.hour", "number", 6);
-							if CurrentMinute &gt;= 1 then
-								DB.setValue("calendar.current.minute", "number", 0);
+							if window.checkweather.getValue() == 1 then
+								local WeatherWind = "Weather - Wind";
+								local WeatherTemp = "Weather - Temperature";
+								local WeatherRain = "Weather - Precipitation";
+								TableManager.processTableRoll("", "Weather Wind");
+								TableManager.processTableRoll("", "Weather Temperature");
+								TableManager.processTableRoll("", "Weather Precipitation");
 							end
+							if DB.getValue("calendar.check.day") == nil or DB.getValue("calendar.check.day") ~= DB.getValue("calendar.current.day") then
+								CalendarManager.outputDate();
+								DB.setValue("calendar.check.day", "number", DB.getValue("calendar.current.day"));
+							end
+							CalendarManager.outputTime();
+							local nDateinMinutes = TimeManager.getCurrentDateinMinutes();
+							DB.setValue("calendar.dateinminutes", "number", nDateinMinutes); DB.setValue("calendar.dateinminutesstring", "string", tostring(nDateinMinutes))
 						end
-						if window.checkweather.getValue() == 1 then
-							local WeatherWind = "Weather - Wind";
-							local WeatherTemp = "Weather - Temperature";
-							local WeatherRain = "Weather - Precipitation";
-							TableManager.processTableRoll("", "Weather Wind");
-							TableManager.processTableRoll("", "Weather Temperature");
-							TableManager.processTableRoll("", "Weather Precipitation");
-						end
-						if DB.getValue("calendar.check.day") == nil or DB.getValue("calendar.check.day") ~= DB.getValue("calendar.current.day") then
-							CalendarManager.outputDate();
-							DB.setValue("calendar.check.day", "number", DB.getValue("calendar.current.day"));
-						end
-						CalendarManager.outputTime();
-						local nDateinMinutes = TimeManager.getCurrentDateinMinutes();
-						DB.setValue("calendar.dateinminutes", "number", nDateinMinutes); DB.setValue("calendar.dateinminutesstring", "string", tostring(nDateinMinutes))
 					end
 				</script>
 			</buttoncontrol>
@@ -619,36 +621,38 @@
 				<tooltip textres="desktop_adv12pm_tooltip" />
 				<script>
 					function onButtonPress()
-						local CurrentHour = DB.getValue("calendar.current.hour");
-						local CurrentMinute = DB.getValue("calendar.current.minute");
+						local nCurrentHour = DB.getValue("calendar.current.hour");
+						local nCurrentMinute = DB.getValue("calendar.current.minute");
 						
-						if CurrentHour &gt;= 12 then
-							DB.setValue("calendar.current.hour", "number", 12);
-							CalendarManager.adjustDays(1);
-							if CurrentMinute &gt;= 1 then
-								DB.setValue("calendar.current.minute", "number", 0);
+						if TimeManager.getCurrentDate() then
+							if nCurrentHour &gt;= 12 then
+								DB.setValue("calendar.current.hour", "number", 12);
+								CalendarManager.adjustDays(1);
+								if nCurrentMinute &gt;= 1 then
+									DB.setValue("calendar.current.minute", "number", 0);
+								end
+							elseif nCurrentHour &lt; 12 then
+								DB.setValue("calendar.current.hour", "number", 12);
+								if nCurrentMinute &gt;= 1 then
+									DB.setValue("calendar.current.minute", "number", 0);
+								end
 							end
-						elseif CurrentHour &lt; 12 then
-							DB.setValue("calendar.current.hour", "number", 12);
-							if CurrentMinute &gt;= 1 then
-								DB.setValue("calendar.current.minute", "number", 0);
+							if window.checkweather.getValue() == 1 then
+								local WeatherWind = "Weather - Wind";
+								local WeatherTemp = "Weather - Temperature";
+								local WeatherRain = "Weather - Precipitation";
+								TableManager.processTableRoll("", "Weather Wind");
+								TableManager.processTableRoll("", "Weather Temperature");
+								TableManager.processTableRoll("", "Weather Precipitation");
 							end
+							if DB.getValue("calendar.check.day") == nil or DB.getValue("calendar.check.day") ~= DB.getValue("calendar.current.day") then
+								CalendarManager.outputDate();
+								DB.setValue("calendar.check.day", "number", DB.getValue("calendar.current.day"));
+							end
+							CalendarManager.outputTime();
+							local nDateinMinutes = TimeManager.getCurrentDateinMinutes();
+							DB.setValue("calendar.dateinminutes", "number", nDateinMinutes); DB.setValue("calendar.dateinminutesstring", "string", tostring(nDateinMinutes))
 						end
-						if window.checkweather.getValue() == 1 then
-							local WeatherWind = "Weather - Wind";
-							local WeatherTemp = "Weather - Temperature";
-							local WeatherRain = "Weather - Precipitation";
-							TableManager.processTableRoll("", "Weather Wind");
-							TableManager.processTableRoll("", "Weather Temperature");
-							TableManager.processTableRoll("", "Weather Precipitation");
-						end
-						if DB.getValue("calendar.check.day") == nil or DB.getValue("calendar.check.day") ~= DB.getValue("calendar.current.day") then
-							CalendarManager.outputDate();
-							DB.setValue("calendar.check.day", "number", DB.getValue("calendar.current.day"));
-						end
-						CalendarManager.outputTime();
-						local nDateinMinutes = TimeManager.getCurrentDateinMinutes();
-						DB.setValue("calendar.dateinminutes", "number", nDateinMinutes); DB.setValue("calendar.dateinminutesstring", "string", tostring(nDateinMinutes))
 					end
 				</script>
 			</buttoncontrol>
@@ -658,36 +662,38 @@
 				<tooltip textres="desktop_adv6pm_tooltip" />
 				<script>
 					function onButtonPress()
-						local CurrentHour = DB.getValue("calendar.current.hour");
-						local CurrentMinute = DB.getValue("calendar.current.minute");
+						local nCurrentHour = DB.getValue("calendar.current.hour");
+						local nCurrentMinute = DB.getValue("calendar.current.minute");
 						
-						if CurrentHour &gt;= 18 then
-							DB.setValue("calendar.current.hour", "number", 18);
-							CalendarManager.adjustDays(1);
-							if CurrentMinute &gt;= 1 then
-								DB.setValue("calendar.current.minute", "number", 0);
+						if TimeManager.getCurrentDate() then
+							if nCurrentHour &gt;= 18 then
+								DB.setValue("calendar.current.hour", "number", 18);
+								CalendarManager.adjustDays(1);
+								if nCurrentMinute &gt;= 1 then
+									DB.setValue("calendar.current.minute", "number", 0);
+								end
+							elseif nCurrentHour &lt; 18 then
+								DB.setValue("calendar.current.hour", "number", 18);
+								if nCurrentMinute &gt;= 1 then
+									DB.setValue("calendar.current.minute", "number", 0);
+								end
 							end
-						elseif CurrentHour &lt; 18 then
-							DB.setValue("calendar.current.hour", "number", 18);
-							if CurrentMinute &gt;= 1 then
-								DB.setValue("calendar.current.minute", "number", 0);
+							if window.checkweather.getValue() == 1 then
+								local WeatherWind = "Weather - Wind";
+								local WeatherTemp = "Weather - Temperature";
+								local WeatherRain = "Weather - Precipitation";
+								TableManager.processTableRoll("", "Weather Wind");
+								TableManager.processTableRoll("", "Weather Temperature");
+								TableManager.processTableRoll("", "Weather Precipitation");
 							end
+							if DB.getValue("calendar.check.day") == nil or DB.getValue("calendar.check.day") ~= DB.getValue("calendar.current.day") then
+								CalendarManager.outputDate();
+								DB.setValue("calendar.check.day", "number", DB.getValue("calendar.current.day"));
+							end
+							CalendarManager.outputTime();
+							local nDateinMinutes = TimeManager.getCurrentDateinMinutes();
+							DB.setValue("calendar.dateinminutes", "number", nDateinMinutes); DB.setValue("calendar.dateinminutesstring", "string", tostring(nDateinMinutes))
 						end
-						if window.checkweather.getValue() == 1 then
-							local WeatherWind = "Weather - Wind";
-							local WeatherTemp = "Weather - Temperature";
-							local WeatherRain = "Weather - Precipitation";
-							TableManager.processTableRoll("", "Weather Wind");
-							TableManager.processTableRoll("", "Weather Temperature");
-							TableManager.processTableRoll("", "Weather Precipitation");
-						end
-						if DB.getValue("calendar.check.day") == nil or DB.getValue("calendar.check.day") ~= DB.getValue("calendar.current.day") then
-							CalendarManager.outputDate();
-							DB.setValue("calendar.check.day", "number", DB.getValue("calendar.current.day"));
-						end
-						CalendarManager.outputTime();
-						local nDateinMinutes = TimeManager.getCurrentDateinMinutes();
-						DB.setValue("calendar.dateinminutes", "number", nDateinMinutes); DB.setValue("calendar.dateinminutesstring", "string", tostring(nDateinMinutes))
 					end
 				</script>
 			</buttoncontrol>
@@ -697,37 +703,39 @@
 				<tooltip textres="desktop_adv12am_tooltip" />
 				<script>
 					function onButtonPress()
-						local CurrentHour = DB.getValue("calendar.current.hour");
-						local CurrentMinute = DB.getValue("calendar.current.minute");
+						local nCurrentHour = DB.getValue("calendar.current.hour");
+						local nCurrentMinute = DB.getValue("calendar.current.minute");
 						
-						if CurrentHour &gt;= 0 then
-							DB.setValue("calendar.current.hour", "number", 0);
-							CalendarManager.adjustDays(1);
-							if CurrentMinute &gt;= 1 then
-								DB.setValue("calendar.current.minute", "number", 0);
+						if TimeManager.getCurrentDate() then
+							if nCurrentHour &gt;= 0 then
+								DB.setValue("calendar.current.hour", "number", 0);
+								CalendarManager.adjustDays(1);
+								if nCurrentMinute &gt;= 1 then
+									DB.setValue("calendar.current.minute", "number", 0);
+								end
+							elseif nCurrentHour &lt; 0 then
+								DB.setValue("calendar.current.hour", "number", 0);
+								if nCurrentMinute &gt;= 1 then
+									DB.setValue("calendar.current.minute", "number", 0);
+								end
 							end
-						elseif CurrentHour &lt; 0 then
-							DB.setValue("calendar.current.hour", "number", 0);
-							if CurrentMinute &gt;= 1 then
-								DB.setValue("calendar.current.minute", "number", 0);
+							
+							if window.checkweather.getValue() == 1 then
+								local WeatherWind = "Weather - Wind";
+								local WeatherTemp = "Weather - Temperature";
+								local WeatherRain = "Weather - Precipitation";
+								TableManager.processTableRoll("", "Weather Wind");
+								TableManager.processTableRoll("", "Weather Temperature");
+								TableManager.processTableRoll("", "Weather Precipitation");
 							end
+							if DB.getValue("calendar.check.day") == nil or DB.getValue("calendar.check.day") ~= DB.getValue("calendar.current.day") then
+								CalendarManager.outputDate();
+								DB.setValue("calendar.check.day", "number", DB.getValue("calendar.current.day"));
+							end
+							CalendarManager.outputTime();
+							local nDateinMinutes = TimeManager.getCurrentDateinMinutes();
+							DB.setValue("calendar.dateinminutes", "number", nDateinMinutes); DB.setValue("calendar.dateinminutesstring", "string", tostring(nDateinMinutes))
 						end
-						
-						if window.checkweather.getValue() == 1 then
-							local WeatherWind = "Weather - Wind";
-							local WeatherTemp = "Weather - Temperature";
-							local WeatherRain = "Weather - Precipitation";
-							TableManager.processTableRoll("", "Weather Wind");
-							TableManager.processTableRoll("", "Weather Temperature");
-							TableManager.processTableRoll("", "Weather Precipitation");
-						end
-						if DB.getValue("calendar.check.day") == nil or DB.getValue("calendar.check.day") ~= DB.getValue("calendar.current.day") then
-							CalendarManager.outputDate();
-							DB.setValue("calendar.check.day", "number", DB.getValue("calendar.current.day"));
-						end
-						CalendarManager.outputTime();
-						local nDateinMinutes = TimeManager.getCurrentDateinMinutes();
-						DB.setValue("calendar.dateinminutes", "number", nDateinMinutes); DB.setValue("calendar.dateinminutesstring", "string", tostring(nDateinMinutes))
 					end
 				</script>
 			</buttoncontrol>

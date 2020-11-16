@@ -2,6 +2,8 @@
 -- Please see the LICENSE.md file included with this distribution for attribution and copyright information.
 --
 
+local bNoticePosted = false
+
 function onInit()
 	DB.addHandler("calendar.log", "onChildUpdate", onEventsChanged);
 end
@@ -58,8 +60,9 @@ function getCurrentDate()
 	--Debug.console("getCurrentDateinMinutes; nMonths =", nMonths);
 	local nYears = DB.getValue("calendar.current.year");
 
-	if not nMinutes and not nHours and not nDays and not nMonths and not nYears then
+	if bNoticePosted == false and not DB.getValue("calendar.data.complete") then
 		ChatManager.Message(Interface.getString('error_calendar_not_configured'));
+		bNoticePosted = true
 	end
 
 	return nMinutes, nHours, nDays, nMonths, nYears;
@@ -106,15 +109,6 @@ end
 
 	
 function getCurrentDateinMinutes(rActor)
-	local nMinutes = 0;
-	local nHours = 0;
-	local nDays = 0;
-	local nMonths = 0;
-	local nYears = 0;
-	local nHoursinMinutes = 0;
-	local nDaysinMinutes = 0;
-	local nMonthsinMinutes = 0;
-	local nYearsinMinutes = 0;
 	--Debug.console("getCurrentDateinMinutes; nRounds =", nRounds);
 	local nMinutes = DB.getValue("calendar.current.minute", 0);
 	--Debug.console("getCurrentDateinMinutes; nMinutes =", nMinutes);
@@ -126,18 +120,19 @@ function getCurrentDateinMinutes(rActor)
 	--Debug.console("getCurrentDateinMinutes; nMonths =", nMonths);
 	local nYears = DB.getValue("calendar.current.year", 0);
 
-	if not nMinutes and not nHours and not nDays and not nMonths and not nYears then
+	if bNoticePosted == false and not DB.getValue("calendar.data.complete") then
 		ChatManager.Message(Interface.getString('error_calendar_not_configured'));
+		bNoticePosted = true
 	end
 	
 	
-	nHoursinMinutes = convertHourstoMinutes(nHours);
+	local nHoursinMinutes = convertHourstoMinutes(nHours);
 	--Debug.console("getCurrentDateinMinutes; nHoursinMinutes =", nHoursinMinutes);
-	nDaysinMinutes = convertDaystoMinutes(nDays);
+	local nDaysinMinutes = convertDaystoMinutes(nDays);
 	--Debug.console("getCurrentDateinMinutes; nDaysinMinutes =", nDaysinMinutes);
-	nMonthsinMinutes = convertMonthssnowtoMinutes(nMonths, nYears);
+	local nMonthsinMinutes = convertMonthssnowtoMinutes(nMonths, nYears);
 	--Debug.console("getCurrentDateinMinutes; nMonthsinMinutes =", nMonthsinMinutes);
-	nYearsinMinutes = convertYearsnowtoMinutes(nYears);
+	local nYearsinMinutes = convertYearsnowtoMinutes(nYears);
 	--Debug.console("getCurrentDateinMinutes; nYearsinMinutes =", nYearsinMinutes);
 	
 	if nHoursinMinutes == nil then
