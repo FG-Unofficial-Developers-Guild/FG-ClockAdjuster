@@ -47,6 +47,20 @@ function getTimerStart(rActor, sFirst)
 	local nStartYear = DB.getValue(nodeActor, "" .. sFirst .. ".startyear", 0);
 	return nStartMinute, nStartHour, nStartDay, nStartMonth, nStartYear;
 end
+
+-- prints a big error message in the Chatwindow
+local function bigMessage(msgtxt, broadcast, rActor)
+	local msg = ChatManager.createBaseMessage(rActor);
+	msg.text = msg.text .. msgtxt;
+	msg.font = 'reference-header';
+
+	if broadcast then
+		Comm.deliverChatMessage(msg);
+	else
+		msg.secret = true;
+		Comm.addChatMessage(msg);
+	end
+end
 	
 function getCurrentDate()
 	--Debug.console("getCurrentDateinMinutes called;");
@@ -61,7 +75,7 @@ function getCurrentDate()
 	local nYears = DB.getValue("calendar.current.year");
 
 	if bNoticePosted == false and not DB.getValue("calendar.data.complete") then
-		ChatManager.Message(Interface.getString('error_calendar_not_configured'));
+		bigMessage(Interface.getString('error_calendar_not_configured'))
 		bNoticePosted = true
 	end
 
@@ -121,7 +135,7 @@ function getCurrentDateinMinutes(rActor)
 	local nYears = DB.getValue("calendar.current.year", 0);
 
 	if bNoticePosted == false and not DB.getValue("calendar.data.complete") then
-		ChatManager.Message(Interface.getString('error_calendar_not_configured'));
+		bigMessage(Interface.getString('error_calendar_not_configured'))
 		bNoticePosted = true
 	end
 	
