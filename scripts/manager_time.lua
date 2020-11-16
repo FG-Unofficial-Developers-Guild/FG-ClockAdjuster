@@ -125,6 +125,10 @@ function getCurrentDateinMinutes(rActor)
 	local nMonths = DB.getValue("calendar.current.month", 0);
 	--Debug.console("getCurrentDateinMinutes; nMonths =", nMonths);
 	local nYears = DB.getValue("calendar.current.year", 0);
+
+	if not nMinutes and not nHours and not nDays and not nMonths and not nYears then
+		ChatManager.Message(Interface.getString('error_calendar_not_configured'));
+	end
 	
 	
 	nHoursinMinutes = convertHourstoMinutes(nHours);
