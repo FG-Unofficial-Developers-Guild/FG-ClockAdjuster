@@ -24,9 +24,9 @@
 	<string name="desktop_currentyear_tooltip">Current Year; CTRL + Mousewheel to adjust</string>
 	<string name="desktop_shortrest">Short Rest; Double-Click to initiate a short rest and advance the time by the number of minutes</string>
 	<string name="desktop_longrest">Long Rest; Double-Click to initiate a long rest and advance the time by the number of hours</string>
-	<string name="desktop_adv12am_tooltip">Advance time to 12AM</string>
+	<string name="desktop_adv12am_tooltip">Advance time to Midnight</string>
 	<string name="desktop_adv6am_tooltip">Advance time to 6AM</string>
-	<string name="desktop_adv12pm_tooltip">Advance time to 12PM</string>
+	<string name="desktop_adv12pm_tooltip">Advance time to Noon</string>
 	<string name="desktop_adv6pm_tooltip">Advance time to 6PM</string>
 	<string name="desktop_openevents_tooltip">Open Events Manager</string>
 	<string name="desktop_openreminders_tooltip">Open Reminder Manager</string>
