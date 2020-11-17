@@ -8,4 +8,4 @@ This extension has been tested with [FantasyGrounds Classic](https://www.fantasy
 
 To use this extension, you need to have the Calendar module enabled and have your calendar configured.
 
-To use the 'advance time to 6am/12am' buttons, you must first have set the time. The easiest way to do this is to advance the time manually 1 minute by entering 1 in the minutes field and double-clicking 'Add'.
+To use the 'advance time to 6am/12am' buttons, you must first have set the time. The easiest way to do this is to advance the time manually by at least 1 hour and 1 minute by entering 1 in the minutes field and hours field and double-clicking 'Add'.
