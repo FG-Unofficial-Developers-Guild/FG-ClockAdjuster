@@ -34,5 +34,5 @@
 	<string name="desktop_opentravel_tooltip">Open Travel Manager</string>
 	<string name="desktop_travel_tooltip">Travel</string>
 	
-	<string name="error_calendar_not_configured">https://github.com/bmos/FG-PFRPG-Time-Manager/blob/main/README.md Error getting current date and time\nPlease see this README file for more information.</string>
+	<string name="error_calendar_not_configured">Error getting current date and time\nPlease ensure you have the calendar module loaded and your calendar configured.</string>
 </root>
