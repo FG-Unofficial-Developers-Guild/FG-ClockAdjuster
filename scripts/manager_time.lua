@@ -74,7 +74,8 @@ function getCurrentDate()
 	--Debug.console("getCurrentDateinMinutes; nMonths =", nMonths);
 	local nYears = DB.getValue("calendar.current.year");
 
-	if bNoticePosted == false and not DB.getValue("calendar.data.complete") then
+	if (bNoticePosted == false) and
+		(not DB.getValue("calendar.data.complete") or (not nMinutes or not nHours or not nDays or not nMonths or not nYears)) then
 		bigMessage(Interface.getString('error_calendar_not_configured'))
 		bNoticePosted = true
 	end
@@ -123,22 +124,7 @@ end
 
 	
 function getCurrentDateinMinutes(rActor)
-	--Debug.console("getCurrentDateinMinutes; nRounds =", nRounds);
-	local nMinutes = DB.getValue("calendar.current.minute", 0);
-	--Debug.console("getCurrentDateinMinutes; nMinutes =", nMinutes);
-	local nHours = DB.getValue("calendar.current.hour", 0);
-	--Debug.console("getCurrentDateinMinutes; nHours =", nHours);
-	local nDays = DB.getValue("calendar.current.day", 0);
-	--Debug.console("getCurrentDateinMinutes; nDays =", nDays);
-	local nMonths = DB.getValue("calendar.current.month", 0);
-	--Debug.console("getCurrentDateinMinutes; nMonths =", nMonths);
-	local nYears = DB.getValue("calendar.current.year", 0);
-
-	if bNoticePosted == false and not DB.getValue("calendar.data.complete") then
-		bigMessage(Interface.getString('error_calendar_not_configured'))
-		bNoticePosted = true
-	end
-	
+	local nMinutes, nHours, nDays, nMonths, nYears = getCurrentDate()
 	
 	local nHoursinMinutes = convertHourstoMinutes(nHours);
 	--Debug.console("getCurrentDateinMinutes; nHoursinMinutes =", nHoursinMinutes);
