@@ -64,15 +64,15 @@ end
 	
 function getCurrentDate()
 	--Debug.console("getCurrentDateinMinutes called;");
-	local nMinutes = DB.getValue("calendar.current.minute");
+	local nMinutes = DB.getValue("calendar.current.minute", 0);
 	--Debug.console("getCurrentDateinMinutes; nMinutes =", nMinutes);
-	local nHours = DB.getValue("calendar.current.hour");
+	local nHours = DB.getValue("calendar.current.hour", 0);
 	--Debug.console("getCurrentDateinMinutes; nHours =", nHours);
-	local nDays = DB.getValue("calendar.current.day");
+	local nDays = DB.getValue("calendar.current.day", 0);
 	--Debug.console("getCurrentDateinMinutes; nDays =", nDays);
-	local nMonths = DB.getValue("calendar.current.month");
+	local nMonths = DB.getValue("calendar.current.month", 0);
 	--Debug.console("getCurrentDateinMinutes; nMonths =", nMonths);
-	local nYears = DB.getValue("calendar.current.year");
+	local nYears = DB.getValue("calendar.current.year", 0);
 
 	if (bNoticePosted == false) and
 		(not DB.getValue("calendar.data.complete") or (not nMinutes or not nHours or not nDays or not nMonths or not nYears)) then
