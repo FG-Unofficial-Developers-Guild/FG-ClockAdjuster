@@ -5,14 +5,14 @@
 <root version="3.0">	
 	<panel name="date" modes="host">
 		<class>chattime</class>
-		<bounds>10,150,235,110</bounds>
+		<bounds>10,100,260,110</bounds>
 		<dynamic />
 		<locked />
 	</panel>
 
 	<windowclass name="chattime">
 		<frame>recordsheet</frame>
-		<size width="235" height="110" />
+		<size width="260" height="110" />
 		<noclose />
 		<sheetdata>
 			<label name="currenthour">
@@ -469,7 +469,7 @@
 			</basicnumber>
 			
 			<label name="addall">
-				<anchored to="addminute" position="righthigh" offset="10" />
+				<anchored to="addminute" position="righthigh" offset="9" />
 				<static textres="desktop_panel_add" />
 				<tooltip textres="desktop_addall_tooltip" />
 				<script>
