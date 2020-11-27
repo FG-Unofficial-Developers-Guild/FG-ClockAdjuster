@@ -11,7 +11,6 @@
 	</panel>
 
 	<windowclass name="chattime">
-		<frame>groupbox</frame>
 		<size width="230" height="90" />
 		<placement>
 			<position>
@@ -23,6 +22,7 @@
 			<size width="230" height="90" />
 			<!--<dynamic /> -->
 		</sizelimits>		
+		<frame>recordsheet</frame>
 		<noclose />
 		<sheetdata>
 			
@@ -94,7 +94,7 @@
 			</label>
 			<label name="timesep">
 				<anchored to="currenthour" position="righthigh" offset="5" />
-				<color>FFFFFF</color>
+				<color>000000</color>
 				<static>:</static>
 			</label>
 			<label name="currentminute">
@@ -138,7 +138,7 @@
 			<label name="currentphase">
 				<anchored to="currentminute" position="righthigh" offset="5" />
 				<font>calendarbold</font>
-				<color>FFFFFF</color>
+				<color>000000</color>
 			</label>
 			<label name="currentday">
 				<anchored to="currentphase" position="righthigh" offset="10" width="20" />
@@ -263,7 +263,7 @@
 					<top offset="35" />
 				</anchored>
 				<font>calendarbold</font>
-				<color>FFFFFF</color>
+				<color>000000</color>
 				<min>0</min>
 				<tooltip textres="desktop_addhour_tooltip" />
 				<script>
@@ -308,13 +308,13 @@
 			</basicnumber>
 			<label name="timesep2">
 				<anchored to="addhour" position="righthigh" offset="5" />
-				<color>FFFFFF</color>
+				<color>000000</color>
 				<static>:</static>
 			</label>
 			<basicnumber name="addminute" source="addminute">
 				<anchored to="timesep2" position="righthigh" offset="6" width="20" />
 				<font>calendarbold</font>
-				<color>FFFFFF</color>
+				<color>000000</color>
 				<min>0</min>
 				<tooltip textres="desktop_addminute_tooltip" />
 				<script>
@@ -352,7 +352,7 @@
 			<basicnumber name="addday" source="addday">
 				<anchored to="addminute" position="righthigh" offset="38" width="20" />
 				<font>calendarbold</font>
-				<color>FFFFFF</color>
+				<color>000000</color>
 				<min>0</min>
 				<tooltip textres="desktop_addday_tooltip" />
 				<script>
@@ -398,7 +398,7 @@
 			<basicnumber name="addmonth" source="addmonth">
 				<anchored to="addday" position="righthigh" offset="10" width="20" />
 				<font>calendarbold</font>
-				<color>FFFFFF</color>
+				<color>000000</color>
 				<min>0</min>
 				<tooltip textres="desktop_addmonth_tooltip" />
 				<script>
@@ -439,7 +439,7 @@
 			<basicnumber name="addyear" source="addyear">
 				<anchored to="addmonth" position="righthigh" offset="10" width="50" />
 				<font>calendarbold</font>
-				<color>FFFFFF</color>
+				<color>000000</color>
 				<min>0</min>
 				<tooltip textres="desktop_addyears_tooltip" />
 				<script>
@@ -523,7 +523,7 @@
 					<top to="addhour" anchor="bottom" offset="10" />
 				</anchored>
 				<font>calendarbold</font>
-				<color>FFFFFF</color>
+				<color>000000</color>
 				<min>0</min>
 				<tooltip textres="desktop_shortrest" />
 				<script>
@@ -546,7 +546,7 @@
 			<basicnumber name="longrest">
 				<anchored to="shortrest" position="right" offset="10" width="20" />
 				<font>calendarbold</font>
-				<color>FFFFFF</color>
+				<color>000000</color>
 				<min>0</min>
 				<tooltip textres="desktop_longrest" />
 				<script>
@@ -799,7 +799,7 @@
 	</windowclass>
 
 	<windowclass name="timedevents">
-		<frame>groupbox</frame>
+		<frame>recordsheet</frame>
 		<placement>
 			<size>
 				<width>370</width>
@@ -1307,7 +1307,7 @@
 	
 	
 	<windowclass name="travelmanager">
-		<frame>groupbox</frame>
+		<frame>recordsheet</frame>
 		<size width="500" height="90" />
 		<placement>
 			<position>
