@@ -5,31 +5,20 @@
 <root version="3.0">	
 	<panel name="date" modes="host">
 		<class>chattime</class>
-		<bounds>10,100,240,90</bounds>
+		<bounds>10,150,235,110</bounds>
 		<dynamic />
 		<locked />
 	</panel>
 
 	<windowclass name="chattime">
-		<size width="230" height="90" />
-		<placement>
-			<position>
-				<x>10</x>
-				<y>30</y>
-			</position>
-		</placement>		
-		<sizelimits>
-			<size width="230" height="90" />
-			<!--<dynamic /> -->
-		</sizelimits>		
 		<frame>recordsheet</frame>
+		<size width="235" height="110" />
 		<noclose />
 		<sheetdata>
-			
 			<label name="currenthour">
 				<anchored position="insidetopleft" width="20">
-					<left anchor="left" offset="20" />
-					<top offset="8" />
+					<left anchor="left" offset="15" />
+					<top offset="22" />
 				</anchored>
 				<frame name="fieldlight" offset="7,5,7,5" />
 				<stateframe>
@@ -136,9 +125,10 @@
 				</script>
 			</label>
 			<label name="currentphase">
-				<anchored to="currentminute" position="righthigh" offset="5" />
+				<anchored to="currentminute" position="righthigh" offset="10" />
 				<font>calendarbold</font>
 				<color>000000</color>
+				<center />
 			</label>
 			<label name="currentday">
 				<anchored to="currentphase" position="righthigh" offset="10" width="20" />
@@ -179,7 +169,7 @@
 				</script>
 			</label>
 			<label name="currentmonth">
-				<anchored to="currentday" position="righthigh" offset="10" width="20" />
+				<anchored to="currentday" position="righthigh" offset="15" width="20" />
 				<frame name="fieldlight" offset="7,5,7,5" />
 				<stateframe>
 					<hover name="fieldfocus" offset="7,5,7,5" />
@@ -258,9 +248,9 @@
 			</label>
 			
 			<basicnumber name="addhour" source="addhour">
-				<anchored position="insidetopleft" width="20">
-					<left anchor="left" offset="20" />
-					<top offset="35" />
+				<anchored to="currenthour" width="20">
+					<left anchor="left" offset="0" />
+					<top anchor="bottom" offset="10" />
 				</anchored>
 				<font>calendarbold</font>
 				<color>000000</color>
@@ -350,7 +340,10 @@
 			</basicnumber>
 			
 			<basicnumber name="addday" source="addday">
-				<anchored to="addminute" position="righthigh" offset="38" width="20" />
+				<anchored to="currentday" width="20">
+					<left anchor="left" offset="0" />
+					<top anchor="bottom" offset="10" />
+				</anchored>
 				<font>calendarbold</font>
 				<color>000000</color>
 				<min>0</min>
@@ -396,7 +389,7 @@
 				</script>
 			</basicnumber>
 			<basicnumber name="addmonth" source="addmonth">
-				<anchored to="addday" position="righthigh" offset="10" width="20" />
+				<anchored to="addday" position="righthigh" offset="15" width="20" />
 				<font>calendarbold</font>
 				<color>000000</color>
 				<min>0</min>
@@ -476,7 +469,7 @@
 			</basicnumber>
 			
 			<label name="addall">
-				<anchored to="addminute" position="righthigh" offset="5" />
+				<anchored to="addminute" position="righthigh" offset="10" />
 				<static textres="desktop_panel_add" />
 				<tooltip textres="desktop_addall_tooltip" />
 				<script>
@@ -515,12 +508,13 @@
 
 					end
 				</script>
+				<center />
 			</label>
 			
 			<basicnumber name="shortrest">
 				<anchored to="addhour" width="20">
 					<left anchor="left" offset="0" />
-					<top to="addhour" anchor="bottom" offset="10" />
+					<top anchor="bottom" offset="10" />
 				</anchored>
 				<font>calendarbold</font>
 				<color>000000</color>
@@ -544,7 +538,10 @@
 			</basicnumber>
 				
 			<basicnumber name="longrest">
-				<anchored to="shortrest" position="right" offset="10" width="20" />
+				<anchored to="addminute" width="20">
+					<left anchor="left" offset="0" />
+					<top anchor="bottom" offset="10" />
+				</anchored>
 				<font>calendarbold</font>
 				<color>000000</color>
 				<min>0</min>
@@ -780,20 +777,15 @@
 						elseif Interface.findWindow("travelmanager", "DB") then
 							Interface.findWindow("travelmanager", "DB").close();
 						end
-						
 					end
 				</script>
 			</buttoncontrol>
 			<button_checkbox name="checkweather">
-				<anchored width="20" height="20">
-					<top parent="opentravelmanager" anchor="top" offset="0" />
-					<right parent="opentravelmanager" anchor="right" offset="20" />
-				</anchored>
+				<anchored to="opentravelmanager" position="righthigh" offset="0,0" width="20" height="20" />
 				<values>
 					<maximum>1</maximum>
 				</values>
 				<tooltip text="Check Weather on Time Adjust; NOTE: You must have a table for each 'Weather Wind', 'Weather Temperature', and 'Weather Precipitation'" />
-				
 			</button_checkbox>
 		</sheetdata>
 	</windowclass>
@@ -801,24 +793,14 @@
 	<windowclass name="timedevents">
 		<frame>recordsheet</frame>
 		<placement>
-			<size>
-				<width>370</width>
-				<height>30</height>
-			</size>
-			<position>
-				<x>260</x>
-				<y>30</y>
-			</position>
+			<size width="370" height="30" />
+			<position x="260" y="30" />
 		</placement>
-		
 		<sizelimits>
 			<dynamic />
 		</sizelimits>
 		<nodelete />
 		<softclose />
-		<script>
-			
-		</script>
 		<sheetdata>
 			<windowlist name="eventslist">
 				<anchored>
@@ -864,8 +846,6 @@
 					end
 				</script>
 			</windowlist>
-			
-			
 			<scrollbar>
 				<anchored to="eventslist" />
 				<target>eventslist</target>
@@ -874,21 +854,10 @@
 		<dynamic />
 	</windowclass>
 	
-	
-	
-	
-	
-	
-
-
 	<windowclass name="list_timedevent">
 		<margins control="0,0,0,2" />
 		<softclose />
 		<script>
-			function onInit()
-			
-			end
-			
 			function update()
 				windowlist.update();
 				if isgmonly.getValue() == 1 then
@@ -931,7 +900,6 @@
 				elseif nCurrentDateinMinutes &lt; nDateinMinutes then
 					completed.setValue(0);
 				end
-							
 			end
 		</script>
 		<sheetdata>
@@ -964,12 +932,6 @@
 				<gmvisibleonly />
 				<state icon="visibilityon" tooltipres="visibilityon" />
 				<state icon="visibilityoff" tooltipres="visibilityoff" />
-				<script>
-					function onInit()
-					end
-					function onValueChanged()
-					end
-				</script>
 			</buttonfield>
 			<buttongroup_counter name="completedbutton">
 				<anchored width="20" height="20">
@@ -992,12 +954,6 @@
 				</anchored>
 				<delaykeyupdate />
 				<tabtarget prev="location" />
-				<script>
-					function onInit()
-					end
-					function onValueChanged()
-					end
-				</script>
 				<invisible />
 			</basicnumber>
 			<basicnumber name="year" source="year">
@@ -1007,12 +963,6 @@
 				</anchored>
 				<delaykeyupdate />
 				<tabtarget prev="location" />
-				<script>
-					function onInit()
-					end
-					function onValueChanged()
-					end
-				</script>
 				<tooltip textres="year_tooltip" />
 			</basicnumber>
 			
@@ -1022,12 +972,6 @@
 					<right parent="rightanchor" anchor="left" relation="relative" offset="-10" />
 				</anchored>
 				<delaykeyupdate />
-				<script>
-					function onInit()
-					end
-					function onValueChanged()
-					end
-				</script>
 				<tooltip textres="month_tooltip" />
 			</basicnumber>
 			<basicnumber name="day" source="day">
@@ -1036,12 +980,6 @@
 					<right parent="rightanchor" anchor="left" relation="relative" offset="-10" />
 				</anchored>
 				<delaykeyupdate />
-				<script>
-					function onInit()
-					end
-					function onValueChanged()
-					end
-				</script>
 				<tooltip textres="day_tooltip" />
 			</basicnumber>
 			<basicnumber name="minute" source="minute">
@@ -1050,12 +988,6 @@
 					<right parent="rightanchor" anchor="left" relation="relative" offset="-10" />
 				</anchored>
 				<delaykeyupdate />
-				<script>
-					function onInit()
-					end
-					function onValueChanged()
-					end
-				</script>
 				<tooltip textres="minute_tooltip" />
 			</basicnumber>
 			<basicnumber name="hour" source="hour">
@@ -1065,12 +997,6 @@
 				</anchored>
 				<delaykeyupdate />
 				<tooltip textres="hour_tooltip" />
-				<script>
-					function onInit()
-					end
-					function onValueChanged()
-					end
-				</script>
 			</basicnumber>
 			<stringu name="name">
 				<anchored height="20">
@@ -1081,7 +1007,6 @@
 				<color>000000</color>
 				<tabtarget next="nonid_name" prev="count" />
 			</stringu>
-			
 		</sheetdata>
 	</windowclass>
 	
@@ -1104,7 +1029,6 @@
 				if header.subwindow then
 					header.subwindow.update();
 				end
-				
 				
 				local bReadOnly = WindowManager.getReadOnlyState(getDatabaseNode());
 				text.setReadOnly(bReadOnly);
@@ -1141,13 +1065,6 @@
 				</anchored>
 				<delaykeyupdate />
 				<tabtarget prev="location" />
-				<script>
-					function onValueChanged()
-						onUpdate();
-					end
-					function onUpdate()
-					end
-				</script>
 				<tooltip textres="hour_tooltip" />
 			</basicnumber>
 			
@@ -1158,13 +1075,6 @@
 				</anchored>
 				<delaykeyupdate />
 				<tabtarget prev="location" />
-				<script>
-					function onValueChanged()
-						onUpdate();
-					end
-					function onUpdate()
-					end
-				</script>
 				<tooltip textres="minute_tooltip" />
 			</basicnumber>
 			<basicnumber name="day" source="day">
@@ -1174,13 +1084,6 @@
 				</anchored>
 				<delaykeyupdate />
 				<tabtarget prev="location" />
-				<script>
-					function onValueChanged()
-						onUpdate();
-					end
-					function onUpdate()
-					end
-				</script>
 				<tooltip textres="day_tooltip" />
 			</basicnumber>
 			<basicnumber name="month" source="month">
@@ -1190,13 +1093,6 @@
 				</anchored>
 				<delaykeyupdate />
 				<tabtarget prev="location" />
-				<script>
-					function onValueChanged()
-						onUpdate();
-					end
-					function onUpdate()
-					end
-				</script>
 				<tooltip textres="month_tooltip" />
 			</basicnumber>
 			<basicnumber name="year" source="year">
@@ -1206,13 +1102,6 @@
 				</anchored>
 				<delaykeyupdate />
 				<tabtarget prev="location" />
-				<script>
-					function onValueChanged()
-						onUpdate();
-					end
-					function onUpdate()
-					end
-				</script>
 				<tooltip textres="year_tooltip" />
 			</basicnumber>
 			<buttonfield name="isgmonly">
@@ -1223,12 +1112,6 @@
 				<gmvisibleonly />
 				<state icon="visibilityon" tooltipres="visibilityon" />
 				<state icon="visibilityoff" tooltipres="visibilityoff" />
-				<script>
-					function onInit()
-					end
-					function onValueChanged()
-					end
-				</script>
 			</buttonfield>
 			<buttoncontrol name="openlogentry">
 				<anchored to="isgmonly" position="right" offset="3,0" width="20" height="20" />
@@ -1260,7 +1143,6 @@
 				</script>
 			</button_text>
 			
-
 			<ft_record name="text">
 				<anchored>
 					<top offset="110" />
@@ -1279,18 +1161,9 @@
 		</sheetdata>
 	</windowclass>
 	
-	
 	<windowclass name="timedevents_header">
 		<margins control="0,0,0,7" />
 		<softclose />
-		<script>
-			function onInit()
-				update();
-			end
-			function update()
-				
-			end
-		</script>
 		<sheetdata>
 			<link_record_header>
 				<class>timedevent</class>
@@ -1305,15 +1178,11 @@
 		</sheetdata>
 	</windowclass>
 	
-	
 	<windowclass name="travelmanager">
 		<frame>recordsheet</frame>
 		<size width="500" height="90" />
 		<placement>
-			<position>
-				<x>10</x>
-				<y>30</y>
-			</position>
+			<position x="10" y="30" />
 		</placement>		
 		<sizelimits>
 			<size width="500" height="90" />
@@ -1374,9 +1243,6 @@
 						local nDistanceTraveled = (window.distancetraveled.getValue() or 0);
 						nDistanceRemaining = nDistance - nDistanceTraveled;
 						DB.setValue("distance.remaining", "number", nDistanceRemaining);
-						onUpdate();
-					end
-					function onUpdate()
 					end
 				</script>
 				<readonly />
@@ -1389,9 +1255,6 @@
 				<script>
 					function onValueChanged()
 						DB.setValue("distance.traveled", "number", (getValue() or 0));
-						onUpdate();
-					end
-					function onUpdate()
 					end
 				</script>
 			</basicnumber>
@@ -1402,9 +1265,6 @@
 				<script>
 					function onValueChanged()
 						DB.setValue("distance.destination", "number", (getValue() or 0));
-						onUpdate();
-					end
-					function onUpdate()
 					end
 				</script>
 			</basicnumber>
@@ -1436,9 +1296,6 @@
 				<script>
 					function onValueChanged()
 						DB.setValue("distance.speed", "number", (getValue() or 6));
-						onUpdate();
-					end
-					function onUpdate()
 					end
 				</script>
 			</basicnumber>
@@ -1579,12 +1436,6 @@
 				<gmvisibleonly />
 				<state icon="visibilityon" tooltipres="visibilityon" />
 				<state icon="visibilityoff" tooltipres="visibilityoff" />
-				<script>
-					function onInit()
-					end
-					function onValueChanged()
-					end
-				</script>
 			</buttonfield>
 			
 			<label name="travellabel">
@@ -1613,21 +1464,14 @@
 				<textprefix><text>distance</text></textprefix>
 				<healthbar />
 			</progressbar>-->
-			
 		</sheetdata>
 	</windowclass>
 	
 	<windowclass name="timedreminders">
-		<frame>groupbox</frame>
+		<frame>recordsheet</frame>
 		<placement>
-			<size>
-				<width>370</width>
-				<height>30</height>
-			</size>
-			<position>
-				<x>260</x>
-				<y>30</y>
-			</position>
+			<size width="370" height="30" />
+			<position x="260" y="30" />
 		</placement>
 		
 		<sizelimits>
@@ -1683,8 +1527,6 @@
 					end
 				</script>
 			</windowlist>
-			
-			
 			<scrollbar>
 				<anchored to="reminderslist" />
 				<target>reminderslist</target>
@@ -1693,21 +1535,10 @@
 		<dynamic />
 	</windowclass>
 	
-	
-	
-	
-	
-	
-
-
 	<windowclass name="list_timedreminder">
 		<margins control="0,0,0,2" />
 		<softclose />
 		<script>
-			function onInit()
-				
-			end
-			
 			function update()
 				windowlist.update();
 				if isgmonly.getValue() == 1 then
@@ -1788,7 +1619,6 @@
 					<maximum>1</maximum>
 				</values>
 				<tooltip text="Active" />
-				
 			</buttongroup_counter>
 			<basicnumber name="active" source="active">
 				<anchored width="40" height="20">
@@ -1796,8 +1626,6 @@
 					<right parent="rightanchor" anchor="left" relation="relative" offset="-10" />
 				</anchored>
 				<script>
-					function onInit()
-					end
 					function onValueChanged()
 						local rActor = ActorManager.resolveActor(window.getDatabaseNode());
 						local sName = window.name.getValue();
@@ -1814,12 +1642,6 @@
 				<gmvisibleonly />
 				<state icon="visibilityon" tooltipres="visibilityon" />
 				<state icon="visibilityoff" tooltipres="visibilityoff" />
-				<script>
-					function onInit()
-					end
-					function onValueChanged()
-					end
-				</script>
 			</buttonfield>
 			<basicnumber name="remindercycle" source="remindercycle">
 				<anchored width="40" height="20">
@@ -1828,12 +1650,6 @@
 				</anchored>
 				<delaykeyupdate />
 				<tabtarget prev="location" />
-				<script>
-					function onInit()
-					end
-					function onValueChanged()
-					end
-				</script>
 				<tooltip textres="remindercycle_tooltip" />
 			</basicnumber>
 			<buttoncontrol name="repeattimebutton" source="reminder.repeattime">
@@ -1893,10 +1709,8 @@
 				<color>000000</color>
 				<tabtarget next="nonid_name" prev="count" />
 			</stringu>
-			
 		</sheetdata>
 	</windowclass>
-	
 	
 	<windowclass name="timedreminder">
 		<frame>referencepage</frame>
@@ -1916,7 +1730,6 @@
 				if header.subwindow then
 					header.subwindow.update();
 				end
-				
 				
 				local bReadOnly = WindowManager.getReadOnlyState(getDatabaseNode());
 				text.setReadOnly(bReadOnly);
@@ -1944,13 +1757,6 @@
 					<left parent="reminderlabel" anchor="right" offset="10" />
 				</anchored>
 				<delaykeyupdate />
-				<script>
-					function onValueChanged()
-						onUpdate();
-					end
-					function onUpdate()
-					end
-				</script>
 				<tooltip textres="remindercycle_tooltip" />
 			</basicnumber>
 			
@@ -2010,12 +1816,6 @@
 				<gmvisibleonly />
 				<state icon="visibilityon" tooltipres="visibilityon" />
 				<state icon="visibilityoff" tooltipres="visibilityoff" />
-				<script>
-					function onInit()
-					end
-					function onValueChanged()
-					end
-				</script>
 			</buttonfield>
 			<ft_record name="text">
 				<anchored>
@@ -2035,27 +1835,18 @@
 		</sheetdata>
 	</windowclass>
 	
-	
 	<windowclass name="timedreminders_header">
 		<margins control="0,0,0,7" />
-		<script>
-			function onInit()
-				update();
-			end
-			function update()
-				
-			end
-		</script>
 		<sheetdata>
 			<link_record_header>
 				<class>timedreminder</class>
 				<description field="name" />
 			</link_record_header>
-
+			
 			<anchor_record_header_right name="rightanchor" />
 			<icon_record_locked />
 			<button_record_locked />
-
+			
 			<string_record_name name="name" />
 		</sheetdata>
 	</windowclass>
