@@ -56,8 +56,10 @@ function nextRound_new(nRounds)
 			local nMinutes = math.floor(nCurrent / 10)
 			nCurrent = nCurrent - (nMinutes * 10)
 			CalendarManager.adjustMinutes(nMinutes)
+			CalendarManager.outputTime()
 		end
-		
+		-- end bmos resetting rounds and advancing time
+
 		local msg = {font = "narratorfont", icon = "turn_flag"};
 		msg.text = "[" .. Interface.getString("combat_tag_round") .. " " .. nCurrent .. "]";
 		Comm.deliverChatMessage(msg);
@@ -80,7 +82,8 @@ function nextRound_new(nRounds)
 			CalendarManager.adjustMinutes(nMinutes)
 			CalendarManager.outputTime()
 		end
-		
+		-- end bmos resetting rounds and advancing time
+
 		local msg = {font = "narratorfont", icon = "turn_flag"};
 		msg.text = "[" .. Interface.getString("combat_tag_round") .. " " .. nCurrent .. "]";
 		Comm.deliverChatMessage(msg);
@@ -110,7 +113,7 @@ function resetInit_new()
 	-- Clear GM identity additions (based on option)
 	CombatManager.clearGMIdentity();
 
-	-- Reset the round counter
+	-- Reset the round counter (bmos changed this to 0 instead of 1)
 	DB.setValue(CombatManager.CT_ROUND, "number", 0);
 	
 	CombatManager.onCombatResetEvent();
