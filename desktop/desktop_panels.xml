@@ -833,7 +833,7 @@
 					end
 					function onTimeChanged()
 						for _,w in pairs(getWindows()) do
-							w.onTimeChanged();
+							if w.onTimeChanged() then w.onTimeChanged() end
 						end
 					end
 					function update()
@@ -841,7 +841,7 @@
 					end
 					function onListChanged()
 						for _,w in pairs(getWindows()) do
-							w.onInit();
+							if w.onInit() then w.onInit() end
 						end
 					end
 				</script>
@@ -1473,15 +1473,11 @@
 			<size width="370" height="30" />
 			<position x="260" y="30" />
 		</placement>
-		
 		<sizelimits>
 			<dynamic />
 		</sizelimits>
 		<nodelete />
 		<softclose />
-		<script>
-			
-		</script>
 		<sheetdata>
 			<windowlist name="reminderslist">
 				<anchored>
@@ -1514,7 +1510,7 @@
 					end
 					function onTimeChanged()
 						for _,w in pairs(getWindows()) do
-							w.onTimeChanged();
+							if w.onTimeChanged() then w.onTimeChanged() end
 						end
 					end
 					function update()
@@ -1522,7 +1518,7 @@
 					end
 					function onListChanged()
 						for _,w in pairs(getWindows()) do
-							w.onInit();
+							if w.onInit() then w.onInit() end
 						end
 					end
 				</script>
