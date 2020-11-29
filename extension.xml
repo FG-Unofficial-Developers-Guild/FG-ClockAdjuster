@@ -9,6 +9,7 @@
 		<author>bmos</author>
 		<description>Provides an interface for easier time management</description>
 		<ruleset name="PFRPG" />
+		<ruleset name="PFRPG2" />
 		<ruleset name="3.5E" />
 	</properties>
 	
