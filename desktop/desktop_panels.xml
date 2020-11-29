@@ -820,29 +820,23 @@
 					<class>referencetextwide</class>
 					<field>*</field>
 				</acceptdrop>
-				<empty text="Right-click to add an event" hidereadonly="true" />
+				<empty font="reference-r" text="Right-click to add an event" hidereadonly="true" />
 				<allowcreate />
 				<allowdelete />
 				<script>
 					function onInit()
 						DB.addHandler("calendar.dateinminutesstring", "onUpdate", onTimeChanged);
-						onListChanged();
 					end
 					function onClose()
 						DB.removeHandler("calendar.dateinminutesstring", "onUpdate", onTimeChanged);
 					end
 					function onTimeChanged()
 						for _,w in pairs(getWindows()) do
-							if w.onTimeChanged() then w.onTimeChanged() end
+							w.onTimeChanged()
 						end
 					end
 					function update()
 						onTimeChanged();
-					end
-					function onListChanged()
-						for _,w in pairs(getWindows()) do
-							if w.onInit() then w.onInit() end
-						end
 					end
 				</script>
 			</windowlist>
@@ -858,6 +852,8 @@
 		<margins control="0,0,0,2" />
 		<softclose />
 		<script>
+			function onInit()
+			end
 			function update()
 				windowlist.update();
 				if isgmonly.getValue() == 1 then
@@ -1490,7 +1486,7 @@
 				<child><backcolor>1A40301E</backcolor></child>
 				<datasource>.timedreminderlist</datasource>
 				<class>list_timedreminder</class>
-				<empty text="Right-click to add an reminder" hidereadonly="true" />
+				<empty font="reference-r" text="Right-click to add an reminder" hidereadonly="true" />
 				<acceptdrop>
 					<class>timedreminder</class>
 					<class>list_timedreminder</class>
@@ -1503,23 +1499,17 @@
 				<script>
 					function onInit()
 						DB.addHandler("calendar.dateinminutesstring", "onUpdate", onTimeChanged);
-						onListChanged();
 					end
 					function onClose()
 						DB.removeHandler("calendar.dateinminutesstring", "onUpdate", onTimeChanged);
 					end
 					function onTimeChanged()
 						for _,w in pairs(getWindows()) do
-							if w.onTimeChanged() then w.onTimeChanged() end
+							w.onTimeChanged()
 						end
 					end
 					function update()
 						onTimeChanged();
-					end
-					function onListChanged()
-						for _,w in pairs(getWindows()) do
-							if w.onInit() then w.onInit() end
-						end
 					end
 				</script>
 			</windowlist>
