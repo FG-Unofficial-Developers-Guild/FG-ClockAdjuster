@@ -404,7 +404,7 @@
 					function onDoubleClick()
 						local nMonth = (window.addmonth.getValue() or 0);
 
-						local nRounds = (nDay * 403200)
+						local nRounds = (nMonth * 432000)
 						LongTermEffects.advanceRoundsOnTimeChanged(nRounds)
 						
 						CalendarManager.adjustMonths(nMonth);
