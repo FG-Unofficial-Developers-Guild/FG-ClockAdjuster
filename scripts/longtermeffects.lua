@@ -11,11 +11,14 @@ function onInit()
 	CombatManager.nextRound = nextRound_new;
 	resetInit_old = CombatManager.resetInit;
 	CombatManager.resetInit = resetInit_new;
+	clearExpiringEffects_old = CombatManager2.clearExpiringEffects;
+	CombatManager2.clearExpiringEffects = clearExpiringEffects_new;
 end
 
 function onClose()
 	CombatManager.nextRound = nextRound_old;
 	CombatManager.resetInit = resetInit_old;
+	CombatManager2.clearExpiringEffects = clearExpiringEffects_old;
 end
 
 function nextRound_new(nRounds)
@@ -134,4 +137,7 @@ function advanceRoundsOnTimeChanged(nRounds)
 			end
 		end
 	end
+end
+
+function clearExpiringEffects_new(bShort)
 end
