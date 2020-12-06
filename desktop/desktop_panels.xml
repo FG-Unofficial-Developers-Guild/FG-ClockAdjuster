@@ -372,7 +372,6 @@
 							TableManager.processTableRoll("", "Weather Precipitation");
 						end
 						if DB.getValue("calendar.check.day") == nil or DB.getValue("calendar.check.day") ~= DB.getValue("calendar.current.day") then
-							CalendarManager.outputDate();
 							DB.setValue("calendar.check.day", "number", DB.getValue("calendar.current.day"));
 						end
 						if nDay &gt; 0 then 
