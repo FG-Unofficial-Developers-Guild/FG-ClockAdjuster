@@ -13,6 +13,13 @@ function onInit()
 	CombatManager.resetInit = resetInit_new;
 	clearExpiringEffects_old = CombatManager2.clearExpiringEffects;
 	CombatManager2.clearExpiringEffects = clearExpiringEffects_new;
+
+	registerOptions()
+end
+
+function registerOptions()
+	OptionsManager.registerOption2('TIME_ROUNDS', false, 'option_header_game', 'opt_lab_time_rounds', 'option_entry_cycler', 
+		{ labels = 'enc_opt_time_rounds_slow', values = 'slow', baselabel = 'enc_opt_time_rounds_fast', baseval = 'fast', default = 'fast' })
 end
 
 function onClose()
@@ -21,7 +28,7 @@ function onClose()
 	CombatManager2.clearExpiringEffects = clearExpiringEffects_old;
 end
 
-function nextRound_new(nRounds)
+function nextRound_new(nRounds, bTimeChanged)
 	if not User.isHost then
 		return;
 	end
@@ -55,7 +62,7 @@ function nextRound_new(nRounds)
 		nCurrent = nCurrent + 1;
 		
 		-- bmos resetting rounds and advancing time
-		if nCurrent >= 10 then
+		if nCurrent >= 10 and not bTimeChanged then
 			local nMinutes = math.floor(nCurrent / 10)
 			nCurrent = nCurrent - (nMinutes * 10)
 			CalendarManager.adjustMinutes(nMinutes)
@@ -79,7 +86,7 @@ function nextRound_new(nRounds)
 		nCurrent = nCurrent + 1;
 		
 		-- bmos resetting rounds and advancing time
-		if nCurrent >= 10 then
+		if nCurrent >= 10 and not bTimeChanged then
 			local nMinutes = math.floor(nCurrent / 10)
 			nCurrent = nCurrent - (nMinutes * 10)
 			CalendarManager.adjustMinutes(nMinutes)

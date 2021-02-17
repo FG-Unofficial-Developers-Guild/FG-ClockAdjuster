@@ -20,6 +20,7 @@
 		<includefile source="graphics/graphics_frames.xml" />
 		<includefile source="graphics/graphics_icons.xml" />
 		<includefile source="strings/strings_clock.xml" />
+		<includefile source="strings/strings_options.xml" />
 		<includefile source="strings/strings_timedevents.xml" />
 		<script name="TimeManager" file="scripts/manager_time.lua" />
 		<script name="ClockAdjuster" file="scripts/clock_adjuster.lua" />

@@ -267,7 +267,11 @@
 						local nHour = (window.addhour.getValue() or 0);
 
 						local nRounds = (nHour * 600)
-						LongTermEffects.advanceRoundsOnTimeChanged(nRounds)
+						if OptionsManager.isOption('TIME_ROUNDS', 'slow') then
+							CombatManager.nextRound(nRounds, true)
+						else
+							LongTermEffects.advanceRoundsOnTimeChanged(nRounds)
+						end
 						
 						CalendarManager.adjustHours(nHour);
 						if window.checkweather.getValue() == 1 then
@@ -318,7 +322,11 @@
 						local nMinute = (window.addminute.getValue() or 0);
 
 						local nRounds = (nMinute * 10)
-						LongTermEffects.advanceRoundsOnTimeChanged(nRounds)
+						if OptionsManager.isOption('TIME_ROUNDS', 'slow') then
+							CombatManager.nextRound(nRounds, true)
+						else
+							LongTermEffects.advanceRoundsOnTimeChanged(nRounds)
+						end
 						
 						CalendarManager.adjustMinutes(nMinute);
 						if DB.getValue("calendar.check.day") == nil or DB.getValue("calendar.check.day") ~= DB.getValue("calendar.current.day") then
@@ -360,7 +368,11 @@
 						local nDay = (window.addday.getValue() or 0);
 
 						local nRounds = (nDay * 14400)
-						LongTermEffects.advanceRoundsOnTimeChanged(nRounds)
+						if OptionsManager.isOption('TIME_ROUNDS', 'slow') then
+							CombatManager.nextRound(nRounds, true)
+						else
+							LongTermEffects.advanceRoundsOnTimeChanged(nRounds)
+						end
 
 						CalendarManager.adjustDays(nDay);
 						if window.checkweather.getValue() == 1 then
@@ -404,7 +416,11 @@
 						local nMonth = (window.addmonth.getValue() or 0);
 
 						local nRounds = (nMonth * 432000)
-						LongTermEffects.advanceRoundsOnTimeChanged(nRounds)
+						if OptionsManager.isOption('TIME_ROUNDS', 'slow') then
+							CombatManager.nextRound(nRounds, true)
+						else
+							LongTermEffects.advanceRoundsOnTimeChanged(nRounds)
+						end
 						
 						CalendarManager.adjustMonths(nMonth);
 						if window.checkweather.getValue() == 1 then
@@ -480,7 +496,11 @@
 						local nYear = (window.addyear.getValue() or 0);
 
 						local nRounds = (nHour * 600) + (nMinute * 10) + (nDay * 14400) + (nDay * 403200)
-						LongTermEffects.advanceRoundsOnTimeChanged(nRounds)
+						if OptionsManager.isOption('TIME_ROUNDS', 'slow') then
+							CombatManager.nextRound(nRounds, true)
+						else
+							LongTermEffects.advanceRoundsOnTimeChanged(nRounds)
+						end
 						
 						if window.checkweather.getValue() == 1 then
 							local WeatherWind = "Weather - Wind";
@@ -530,7 +550,12 @@
 
 						local nMinutes = (getValue())
 						local nRounds = (nMinute * 10)
+						if OptionsManager.isOption('TIME_ROUNDS', 'slow') then
+							CombatManager.nextRound(nRounds, true)
+						else
 							LongTermEffects.advanceRoundsOnTimeChanged(nRounds)
+						end
+						
 						CalendarManager.outputTime();
 						ChatManager.Message(Interface.getString("menu_restshort"), true);
 						CombatManager2.rest(bShort);
@@ -568,7 +593,12 @@
 
 						local nHours = (getValue())
 						local nRounds = (nHours * 600)
+						if OptionsManager.isOption('TIME_ROUNDS', 'slow') then
+							CombatManager.nextRound(nRounds, true)
+						else
 							LongTermEffects.advanceRoundsOnTimeChanged(nRounds)
+						end
+
 						CalendarManager.outputTime();
 						ChatManager.Message(Interface.getString("menu_restovernight"), true);
 						CombatManager2.rest(bShort);
