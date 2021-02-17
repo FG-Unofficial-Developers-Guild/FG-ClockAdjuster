@@ -191,9 +191,9 @@ end
 
 --- Time conversion functions
 function convertSecondstoMinutes(nNumber)
-	--Debug.console("convertRoundstoMinutes called, nNumber = " .. nNumber .. "");
+	--Debug.console("convertSecondstoMinutes called, nNumber = " .. nNumber .. "");
 	local nMinutesTotaled = nNumber / 60;
-	--Debug.console("convertHourstoMinutes, nMinutesTotaled = " .. nMinutesTotaled .. "");
+	--Debug.console("convertSecondstoMinutes, nMinutesTotaled = " .. nMinutesTotaled .. "");
 	return nMinutesTotaled;
 end
 function convertHourstoMinutes(nNumber)
@@ -203,9 +203,9 @@ function convertHourstoMinutes(nNumber)
 	return nMinutesTotaled;
 end
 function convertMinutestoHours(nNumber)
-	--Debug.console("convertHourstoMinutes called, nNumber = " .. nNumber .. "");
+	--Debug.console("convertMinutestoHours called, nNumber = " .. nNumber .. "");
 	local nHoursTotaled = nNumber / 60;
-	--Debug.console("convertHourstoMinutes, nHoursTotaled = " .. nHoursTotaled .. "");
+	--Debug.console("convertMinutestoHours, nHoursTotaled = " .. nHoursTotaled .. "");
 	return nHoursTotaled;
 end
 function convertHourstoDays(nNumber)
@@ -217,7 +217,7 @@ end
 function convertDaystoHours(nNumber)
 	--Debug.console("convertDaystoHours called, nNumber = " .. nNumber .. "");
 	local nHoursTotaled = nNumber * 24;
-	--Debug.console("convertHourstoDays, nHoursTotaled = " .. nHoursTotaled .. "");
+	--Debug.console("convertDaystoHours, nHoursTotaled = " .. nHoursTotaled .. "");
 	return nHoursTotaled;
 end
 function convertMinutestoDays(nNumber)
