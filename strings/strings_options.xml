@@ -4,7 +4,7 @@
 
 <root>
 	<!-- options titles -->
-	<string name="opt_lab_time_rounds">Time Manger Rounds Mode</string>
+	<string name="opt_lab_time_rounds">Time Manager Rounds Mode</string>
 
 	<!-- option states -->
 	<string name="enc_opt_time_rounds_fast">Quick Mode</string>
