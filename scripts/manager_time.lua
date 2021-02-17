@@ -11,7 +11,7 @@ end
 --- Timer Functions
 function setStartTime(rActor, sFirst)
 	--Debug.console("setStartTime called; " .. sFirst .."");
-	local sActorType, nodeActor = ActorManager.getTypeAndNode(rActor);
+	local nodeActor = ActorManager.getCreatureNode(rActor);
 	nStartTime = getCurrentDateinMinutes(rActor);
 	--Debug.console("setStartTime; nStartTime =", nStartTime);
 	DB.setValue(nodeActor, "" .. sFirst .. ".starttime", "number", nStartTime);
@@ -20,7 +20,7 @@ end
 
 function getStartTime(rActor, sFirst)
 	--Debug.console("getStartTime called; " .. sFirst .."");
-	local sActorType, nodeActor = ActorManager.getTypeAndNode(rActor);
+	local nodeActor = ActorManager.getCreatureNode(rActor);
 	FetchStartTime = DB.getValue(nodeActor, "" .. sFirst .. ".starttime", 0);
 	--Debug.console("setStartTime; FetchStartTime = DB.getValue(" .. nodeActor .. ", " .. sFirst .. ".starttime, " .. nStartTime .. ") = " .. DB.getValue(nodeActor, "" .. sFirst .. ".starttime", nStartTime) .. "");
 
@@ -28,7 +28,7 @@ function getStartTime(rActor, sFirst)
 end
 
 function setTimerStart(rActor, sFirst)
-	local sActorType, nodeActor = ActorManager.getTypeAndNode(rActor);
+	local nodeActor = ActorManager.getCreatureNode(rActor);
 	local nStartMinute, nStartHour, nStartDay, nStartMonth, nStartYear = getCurrentDate();
 	
 	DB.setValue(nodeActor, "" .. sFirst .. ".startminute", "number", nStartMinute);
@@ -38,8 +38,7 @@ function setTimerStart(rActor, sFirst)
 	DB.setValue(nodeActor, "" .. sFirst .. ".startyear", "number", nStartYear);
 end
 function getTimerStart(rActor, sFirst)
-	local sActorType, nodeActor = ActorManager.getTypeAndNode(rActor);
-		
+	local nodeActor = ActorManager.getCreatureNode(rActor);		
 	local nStartMinute = DB.getValue(nodeActor, "" .. sFirst .. ".startminute", 0);
 	local nStartHour = DB.getValue(nodeActor, "" .. sFirst .. ".starthour", 0);
 	local nStartDay = DB.getValue(nodeActor, "" .. sFirst .. ".startday", 0);
@@ -84,8 +83,7 @@ function getCurrentDate()
 end
 
 function compareDates(rActor, sFirst)
-	local sActorType, nodeActor = ActorManager.getTypeAndNode(rActor);
-	
+	local nodeActor = ActorManager.getCreatureNode(rActor);	
 	local nMinutes, nHours, nDays, nMonths, nYears = getCurrentDate();
 	local nStartMinute, nStartHour, nStartDay, nStartMonth, nStartYear = getTimerStart(rActor, sFirst);
 	
@@ -99,8 +97,7 @@ function compareDates(rActor, sFirst)
 end
 
 function hasTimePassed(rActor, sFirst, sTime)
-	local sActorType, nodeActor = ActorManager.getTypeAndNode(rActor);
-	
+	local nodeActor = ActorManager.getCreatureNode(rActor);	
 	local nMinutes, nHours, nDays, nMonths, nYears = getCurrentDate();
 	local nStartMinute, nStartHour, nStartDay, nStartMonth, nStartYear = getTimerStart(rActor, sFirst);
 	local nMinuteDifference, nHourDifference, nDayDifference, nMonthDifference, nYearDifference = compareDates(rActor, sFirst);
@@ -155,7 +152,7 @@ end
 --- Compare times
 function isTimeGreaterThan(rActor, sFirst, nCompareBy)
 	--Debug.console("isTimeGreaterThan called, sFirst = " .. sFirst .. ", nCompareBy = " .. nCompareBy .. ";");
-	local sActorType, nodeActor = ActorManager.getTypeAndNode(rActor);
+	local nodeActor = ActorManager.getCreatureNode(rActor);
 	local nStartTime = getStartTime(rActor, sFirst);
 	--Debug.console("isTimeGreaterThan, nStartTime = " .. rActor .. "");
 	local nCurrentTime = getCurrentDateinMinutes(rActor);
@@ -172,7 +169,7 @@ end
 
 function getTimeDifference(rActor, sFirst, nCompareBy)
 	--Debug.console("isTimeGreaterThan called, sFirst = " .. sFirst .. ", nCompareBy = " .. nCompareBy .. ";");
-	local sActorType, nodeActor = ActorManager.getTypeAndNode(rActor);
+	local nodeActor = ActorManager.getCreatureNode(rActor);
 	local nStartTime = DB.getValue(nodeActor, "" .. sFirst .. ".starttime", 0);
 	--Debug.console("getTimeDifference; nStartTime = DB.getValue(nodeActor, " .. sFirst .. ".starttime, 0) = " .. DB.getValue(nodeActor, "" .. sFirst .. ".starttime", nStartTime) .. "");
 	local nCurrentTime = getCurrentDateinMinutes();

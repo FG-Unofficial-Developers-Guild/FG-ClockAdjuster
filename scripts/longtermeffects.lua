@@ -22,7 +22,7 @@ function onClose()
 end
 
 function nextRound_new(nRounds)
-	if not User.isHost() then
+	if not User.isHost then
 		return;
 	end
 
