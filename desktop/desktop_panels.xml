@@ -527,6 +527,10 @@
 							CalendarManager.outputDate();
 							DB.setValue("calendar.check.day", "number", DB.getValue("calendar.current.day"));
 						end
+
+						local nMinutes = (getValue())
+						local nRounds = (nMinute * 10)
+							LongTermEffects.advanceRoundsOnTimeChanged(nRounds)
 						CalendarManager.outputTime();
 						ChatManager.Message(Interface.getString("menu_restshort"), true);
 						CombatManager2.rest(bShort);
@@ -561,6 +565,10 @@
 							TableManager.processTableRoll("", "Weather Temperature");
 							TableManager.processTableRoll("", "Weather Precipitation");
 						end
+
+						local nHours = (getValue())
+						local nRounds = (nHours * 600)
+							LongTermEffects.advanceRoundsOnTimeChanged(nRounds)
 						CalendarManager.outputTime();
 						ChatManager.Message(Interface.getString("menu_restovernight"), true);
 						CombatManager2.rest(bShort);
