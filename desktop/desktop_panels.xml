@@ -1692,12 +1692,12 @@
 				<script>
 					function onInit()
 						local rActor = ActorManager.resolveActor(window.getDatabaseNode());
-						local sActorType, nodeActor = ActorManager.getTypeAndNode(rActor);
+						local nodeActor = ActorManager.getCreatureNode(rActor);
 						setValue(DB.getValue(nodeActor, "reminder.repeattime", 0));
 					end
 					function onButtonPress()
 						local rActor = ActorManager.resolveActor(window.getDatabaseNode());
-						local sActorType, nodeActor = ActorManager.getTypeAndNode(rActor);
+						local nodeActor = ActorManager.getCreatureNode(rActor);
 						DB.setValue(nodeActor, "reminder.repeattime", "number", getValue());
 						window.repeattime.setValue(getValue());
 					end
@@ -1711,12 +1711,12 @@
 				<script>
 					function onInit()
 						local rActor = ActorManager.resolveActor(window.getDatabaseNode());
-						local sActorType, nodeActor = ActorManager.getTypeAndNode(rActor);
+						local nodeActor = ActorManager.getCreatureNode(rActor);
 						setValue(DB.getValue(nodeActor, "reminder.repeattime", 0));
 					end
 					function onValueChanged()
 						local rActor = ActorManager.resolveActor(window.getDatabaseNode());
-						local sActorType, nodeActor = ActorManager.getTypeAndNode(rActor);
+						local nodeActor = ActorManager.getCreatureNode(rActor);
 						DB.setValue(nodeActor, "reminder.repeattime", "number", getValue());
 						window.repeattimebutton.setValue(getValue());
 					end
@@ -1791,12 +1791,12 @@
 				<script>
 					function onInit()
 						local rActor = ActorManager.resolveActor(window.getDatabaseNode());
-						local sActorType, nodeActor = ActorManager.getTypeAndNode(rActor);
+						local nodeActor = ActorManager.getCreatureNode(rActor);
 						setValue(DB.getValue(nodeActor, "reminder.repeattime", 0));
 					end
 					function onValueChanged()
 						local rActor = ActorManager.resolveActor(window.getDatabaseNode());
-						local sActorType, nodeActor = ActorManager.getTypeAndNode(rActor);
+						local nodeActor = ActorManager.getCreatureNode(rActor);
 						DB.setValue(nodeActor, "reminder.repeattime", "number", getValue());
 						window.repeattimebutton.setValue(getValue());
 					end
@@ -1820,12 +1820,12 @@
 				<script>
 					function onInit()
 						local rActor = ActorManager.resolveActor(window.getDatabaseNode());
-						local sActorType, nodeActor = ActorManager.getTypeAndNode(rActor);
+						local nodeActor = ActorManager.getCreatureNode(rActor);
 						setValue(DB.getValue(nodeActor, "reminder.repeattime", 0));
 					end
 					function onButtonPress()
 						local rActor = ActorManager.resolveActor(window.getDatabaseNode());
-						local sActorType, nodeActor = ActorManager.getTypeAndNode(rActor);
+						local nodeActor = ActorManager.getCreatureNode(rActor);
 						DB.setValue(nodeActor, "reminder.repeattime", "number", getValue());
 						window.repeattime.setValue(getValue());
 					end
