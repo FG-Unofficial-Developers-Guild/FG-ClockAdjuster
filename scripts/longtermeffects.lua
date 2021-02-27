@@ -38,7 +38,7 @@ local function filterTable (tab, fun)
 	return tFiltered
 end
 
-local function inArr (arr, val)
+local function inArray (arr, val)
 	for _, value in ipairs(arr) do
 		if value == val then
 			return true
@@ -47,45 +47,85 @@ local function inArr (arr, val)
 	return false
 end
 
-local function splitnEffectIntoComponents(nEffect)
-	local sEffect = EffectManager.getEffectString(nEffect, 0)
-	local sEffectComps = EffectManager.parseEffect(sEffect)
-	return sEffectComps
+local function splitEffectIntoComponentsTypes(sEffect)
+	local aEffectComps = EffectManager.parseEffect(sEffect)
+	local aComponentTypes = {}
+	for index, effectComp in ipairs(aEffectComps) do
+		local component = EffectManager.parseEffectCompSimple(effectComp).type
+		table.insert(aComponentTypes, index, component)
+	end
+	return aComponentTypes
 end
 
-local function doesEffectRequireSlowMode(sEffectComp)
+local function EffectTypeShouldBeChecked(sEffectComponentType)
+	-- Check if
 	local arrsComponentsToInclude = {'FHEAL', 'REGEN', 'DMGO'}
-	return inArr(sEffectComp, sEffectComp)
+	return inArray(arrsComponentsToInclude, sEffectComponentType)
 end
 
-local function CTEntryRequiresSlowMode(nodeCT, arrSEffects)
-	if inArr(arrSEffects, 'DMGO') then
+local function ActorRequiresSlowMode(actor, arrSEffects)
+
+	local actorHealth = ActorHealthManager.getHealthStatus(actor)
+
+	-- Has ongoing damage
+	if inArray(arrSEffects, 'DMGO') then
 		return true
 	end
-	if inArr(arrSEffects, 'FHEAL') or inArr(arrSEffects, 'REGEN') then
-		-- get hp of entity, check if full
-		local actor = ActorManager.resolveActor(nodeCT)
-		if ActorHealthManager.getHealthStatus(actor) ~= ActorHealthManager.STATUS_HEALTHY then
+
+	-- Healing through Regeneration
+	if inArray(arrSEffects, 'REGEN') then
+		if actorHealth ~= ActorHealthManager.STATUS_HEALTHY then
+			return true
+		end
+	end
+	-- Healing through Fast Healing
+	if inArray(arrSEffects, 'FHEAL') then
+		if actorHealth ~= ActorHealthManager.STATUS_HEALTHY and actorHealth ~= ActorHealthManager.STATUS_DEAD then
 			return true
 		end
 	end
 	return false
 end
 
-local function shouldSwitchToQuickSimulation ()
-	for _, nodeCT in pairs(DB.getChildren('combattracker.list')) do
-		local sEffectsInCTRequiringSlowMode = {}
-		for _, nodeEffect in pairs(DB.getChildren(nodeCT, 'effects')) do 
-			local splitEffectComps = splitnEffectIntoComponents(nodeEffect)
-			local splitSimulatedEffectComps = filterTable(splitEffectComps, doesEffectRequireSlowMode)
+local function IsActorDying(actor, bIsStable)
+	local actorHealth = ActorHealthManager.getHealthStatus(actor)
+	if not bIsStable and actorHealth == ActorHealthManager.STATUS_DYING then
+		return true
+	end
+	return false
+end
+
+local function getIsStableAndEffectsToCheck(nodeCT)
+	-- Return if node has effect stable, and flat list of all effect types.
+	local aEffectsRequiringSlowMode = {}
+	local bIsCTStable = false
+	for _, nEffect in pairs(DB.getChildren(nodeCT, 'effects')) do
+		local sEffect = EffectManager.getEffectString(nEffect, false)
+		if string.lower(sEffect) == 'stable' then
+			bIsCTStable = true
+		else
+			local splitEffectComps = splitEffectIntoComponentsTypes(sEffect)
+			local splitSimulatedEffectComps = filterTable(splitEffectComps, EffectTypeShouldBeChecked)
 			for _, sEffectComp in pairs(splitSimulatedEffectComps) do
-				table.insert(sEffectsInCTRequiringSlowMode, sEffectComp)
+				table.insert(aEffectsRequiringSlowMode, sEffectComp)  -- flatten remaining components
 			end
 		end
-		if next(sEffectsInCTRequiringSlowMode, nil) ~= nil then -- if Effects are left
-			if CTEntryRequiresSlowMode(nodeCT, sEffectsInCTRequiringSlowMode) then
-				return false -- we can leave early if there is at least one node requiring simulation
-			end
+	end
+	return bIsCTStable, aEffectsRequiringSlowMode
+end
+
+local function shouldSwitchToQuickSimulation ()
+	for _, nodeCT in pairs(DB.getChildren('combattracker.list')) do
+		-- Debug.console(ActorManager.getName(nodeCT))
+		local bIsStable = false
+		local aEffectsToCheck = {}
+		local actor = ActorManager.resolveActor(nodeCT) -- maybe extract health too, instead of doing it twice. But it makes naming functions harded. IDK.
+		bIsStable, aEffectsToCheck = getIsStableAndEffectsToCheck(nodeCT) -- does two things, but I dont want to iterate twice over all effects.
+		if ActorRequiresSlowMode(actor, aEffectsToCheck) then
+			return false -- we can leave early if there is at least one node requiring simulation
+		end
+		if IsActorDying(actor, bIsStable) then
+			return false
 		end
 	end
 	return true
@@ -140,9 +180,8 @@ function nextRound_new(nRounds, bTimeChanged)
 
 	for i = nStartCounter, nRounds do
 		if shouldSwitchToQuickSimulation() then
-
+			Debug.chat("[ Skipping is ok from " .. nCurrent .. "]");
 			-- switch to Quick Simulation
-			return
 		end
 
 		-- TODO: LEAVE LOOP, take remaining time, call fast simulation.
