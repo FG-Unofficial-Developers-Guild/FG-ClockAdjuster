@@ -28,6 +28,69 @@ function onClose()
 	CombatManager2.clearExpiringEffects = clearExpiringEffects_old;
 end
 
+local function filterTable (tab, fun)
+	local tFiltered = {}
+	for key, value in pairs(tab) do
+		if fun(value) then
+			table.insert(tFiltered, key, value)
+		end
+	end
+	return tFiltered
+end
+
+local function inArr (arr, val)
+	for _, value in ipairs(arr) do
+		if value == val then
+			return true
+		end
+	end
+	return false
+end
+
+local function splitnEffectIntoComponents(nEffect)
+	local sEffect = EffectManager.getEffectString(nEffect, 0)
+	local sEffectComps = EffectManager.parseEffect(sEffect)
+	return sEffectComps
+end
+
+local function doesEffectRequireSlowMode(sEffectComp)
+	local arrsComponentsToInclude = {'FHEAL', 'REGEN', 'DMGO'}
+	return inArr(sEffectComp, sEffectComp)
+end
+
+local function CTEntryRequiresSlowMode(nodeCT, arrSEffects)
+	if inArr(arrSEffects, 'DMGO') then
+		return true
+	end
+	if inArr(arrSEffects, 'FHEAL') or inArr(arrSEffects, 'REGEN') then
+		-- get hp of entity, check if full
+		local actor = ActorManager.resolveActor(nodeCT)
+		if ActorHealthManager.getHealthStatus(actor) ~= ActorHealthManager.STATUS_HEALTHY then
+			return true
+		end
+	end
+	return false
+end
+
+local function shouldSwitchToQuickSimulation ()
+	for _, nodeCT in pairs(DB.getChildren('combattracker.list')) do
+		local sEffectsInCTRequiringSlowMode = {}
+		for _, nodeEffect in pairs(DB.getChildren(nodeCT, 'effects')) do 
+			local splitEffectComps = splitnEffectIntoComponents(nodeEffect)
+			local splitSimulatedEffectComps = filterTable(splitEffectComps, doesEffectRequireSlowMode)
+			for _, sEffectComp in pairs(splitSimulatedEffectComps) do
+				table.insert(sEffectsInCTRequiringSlowMode, sEffectComp)
+			end
+		end
+		if next(sEffectsInCTRequiringSlowMode, nil) ~= nil then -- if Effects are left
+			if CTEntryRequiresSlowMode(nodeCT, sEffectsInCTRequiringSlowMode) then
+				return false -- we can leave early if there is at least one node requiring simulation
+			end
+		end
+	end
+	return true
+end
+
 function nextRound_new(nRounds, bTimeChanged)
 	if not User.isHost then
 		return;
@@ -74,7 +137,15 @@ function nextRound_new(nRounds, bTimeChanged)
 		msg.text = "[" .. Interface.getString("combat_tag_round") .. " " .. nCurrent .. "]";
 		Comm.deliverChatMessage(msg);
 	end
+
 	for i = nStartCounter, nRounds do
+		if shouldSwitchToQuickSimulation() then
+
+			-- switch to Quick Simulation
+			return
+		end
+
+		-- TODO: LEAVE LOOP, take remaining time, call fast simulation.
 		for i = 1,#aEntries do
 			CombatManager.onTurnStartEvent(aEntries[i]);
 			CombatManager.onTurnEndEvent(aEntries[i]);
