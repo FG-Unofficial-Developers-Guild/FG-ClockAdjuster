@@ -66,9 +66,11 @@ local function ActorRequiresSlowMode(actor, arrSEffects)
 
 	local actorHealth = ActorHealthManager.getHealthStatus(actor)
 
-	-- Has ongoing damage
+	-- Has ongoing damage, and still lives.
 	if inTable(arrSEffects, 'DMGO') then
-		return true
+		if actorHealth ~= ActorHealthManager.STATUS_DEAD then
+			return true
+		end
 	end
 
 	-- Healing through Regeneration
