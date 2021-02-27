@@ -92,7 +92,7 @@ local function shouldSwitchToQuickSimulation ()
 end
 
 function nextRound_new(nRounds, bTimeChanged)
-	if not User.isHost then
+	if not Session.IsHost then
 		return;
 	end
 
