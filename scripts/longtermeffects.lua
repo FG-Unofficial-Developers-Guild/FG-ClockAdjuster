@@ -28,19 +28,19 @@ function onClose()
 	CombatManager2.clearExpiringEffects = clearExpiringEffects_old;
 end
 
-local function filterTable (tab, fun)
+local function filterTable (table, filterFunction)
 	local tFiltered = {}
-	for key, value in pairs(tab) do
-		if fun(value) then
+	for key, value in pairs(table) do
+		if filterFunction(value) then
 			table.insert(tFiltered, key, value)
 		end
 	end
 	return tFiltered
 end
 
-local function inArray (arr, val)
-	for _, value in ipairs(arr) do
-		if value == val then
+local function inTable (table, checkedValue)
+	for _, value in pairs(table) do
+		if value == checkedValue then
 			return true
 		end
 	end
@@ -58,9 +58,8 @@ local function splitEffectIntoComponentsTypes(sEffect)
 end
 
 local function EffectTypeShouldBeChecked(sEffectComponentType)
-	-- Check if
 	local arrsComponentsToInclude = {'FHEAL', 'REGEN', 'DMGO'}
-	return inArray(arrsComponentsToInclude, sEffectComponentType)
+	return inTable(arrsComponentsToInclude, sEffectComponentType)
 end
 
 local function ActorRequiresSlowMode(actor, arrSEffects)
@@ -68,18 +67,18 @@ local function ActorRequiresSlowMode(actor, arrSEffects)
 	local actorHealth = ActorHealthManager.getHealthStatus(actor)
 
 	-- Has ongoing damage
-	if inArray(arrSEffects, 'DMGO') then
+	if inTable(arrSEffects, 'DMGO') then
 		return true
 	end
 
 	-- Healing through Regeneration
-	if inArray(arrSEffects, 'REGEN') then
+	if inTable(arrSEffects, 'REGEN') then
 		if actorHealth ~= ActorHealthManager.STATUS_HEALTHY then
 			return true
 		end
 	end
 	-- Healing through Fast Healing
-	if inArray(arrSEffects, 'FHEAL') then
+	if inTable(arrSEffects, 'FHEAL') then
 		if actorHealth ~= ActorHealthManager.STATUS_HEALTHY and actorHealth ~= ActorHealthManager.STATUS_DEAD then
 			return true
 		end
@@ -96,7 +95,8 @@ local function IsActorDying(actor, bIsStable)
 end
 
 local function getIsStableAndEffectsToCheck(nodeCT)
-	-- Return if node has effect stable, and flat list of all effect types.
+	-- Returns if node has effect stable, and flat list of all effect types.
+	-- Does two thing at once. as I dont want to iterate twice over all effects 
 	local aEffectsRequiringSlowMode = {}
 	local bIsCTStable = false
 	for _, nEffect in pairs(DB.getChildren(nodeCT, 'effects')) do
@@ -107,7 +107,7 @@ local function getIsStableAndEffectsToCheck(nodeCT)
 			local splitEffectComps = splitEffectIntoComponentsTypes(sEffect)
 			local splitSimulatedEffectComps = filterTable(splitEffectComps, EffectTypeShouldBeChecked)
 			for _, sEffectComp in pairs(splitSimulatedEffectComps) do
-				table.insert(aEffectsRequiringSlowMode, sEffectComp)  -- flatten remaining components
+				table.insert(aEffectsRequiringSlowMode, sEffectComp)
 			end
 		end
 	end
@@ -120,7 +120,7 @@ local function shouldSwitchToQuickSimulation ()
 		local bIsStable = false
 		local aEffectsToCheck = {}
 		local actor = ActorManager.resolveActor(nodeCT) -- maybe extract health too, instead of doing it twice. But it makes naming functions harded. IDK.
-		bIsStable, aEffectsToCheck = getIsStableAndEffectsToCheck(nodeCT) -- does two things, but I dont want to iterate twice over all effects.
+		bIsStable, aEffectsToCheck = getIsStableAndEffectsToCheck(nodeCT)
 		if ActorRequiresSlowMode(actor, aEffectsToCheck) then
 			return false -- we can leave early if there is at least one node requiring simulation
 		end
