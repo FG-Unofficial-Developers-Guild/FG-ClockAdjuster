@@ -180,11 +180,11 @@ function nextRound_new(nRounds, bTimeChanged)
 
 	for i = nStartCounter, nRounds do
 		if shouldSwitchToQuickSimulation() then
-			Debug.chat("[ Skipping is ok from " .. nCurrent .. "]");
-			-- switch to Quick Simulation
+			-- Debug.chat("[ Skipping is ok from " .. nCurrent .. "]");
+			LongTermEffects.advanceRoundsOnTimeChanged(nRounds - i) -- Probably force update in Combat window too?
+			break
 		end
 
-		-- TODO: LEAVE LOOP, take remaining time, call fast simulation.
 		for i = 1,#aEntries do
 			CombatManager.onTurnStartEvent(aEntries[i]);
 			CombatManager.onTurnEndEvent(aEntries[i]);

@@ -13,7 +13,7 @@
 		<ruleset name="3.5E" />
 	</properties>
 	
-	<announcement text="https://github.com/bmos/FG-PFRPG-Time-Manager\rPFRPG Time Manager v1.9 DEBUG:\rThis extension is a GM tool which provides an interface for easy time tracking and management.\nThis extension is heavily-based on Clock Adjuster which is the work of pr6i6e6st." font="emotefont" />
+	<announcement text="https://github.com/bmos/FG-PFRPG-Time-Manager\rPFRPG Time Manager v1.9 WIP limited slow simulation:\rThis extension is a GM tool which provides an interface for easy time tracking and management.\nThis extension is heavily-based on Clock Adjuster which is the work of pr6i6e6st." font="emotefont" />
 	
 	<base>
 		<includefile source="desktop/desktop_panels.xml" />
