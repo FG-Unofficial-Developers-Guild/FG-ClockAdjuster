@@ -61,14 +61,12 @@ function nextRound_new(nRounds, bTimeChanged)
 		-- Announce round
 		nCurrent = nCurrent + 1;
 		
-		-- bmos resetting rounds and advancing time
-		if nCurrent >= 10 and not bTimeChanged then
-			local nMinutes = math.floor(nCurrent / 10)
-			nCurrent = nCurrent - (nMinutes * 10)
-			CalendarManager.adjustMinutes(nMinutes)
+		-- bmos advancing time
+		if (nCurrent % 10) = 9 and not bTimeChanged then
+			CalendarManager.adjustMinutes(1)
 			CalendarManager.outputTime()
 		end
-		-- end bmos resetting rounds and advancing time
+		-- end bmos advancing time
 
 		local msg = {font = "narratorfont", icon = "turn_flag"};
 		msg.text = "[" .. Interface.getString("combat_tag_round") .. " " .. nCurrent .. "]";
@@ -85,14 +83,12 @@ function nextRound_new(nRounds, bTimeChanged)
 		-- Announce round
 		nCurrent = nCurrent + 1;
 		
-		-- bmos resetting rounds and advancing time
-		if nCurrent >= 10 and not bTimeChanged then
-			local nMinutes = math.floor(nCurrent / 10)
-			nCurrent = nCurrent - (nMinutes * 10)
-			CalendarManager.adjustMinutes(nMinutes)
+		-- bmos advancing time
+		if (nCurrent % 10) = 9 and not bTimeChanged then
+			CalendarManager.adjustMinutes(1)
 			CalendarManager.outputTime()
 		end
-		-- end bmos resetting rounds and advancing time
+		-- end bmos advancing time
 
 		local msg = {font = "narratorfont", icon = "turn_flag"};
 		msg.text = "[" .. Interface.getString("combat_tag_round") .. " " .. nCurrent .. "]";
