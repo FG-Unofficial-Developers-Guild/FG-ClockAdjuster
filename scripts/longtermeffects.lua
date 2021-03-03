@@ -28,6 +28,13 @@ function onClose()
 	CombatManager2.clearExpiringEffects = clearExpiringEffects_old;
 end
 
+local function announceTime(nCurrent, bTimeChanged)
+	if (nCurrent % 10) == 9 and not bTimeChanged then
+		CalendarManager.adjustMinutes(1)
+		CalendarManager.outputTime()
+	end
+end
+
 function nextRound_new(nRounds, bTimeChanged)
 	if not Session.IsHost then
 		return;
@@ -60,19 +67,13 @@ function nextRound_new(nRounds, bTimeChanged)
 
 		-- Announce round
 		nCurrent = nCurrent + 1;
-		
-		-- bmos resetting rounds and advancing time
-		if nCurrent >= 10 and not bTimeChanged then
-			local nMinutes = math.floor(nCurrent / 10)
-			nCurrent = nCurrent - (nMinutes * 10)
-			CalendarManager.adjustMinutes(nMinutes)
-			CalendarManager.outputTime()
-		end
-		-- end bmos resetting rounds and advancing time
-
 		local msg = {font = "narratorfont", icon = "turn_flag"};
 		msg.text = "[" .. Interface.getString("combat_tag_round") .. " " .. nCurrent .. "]";
 		Comm.deliverChatMessage(msg);
+
+		-- bmos advancing time
+		announceTime(nCurrent, bTimeChanged)
+		-- end bmos advancing time
 	end
 	for i = nStartCounter, nRounds do
 		for i = 1,#aEntries do
@@ -84,19 +85,13 @@ function nextRound_new(nRounds, bTimeChanged)
 		
 		-- Announce round
 		nCurrent = nCurrent + 1;
-		
-		-- bmos resetting rounds and advancing time
-		if nCurrent >= 10 and not bTimeChanged then
-			local nMinutes = math.floor(nCurrent / 10)
-			nCurrent = nCurrent - (nMinutes * 10)
-			CalendarManager.adjustMinutes(nMinutes)
-			CalendarManager.outputTime()
-		end
-		-- end bmos resetting rounds and advancing time
-
 		local msg = {font = "narratorfont", icon = "turn_flag"};
 		msg.text = "[" .. Interface.getString("combat_tag_round") .. " " .. nCurrent .. "]";
 		Comm.deliverChatMessage(msg);
+
+		-- bmos advancing time
+		announceTime(nCurrent, bTimeChanged)
+		-- end bmos advancing time
 	end
 
 	-- Update round counter
@@ -108,7 +103,7 @@ function nextRound_new(nRounds, bTimeChanged)
 	-- Check option to see if we should advance to first actor or stop on round start
 	if OptionsManager.isOption("RNDS", "off") then
 		local bSkipBell = (nRounds > 1);
-		if CombatManager.getCombatantCount() > 0 then
+		if #aEntries > 0 then
 			CombatManager.nextActor(bSkipBell, true);
 		end
 	end
