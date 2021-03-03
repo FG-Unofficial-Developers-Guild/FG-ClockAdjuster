@@ -2,41 +2,43 @@
 -- Please see the LICENSE.md file included with this distribution for attribution and copyright information.
 --
 
-local nextRound_old = nil
+local clearExpiringEffects_old = nil
+local onEffectAddStart_old = nil
 local resetInit_old = nil
+local nextRound_old = nil
 
--- Function Overrides
-function onInit()
-	nextRound_old = CombatManager.nextRound;
-	CombatManager.nextRound = nextRound_new;
-	resetInit_old = CombatManager.resetInit;
-	CombatManager.resetInit = resetInit_new;
-	clearExpiringEffects_old = CombatManager2.clearExpiringEffects;
-	CombatManager2.clearExpiringEffects = clearExpiringEffects_new;
-
-	registerOptions()
+local function clearExpiringEffects_new(bShort)
 end
 
-function registerOptions()
-	OptionsManager.registerOption2('TIME_ROUNDS', false, 'option_header_game', 'opt_lab_time_rounds', 'option_entry_cycler', 
-		{ labels = 'enc_opt_time_rounds_slow', values = 'slow', baselabel = 'enc_opt_time_rounds_fast', baseval = 'fast', default = 'fast' })
-end
-
-function onClose()
-	CombatManager.nextRound = nextRound_old;
-	CombatManager.resetInit = resetInit_old;
-	CombatManager2.clearExpiringEffects = clearExpiringEffects_old;
-end
-
-local function announceTime(nCurrent, bTimeChanged)
-	if (nCurrent % 10) == 9 and not bTimeChanged then
-		CalendarManager.adjustMinutes(1)
-		CalendarManager.outputTime()
+local function onEffectAddStart_new(rEffect)
+	rEffect.nDuration = rEffect.nDuration or 1;
+	if rEffect.sUnits == "minute" then
+		rEffect.nDuration = rEffect.nDuration * 10;
+	elseif rEffect.sUnits == "hour" then
+		rEffect.nDuration = rEffect.nDuration * 600;
+	elseif rEffect.sUnits == "day" then
+		rEffect.nDuration = rEffect.nDuration * 14400;
 	end
+	rEffect.sUnits = "";
 end
 
-function nextRound_new(nRounds, bTimeChanged)
-	if not Session.IsHost then
+local function resetInit_new()
+	-- De-activate all entries
+	for _,v in pairs(CombatManager.getCombatantNodes()) do
+		DB.setValue(v, "active", "number", 0);
+	end
+	
+	-- Clear GM identity additions (based on option)
+	CombatManager.clearGMIdentity();
+
+	-- Reset the round counter (bmos changed this to 0 instead of 1)
+	DB.setValue(CombatManager.CT_ROUND, "number", 0);
+	
+	CombatManager.onCombatResetEvent();
+end
+
+local function nextRound_new(nRounds, bTimeChanged)
+	if not Session.isHost then
 		return;
 	end
 
@@ -67,13 +69,19 @@ function nextRound_new(nRounds, bTimeChanged)
 
 		-- Announce round
 		nCurrent = nCurrent + 1;
+		
+		-- bmos resetting rounds and advancing time
+		if (nCurrent % 10) == 9 and not bTimeChanged then
+			local nMinutes = math.floor(nCurrent / 10)
+			nCurrent = nCurrent - (nMinutes * 10)
+			CalendarManager.adjustMinutes(nMinutes)
+			CalendarManager.outputTime()
+		end
+		-- end bmos resetting rounds and advancing time
+
 		local msg = {font = "narratorfont", icon = "turn_flag"};
 		msg.text = "[" .. Interface.getString("combat_tag_round") .. " " .. nCurrent .. "]";
 		Comm.deliverChatMessage(msg);
-
-		-- bmos advancing time
-		announceTime(nCurrent, bTimeChanged)
-		-- end bmos advancing time
 	end
 	for i = nStartCounter, nRounds do
 		for i = 1,#aEntries do
@@ -85,13 +93,19 @@ function nextRound_new(nRounds, bTimeChanged)
 		
 		-- Announce round
 		nCurrent = nCurrent + 1;
+		
+		-- bmos resetting rounds and advancing time
+		if (nCurrent % 10) == 9 and not bTimeChanged then
+			local nMinutes = math.floor(nCurrent / 10)
+			nCurrent = nCurrent - (nMinutes * 10)
+			CalendarManager.adjustMinutes(nMinutes)
+			CalendarManager.outputTime()
+		end
+		-- end bmos resetting rounds and advancing time
+
 		local msg = {font = "narratorfont", icon = "turn_flag"};
 		msg.text = "[" .. Interface.getString("combat_tag_round") .. " " .. nCurrent .. "]";
 		Comm.deliverChatMessage(msg);
-
-		-- bmos advancing time
-		announceTime(nCurrent, bTimeChanged)
-		-- end bmos advancing time
 	end
 
 	-- Update round counter
@@ -103,25 +117,28 @@ function nextRound_new(nRounds, bTimeChanged)
 	-- Check option to see if we should advance to first actor or stop on round start
 	if OptionsManager.isOption("RNDS", "off") then
 		local bSkipBell = (nRounds > 1);
-		if #aEntries > 0 then
+		local aCombatantEntries = CombatManager.getSortedCombatantList();
+		if #aCombatantEntries > 0 then
 			CombatManager.nextActor(bSkipBell, true);
 		end
 	end
 end
 
-function resetInit_new()
-	-- De-activate all entries
-	for _,v in pairs(CombatManager.getCombatantNodes()) do
-		DB.setValue(v, "active", "number", 0);
-	end
+-- Function Overrides
+function onInit()
+	nextRound_old = CombatManager.nextRound;
+	CombatManager.nextRound = nextRound_new;
 	
-	-- Clear GM identity additions (based on option)
-	CombatManager.clearGMIdentity();
+	resetInit_old = CombatManager.resetInit;
+	CombatManager.resetInit = resetInit_new;
+	
+	onEffectAddStart_old = EffectManager35E.onEffectAddStart;
+	EffectManager35E.onEffectAddStart = onEffectAddStart_new;
 
-	-- Reset the round counter (bmos changed this to 0 instead of 1)
-	DB.setValue(CombatManager.CT_ROUND, "number", 0);
-	
-	CombatManager.onCombatResetEvent();
+	clearExpiringEffects_old = CombatManager2.clearExpiringEffects;
+	CombatManager2.clearExpiringEffects = clearExpiringEffects_new;
+
+	registerOptions()
 end
 
 ---	This function compiles all effects and decrements their durations when time is advanced
@@ -142,5 +159,14 @@ function advanceRoundsOnTimeChanged(nRounds)
 	end
 end
 
-function clearExpiringEffects_new(bShort)
+function registerOptions()
+	OptionsManager.registerOption2('TIMEROUNDS', false, 'option_header_game', 'opt_lab_time_rounds', 'option_entry_cycler', 
+		{ labels = 'enc_opt_time_rounds_slow', values = 'slow', baselabel = 'enc_opt_time_rounds_fast', baseval = 'fast', default = 'fast' })
+end
+
+function onClose()
+	CombatManager2.clearExpiringEffects = clearExpiringEffects_old;
+	EffectManager35E.onEffectAddStart = onEffectAddStart_old;
+	CombatManager.resetInit = resetInit_old;
+	CombatManager.nextRound = nextRound_old;
 end

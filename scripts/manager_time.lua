@@ -11,24 +11,25 @@ end
 --- Timer Functions
 function setStartTime(rActor, sFirst)
 	--Debug.console("setStartTime called; " .. sFirst .."");
-	local nodeActor = ActorManager.getCreatureNode(rActor);
+	local nodeActor = rActor;
 	nStartTime = getCurrentDateinMinutes(rActor);
 	--Debug.console("setStartTime; nStartTime =", nStartTime);
-	DB.setValue(nodeActor, "" .. sFirst .. ".starttime", "number", nStartTime);
+	DB.setValue(nodeActor, "starttime", "number", nStartTime);
+	Debug.console("setStartTime", rActor, sFirst, nStartTime, DB.getValue(nodeActor, "starttime"));
 	--Debug.console("setStartTime; DB.setValue(nodeActor, " .. sFirst .. ".starttime, number, " .. nStartTime .. ") = ", DB.setValue(nodeActor, "" .. sFirst .. ".starttime", "number", nStartTime));
 end
 
 function getStartTime(rActor, sFirst)
 	--Debug.console("getStartTime called; " .. sFirst .."");
-	local nodeActor = ActorManager.getCreatureNode(rActor);
-	FetchStartTime = DB.getValue(nodeActor, "" .. sFirst .. ".starttime", 0);
+	local nodeActor = rActor;
+	FetchStartTime = DB.getValue(nodeActor, "starttime", 0);
 	--Debug.console("setStartTime; FetchStartTime = DB.getValue(" .. nodeActor .. ", " .. sFirst .. ".starttime, " .. nStartTime .. ") = " .. DB.getValue(nodeActor, "" .. sFirst .. ".starttime", nStartTime) .. "");
 
 	return FetchStartTime;
 end
 
 function setTimerStart(rActor, sFirst)
-	local nodeActor = ActorManager.getCreatureNode(rActor);
+	local nodeActor = rActor;
 	local nStartMinute, nStartHour, nStartDay, nStartMonth, nStartYear = getCurrentDate();
 	
 	DB.setValue(nodeActor, "" .. sFirst .. ".startminute", "number", nStartMinute);
@@ -38,7 +39,7 @@ function setTimerStart(rActor, sFirst)
 	DB.setValue(nodeActor, "" .. sFirst .. ".startyear", "number", nStartYear);
 end
 function getTimerStart(rActor, sFirst)
-	local nodeActor = ActorManager.getCreatureNode(rActor);		
+	local nodeActor = rActor;		
 	local nStartMinute = DB.getValue(nodeActor, "" .. sFirst .. ".startminute", 0);
 	local nStartHour = DB.getValue(nodeActor, "" .. sFirst .. ".starthour", 0);
 	local nStartDay = DB.getValue(nodeActor, "" .. sFirst .. ".startday", 0);
@@ -83,7 +84,7 @@ function getCurrentDate()
 end
 
 function compareDates(rActor, sFirst)
-	local nodeActor = ActorManager.getCreatureNode(rActor);	
+	local nodeActor = rActor;	
 	local nMinutes, nHours, nDays, nMonths, nYears = getCurrentDate();
 	local nStartMinute, nStartHour, nStartDay, nStartMonth, nStartYear = getTimerStart(rActor, sFirst);
 	
@@ -97,7 +98,7 @@ function compareDates(rActor, sFirst)
 end
 
 function hasTimePassed(rActor, sFirst, sTime)
-	local nodeActor = ActorManager.getCreatureNode(rActor);	
+	local nodeActor = rActor;	
 	local nMinutes, nHours, nDays, nMonths, nYears = getCurrentDate();
 	local nStartMinute, nStartHour, nStartDay, nStartMonth, nStartYear = getTimerStart(rActor, sFirst);
 	local nMinuteDifference, nHourDifference, nDayDifference, nMonthDifference, nYearDifference = compareDates(rActor, sFirst);
@@ -152,13 +153,14 @@ end
 --- Compare times
 function isTimeGreaterThan(rActor, sFirst, nCompareBy)
 	--Debug.console("isTimeGreaterThan called, sFirst = " .. sFirst .. ", nCompareBy = " .. nCompareBy .. ";");
-	local nodeActor = ActorManager.getCreatureNode(rActor);
+	local nodeActor = rActor;
 	local nStartTime = getStartTime(rActor, sFirst);
 	--Debug.console("isTimeGreaterThan, nStartTime = " .. rActor .. "");
 	local nCurrentTime = getCurrentDateinMinutes(rActor);
 	--Debug.console("isTimeGreaterThan, nCurrentTime = " .. nCurrentTime .. ", nCompareBy = " .. nCompareBy .. "");
 	
 	local nDifference = nCurrentTime - nStartTime;
+	Debug.console("isTimeGreaterThan", rActor, sFirst, nCompareBy, nStartTime, nCurrentTime, nDifference);
 	--Debug.console("isTimeGreaterThan; nDifference = " .. nDifference .. ", nCurrentTime = " .. nCurrentTime ..  ", nStartTime = " .. nStartTime .. "");
 	if nDifference >= nCompareBy then
 		return true;
@@ -169,8 +171,8 @@ end
 
 function getTimeDifference(rActor, sFirst, nCompareBy)
 	--Debug.console("isTimeGreaterThan called, sFirst = " .. sFirst .. ", nCompareBy = " .. nCompareBy .. ";");
-	local nodeActor = ActorManager.getCreatureNode(rActor);
-	local nStartTime = DB.getValue(nodeActor, "" .. sFirst .. ".starttime", 0);
+	local nodeActor = rActor;
+	local nStartTime = DB.getValue(nodeActor, "starttime", 0);
 	--Debug.console("getTimeDifference; nStartTime = DB.getValue(nodeActor, " .. sFirst .. ".starttime, 0) = " .. DB.getValue(nodeActor, "" .. sFirst .. ".starttime", nStartTime) .. "");
 	local nCurrentTime = getCurrentDateinMinutes();
 	--Debug.console("getTimeDifference, nCurrentTime = " .. nCurrentTime .. "");
@@ -375,23 +377,55 @@ function addLogEntryToSelected()
 	addLogEntry(nSelMonth, nSelDay);
 end
 
-function addLogEntry(nMonth, nDay, nYear, bGMVisible, nString)
+function addLogEntry(nMonth, nDay, nYear, bGMVisible, node)
 	local nodeEvent;
+	local sName = DB.getValue(node, "name", "");
+	local sString = DB.getValue(node, "text", "");
+	local nMinute = DB.getValue(node, "minute", 0);
+	local sMinute = tostring(nMinute);
+	local nHour = DB.getValue(node, "hour", 0);
+	local sHour = tostring(nHour);
+	
+	if nHour < 10 then
+		sHour = "0" .. sHour;
+	end
+	if nMinute < 10 then
+		sMinute = "0" .. sMinute;
+	end
+	
 	if aEvents[nYear] and aEvents[nYear][nMonth] and aEvents[nYear][nMonth][nDay] then
 		nodeEvent = aEvents[nYear][nMonth][nDay];
+		nodeOld = nodeEvent;
+		local EventGMLog = DB.getValue(nodeEvent, "gmlogentry", "");
+		local EventGMLogNew = string.gsub(EventGMLog, "%W", "");
+		local EventLog = DB.getValue(nodeEvent, "logentry", "");
+		local EventLogNew = string.gsub(EventLog, "%W", "");
+		local sNameNew = string.gsub(sName, "%W", "");
+		if bGMVisible == true then
+			if not string.find(EventGMLogNew, sHour .. "" .. sMinute) then
+				sString = EventGMLog .. "<h>" .. sName .. " [" .. sHour .. ":" .. sMinute .. "]" .. "</h>" .. sString;
+				DB.setValue(nodeEvent, "gmlogentry", "formattedtext", sString);
+			end
+		else
+			if not string.find(EventLogNew, sHour .. "" .. sMinute) then
+				sString = EventLog .. "<h>" .. sName .. " [" .. sHour .. ":" .. sMinute .. "]" .. "</h>" .. sString;
+				DB.setValue(nodeEvent, "logentry", "formattedtext", sString);
+			end
+		end	
 	elseif Session.IsHost then
 		local nodeLog = DB.createNode("calendar.log");
 		bEnableBuild = false;
 		nodeEvent = nodeLog.createChild();
+		sString = "<h>" .. sName .. " [" .. sHour .. ":" .. sMinute .. "]" .. "</h>" .. sString;
 		
 		DB.setValue(nodeEvent, "epoch", "string", DB.getValue("calendar.current.epoch", ""));
 		DB.setValue(nodeEvent, "year", "number", nYear);
 		DB.setValue(nodeEvent, "month", "number", nMonth);
 		DB.setValue(nodeEvent, "day", "number", nDay);
 		if bGMVisible == true then
-			DB.setValue(nodeEvent, "gmlogentry", "formattedtext", nString);
+			DB.setValue(nodeEvent, "gmlogentry", "formattedtext", sString);
 		elseif bGMVisible == false then
-			DB.setValue(nodeEvent, "logentry", "formattedtext", nString);
+			DB.setValue(nodeEvent, "logentry", "formattedtext", sString);
 		end
 		
 		bEnableBuild = true;
@@ -401,6 +435,7 @@ function addLogEntry(nMonth, nDay, nYear, bGMVisible, nString)
 
 	if nodeEvent then
 		Interface.openWindow("advlogentry", nodeEvent);
+		return nodeOld;
 	end
 end
 
