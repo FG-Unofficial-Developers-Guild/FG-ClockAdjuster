@@ -28,6 +28,13 @@ function onClose()
 	CombatManager2.clearExpiringEffects = clearExpiringEffects_old;
 end
 
+local function announceTime(nCurrent, bTimeChanged)
+	if (nCurrent % 10) == 9 and not bTimeChanged then
+		CalendarManager.adjustMinutes(1)
+		CalendarManager.outputTime()
+	end
+end
+
 function nextRound_new(nRounds, bTimeChanged)
 	if not Session.IsHost then
 		return;
@@ -61,16 +68,13 @@ function nextRound_new(nRounds, bTimeChanged)
 		-- Announce round
 		nCurrent = nCurrent + 1;
 		
-		-- bmos advancing time
-		if (nCurrent % 10) == 9 and not bTimeChanged then
-			CalendarManager.adjustMinutes(1)
-			CalendarManager.outputTime()
-		end
-		-- end bmos advancing time
-
 		local msg = {font = "narratorfont", icon = "turn_flag"};
 		msg.text = "[" .. Interface.getString("combat_tag_round") .. " " .. nCurrent .. "]";
 		Comm.deliverChatMessage(msg);
+		
+		-- bmos advancing time
+		announceTime(nCurrent, bTimeChanged)
+		-- end bmos advancing time
 	end
 	for i = nStartCounter, nRounds do
 		for i = 1,#aEntries do
@@ -83,16 +87,13 @@ function nextRound_new(nRounds, bTimeChanged)
 		-- Announce round
 		nCurrent = nCurrent + 1;
 		
-		-- bmos advancing time
-		if (nCurrent % 10) == 9 and not bTimeChanged then
-			CalendarManager.adjustMinutes(1)
-			CalendarManager.outputTime()
-		end
-		-- end bmos advancing time
-
 		local msg = {font = "narratorfont", icon = "turn_flag"};
 		msg.text = "[" .. Interface.getString("combat_tag_round") .. " " .. nCurrent .. "]";
 		Comm.deliverChatMessage(msg);
+		
+		-- bmos advancing time
+		announceTime(nCurrent, bTimeChanged)
+		-- end bmos advancing time
 	end
 
 	-- Update round counter
