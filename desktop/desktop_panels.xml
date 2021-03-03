@@ -947,7 +947,7 @@
 			function update()
 				windowlist.update();
 				if isgmonly.getValue() == 1 then
-					if not User.isHost() == true then
+					if not Session.IsHost == true then
 						setVisible(false);
 					end
 				end
@@ -2154,7 +2154,7 @@
 			function update()
 				windowlist.update();
 				if isgmonly.getValue() == 1 then
-					if not User.isHost() == true then
+					if not Session.IsHost == true then
 						setVisible(false);
 					end
 				end
