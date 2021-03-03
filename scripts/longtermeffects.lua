@@ -62,7 +62,7 @@ function nextRound_new(nRounds, bTimeChanged)
 		nCurrent = nCurrent + 1;
 		
 		-- bmos advancing time
-		if (nCurrent % 10) = 9 and not bTimeChanged then
+		if (nCurrent % 10) == 9 and not bTimeChanged then
 			CalendarManager.adjustMinutes(1)
 			CalendarManager.outputTime()
 		end
@@ -84,7 +84,7 @@ function nextRound_new(nRounds, bTimeChanged)
 		nCurrent = nCurrent + 1;
 		
 		-- bmos advancing time
-		if (nCurrent % 10) = 9 and not bTimeChanged then
+		if (nCurrent % 10) == 9 and not bTimeChanged then
 			CalendarManager.adjustMinutes(1)
 			CalendarManager.outputTime()
 		end
