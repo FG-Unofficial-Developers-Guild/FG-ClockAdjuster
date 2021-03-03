@@ -67,11 +67,10 @@ function nextRound_new(nRounds, bTimeChanged)
 
 		-- Announce round
 		nCurrent = nCurrent + 1;
-		
 		local msg = {font = "narratorfont", icon = "turn_flag"};
 		msg.text = "[" .. Interface.getString("combat_tag_round") .. " " .. nCurrent .. "]";
 		Comm.deliverChatMessage(msg);
-		
+
 		-- bmos advancing time
 		announceTime(nCurrent, bTimeChanged)
 		-- end bmos advancing time
@@ -86,11 +85,10 @@ function nextRound_new(nRounds, bTimeChanged)
 		
 		-- Announce round
 		nCurrent = nCurrent + 1;
-		
 		local msg = {font = "narratorfont", icon = "turn_flag"};
 		msg.text = "[" .. Interface.getString("combat_tag_round") .. " " .. nCurrent .. "]";
 		Comm.deliverChatMessage(msg);
-		
+
 		-- bmos advancing time
 		announceTime(nCurrent, bTimeChanged)
 		-- end bmos advancing time
@@ -105,7 +103,7 @@ function nextRound_new(nRounds, bTimeChanged)
 	-- Check option to see if we should advance to first actor or stop on round start
 	if OptionsManager.isOption("RNDS", "off") then
 		local bSkipBell = (nRounds > 1);
-		if CombatManager.getCombatantCount() > 0 then
+		if #aEntries > 0 then
 			CombatManager.nextActor(bSkipBell, true);
 		end
 	end
