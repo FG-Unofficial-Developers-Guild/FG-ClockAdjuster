@@ -74,6 +74,14 @@
 						if not Input.isControlPressed() then
 							return false;
 						end
+						local nMinute = (n or 0);
+
+						local nRounds = (nMinute * 10)
+						if OptionsManager.isOption('TIMEROUNDS', 'slow') then
+							CombatManager.nextRound(nRounds, true)
+						else
+							LongTermEffects.advanceRoundsOnTimeChanged(nRounds)
+						end
 						CalendarManager.adjustHours(n);
 						local nDateinMinutes = TimeManager.getCurrentDateinMinutes();
 						DB.setValue("calendar.dateinminutes", "number", nDateinMinutes); DB.setValue("calendar.dateinminutesstring", "string", tostring(nDateinMinutes))
@@ -120,6 +128,14 @@
 						CalendarManager.adjustMinutes(n);
 						local nDateinMinutes = TimeManager.getCurrentDateinMinutes();
 						DB.setValue("calendar.dateinminutes", "number", nDateinMinutes); DB.setValue("calendar.dateinminutesstring", "string", tostring(nDateinMinutes))
+						local nHour = (n or 0);
+
+						local nRounds = (nHour * 600)
+						if OptionsManager.isOption('TIMEROUNDS', 'slow') then
+							CombatManager.nextRound(nRounds, true)
+						else
+							LongTermEffects.advanceRoundsOnTimeChanged(nRounds)
+						end
 						return true;
 					end
 				</script>
@@ -164,6 +180,14 @@
 						CalendarManager.adjustDays(n);
 						local nDateinMinutes = TimeManager.getCurrentDateinMinutes();
 						DB.setValue("calendar.dateinminutes", "number", nDateinMinutes); DB.setValue("calendar.dateinminutesstring", "string", tostring(nDateinMinutes))
+						local nDay = (n or 0);
+
+						local nRounds = (nDay * 14400)
+						if OptionsManager.isOption('TIMEROUNDS', 'slow') then
+							CombatManager.nextRound(nRounds, true)
+						else
+							LongTermEffects.advanceRoundsOnTimeChanged(nRounds)
+						end
 						return true;
 					end
 				</script>
@@ -202,6 +226,14 @@
 						CalendarManager.adjustMonths(n);
 						local nDateinMinutes = TimeManager.getCurrentDateinMinutes();
 						DB.setValue("calendar.dateinminutes", "number", nDateinMinutes); DB.setValue("calendar.dateinminutesstring", "string", tostring(nDateinMinutes))
+						local nMonth = (n or 0);
+
+						local nRounds = (nMonth * 432000)
+						if OptionsManager.isOption('TIMEROUNDS', 'slow') then
+							CombatManager.nextRound(nRounds, true)
+						else
+							LongTermEffects.advanceRoundsOnTimeChanged(nRounds)
+						end
 						return true;
 					end
 				</script>
@@ -267,12 +299,11 @@
 						local nHour = (window.addhour.getValue() or 0);
 
 						local nRounds = (nHour * 600)
-						if OptionsManager.isOption('TIME_ROUNDS', 'slow') then
+						if OptionsManager.isOption('TIMEROUNDS', 'slow') then
 							CombatManager.nextRound(nRounds, true)
 						else
 							LongTermEffects.advanceRoundsOnTimeChanged(nRounds)
 						end
-						
 						CalendarManager.adjustHours(nHour);
 						if window.checkweather.getValue() == 1 then
 							local WeatherWind = "Weather - Wind";
@@ -322,12 +353,11 @@
 						local nMinute = (window.addminute.getValue() or 0);
 
 						local nRounds = (nMinute * 10)
-						if OptionsManager.isOption('TIME_ROUNDS', 'slow') then
+						if OptionsManager.isOption('TIMEROUNDS', 'slow') then
 							CombatManager.nextRound(nRounds, true)
 						else
 							LongTermEffects.advanceRoundsOnTimeChanged(nRounds)
 						end
-						
 						CalendarManager.adjustMinutes(nMinute);
 						if DB.getValue("calendar.check.day") == nil or DB.getValue("calendar.check.day") ~= DB.getValue("calendar.current.day") then
 							CalendarManager.outputDate();
@@ -368,12 +398,11 @@
 						local nDay = (window.addday.getValue() or 0);
 
 						local nRounds = (nDay * 14400)
-						if OptionsManager.isOption('TIME_ROUNDS', 'slow') then
+						if OptionsManager.isOption('TIMEROUNDS', 'slow') then
 							CombatManager.nextRound(nRounds, true)
 						else
 							LongTermEffects.advanceRoundsOnTimeChanged(nRounds)
 						end
-
 						CalendarManager.adjustDays(nDay);
 						if window.checkweather.getValue() == 1 then
 							local WeatherWind = "Weather - Wind";
@@ -416,7 +445,7 @@
 						local nMonth = (window.addmonth.getValue() or 0);
 
 						local nRounds = (nMonth * 432000)
-						if OptionsManager.isOption('TIME_ROUNDS', 'slow') then
+						if OptionsManager.isOption('TIMEROUNDS', 'slow') then
 							CombatManager.nextRound(nRounds, true)
 						else
 							LongTermEffects.advanceRoundsOnTimeChanged(nRounds)
@@ -496,12 +525,11 @@
 						local nYear = (window.addyear.getValue() or 0);
 
 						local nRounds = (nHour * 600) + (nMinute * 10) + (nDay * 14400) + (nDay * 403200)
-						if OptionsManager.isOption('TIME_ROUNDS', 'slow') then
+						if OptionsManager.isOption('TIMEROUNDS', 'slow') then
 							CombatManager.nextRound(nRounds, true)
 						else
 							LongTermEffects.advanceRoundsOnTimeChanged(nRounds)
 						end
-						
 						if window.checkweather.getValue() == 1 then
 							local WeatherWind = "Weather - Wind";
 							local WeatherTemp = "Weather - Temperature";
@@ -540,17 +568,27 @@
 				<min>0</min>
 				<tooltip textres="desktop_shortrest" />
 				<script>
+					function onInit()
+						sRuleset = User.getRulesetName();
+						if sRuleset == "PFRPG" or sRuleset == "PFRPG2" or sRuleset == "3.5E" then
+							bLong = true;
+						elseif sRuleset == "5E" then
+							bLong = false;
+						else
+							setVisible(false);
+ 						end
+					end
 					function onDoubleClick()
 						CalendarManager.adjustMinutes((getValue() or 0));
-						bShort = true;
+						
 						if DB.getValue("calendar.check.day") == nil or DB.getValue("calendar.check.day") ~= DB.getValue("calendar.current.day") then
 							CalendarManager.outputDate();
 							DB.setValue("calendar.check.day", "number", DB.getValue("calendar.current.day"));
 						end
 
 						local nMinutes = (getValue())
-						local nRounds = (nMinute * 10)
-						if OptionsManager.isOption('TIME_ROUNDS', 'slow') then
+						local nRounds = (nMinutes * 10)
+						if OptionsManager.isOption('TIMEROUNDS', 'slow') then
 							CombatManager.nextRound(nRounds, true)
 						else
 							LongTermEffects.advanceRoundsOnTimeChanged(nRounds)
@@ -558,10 +596,13 @@
 						
 						CalendarManager.outputTime();
 						ChatManager.Message(Interface.getString("menu_restshort"), true);
-						CombatManager2.rest(bShort);
+						CombatManager2.rest(bLong);
 						local nDateinMinutes = TimeManager.getCurrentDateinMinutes();
 						DB.setValue("calendar.dateinminutes", "number", nDateinMinutes); DB.setValue("calendar.dateinminutesstring", "string", tostring(nDateinMinutes))
+						
+						Debug.console(sRuleset, bLong);
 					end
+					
 				</script>
 			</basicnumber>
 				
@@ -575,9 +616,19 @@
 				<min>0</min>
 				<tooltip textres="desktop_longrest" />
 				<script>
+					function onInit()
+						sRuleset = User.getRulesetName();
+						if sRuleset == "PFRPG" or sRuleset == "PFRPG2" or sRuleset == "3.5E" then
+							bLong = false;
+						elseif sRuleset == "5E" then
+							bLong = true;
+						else
+							setVisible(false);
+ 						end
+					end
 					function onDoubleClick()
 						CalendarManager.adjustHours((getValue() or 0));
-						bShort = false;
+						
 						if DB.getValue("calendar.check.day") == nil or DB.getValue("calendar.check.day") ~= DB.getValue("calendar.current.day") then
 							CalendarManager.outputDate();
 							DB.setValue("calendar.check.day", "number", DB.getValue("calendar.current.day"));
@@ -593,17 +644,19 @@
 
 						local nHours = (getValue())
 						local nRounds = (nHours * 600)
-						if OptionsManager.isOption('TIME_ROUNDS', 'slow') then
+						if OptionsManager.isOption('TIMEROUNDS', 'slow') then
 							CombatManager.nextRound(nRounds, true)
 						else
-							LongTermEffects.advanceRoundsOnTimeChanged(nRounds)
+							LongTermEffects.advanceRoundsOnTimeChanged(nRounds);
 						end
+						
 
 						CalendarManager.outputTime();
-						ChatManager.Message(Interface.getString("menu_restovernight"), true);
-						CombatManager2.rest(bShort);
+						ChatManager.Message("Long Rest", true);
+						CombatManager2.rest(bLong);
 						local nDateinMinutes = TimeManager.getCurrentDateinMinutes();
 						DB.setValue("calendar.dateinminutes", "number", nDateinMinutes); DB.setValue("calendar.dateinminutesstring", "string", tostring(nDateinMinutes))
+						Debug.console(sRuleset, bLong);
 					end
 				</script>
 			</basicnumber>
@@ -1059,9 +1112,6 @@
 		<script>
 			nString = "";
 			function onLockChanged()
-				if header.subwindow then
-					header.subwindow.update();
-				end
 				
 				local bReadOnly = WindowManager.getReadOnlyState(getDatabaseNode());
 				text.setReadOnly(bReadOnly);
@@ -1155,14 +1205,14 @@
 						nMonth = (window.month.getValue() or 0);
 						nDay = (window.day.getValue() or 0);
 						nYear = (window.year.getValue() or 0);
-						sString = (window.text.getValue() or "");
 						if window.isgmonly.getValue() == 1 then
 							bGMVisible = true;
 						elseif window.isgmonly.getValue() == 0 then
 							bGMVisible = false;
 						end
-						
-						TimeManager.addLogEntry(nMonth, nDay, nYear, bGMVisible, sString);
+						local sName = DB.getValue(window.getDatabaseNode(), "name", "");
+						local nodeOld = TimeManager.addLogEntry(nMonth, nDay, nYear, bGMVisible, window.getDatabaseNode());
+
 					end
 				</script>
 			</buttoncontrol>
@@ -1213,15 +1263,17 @@
 	
 	<windowclass name="travelmanager">
 		<frame>recordsheet</frame>
-		<size width="500" height="90" />
+		<size width="250" height="250" />
 		<placement>
 			<position x="10" y="30" />
+			<size width="250" height="250" />
 		</placement>		
 		<sizelimits>
-			<size width="500" height="90" />
+			<maximum height="250" width="250" />
 		</sizelimits>		
 		<nodelete />
 		<softclose />
+		<resize />
 		<sheetdata>
 			<label name="traveledlabel">
 				<anchored position="insidetopleft" offset="10,10" height="20" width="70" />
@@ -1380,6 +1432,80 @@
 				<anchored to="travelbylabel" position="righthigh" height="20" width="20" offset="5" />
 				<tooltip text="Travel by # of Hours/Days" />
 				<script>
+					function TravelByPace(NewHourSpeed, NewDaySpeed)
+						local bAllow = true;
+						local nValue = getValue();
+						local nDistanceTotaled = 0;
+						local nTimePassed = 0;
+						local nTravelCount = 0;
+						local UseSpeed = window.travelspeed.getValue()
+						if window.isgmonly.getValue() == 0 then
+							isGMonly = false;
+						elseif window.isgmonly.getValue() == 1 then
+							isGMonly = true;
+						end
+						if window.unitofmeasurement.getValue() == 0 then
+							MilesorKilometers = "miles";
+						elseif window.unitofmeasurement.getValue() == 1 then
+							MilesorKilometers = "kilometers";
+						end
+						for i=1,nValue do
+							local nDistance = window.destination.getValue();
+							local nDistanceTraveled = window.distancetraveled.getValue() + window.travelspeed.getValue();
+							local nTraveledBefore = window.distancetraveled.getValue();
+							if nDistance &gt; nTraveledBefore then
+								if window.perlimit.getValue() == 0 then
+									DaysorHours = "hours";
+									CalendarManager.adjustHours(1);
+								elseif window.perlimit.getValue() == 1 then
+									DaysorHours = "days";
+									CalendarManager.adjustDays(1);
+								end
+								nTimePassed = nTimePassed + 1;
+								if NewHourSpeed ~= nil then
+									UseSpeed = NewHourSpeed;
+									MilesorKilometers = "miles";
+								end
+								if NewDaySpeed ~= nil then
+									UseSpeed = NewDaySpeed;
+									MilesorKilometers = "miles";
+									window.unitofmeasurement.setValue(0);
+									window.traveltime.setValue(0);
+								end
+								for i=1,UseSpeed do
+									if nDistance &gt; window.distancetraveled.getValue() then
+										nTravelCount = nTravelCount + 1;
+										nDistanceTotaled = window.distancetraveled.getValue() + 1;
+										window.distancetraveled.setValue(nDistanceTotaled);
+										
+									end
+								end
+								
+							end
+						end
+						if DB.getValue("checkweather", 0) == 1 then
+							local WeatherToday = "Weather Today";
+							
+							TableManager.processTableRoll("", WeatherToday);
+						end
+						if window.perlimit.getValue() == 0 then
+							DaysorHours = "hours";
+						elseif window.perlimit.getValue() == 1 then
+							DaysorHours = "days";
+						end
+						
+						local nDistance = window.destination.getValue();
+						local nDistanceTraveled = window.travelspeed.getValue() * getValue();
+						local nTraveledBefore = window.distancetraveled.getValue();
+						if nDistance &gt; nTraveledBefore then
+							local msg = {font = "reference-r", text = "The Party has traveled " .. nTravelCount .. " " .. MilesorKilometers .. " in " .. getValue() .. " " .. DaysorHours .. ". They have " .. window.distanceremaining.getValue() .. " " .. MilesorKilometers .. " left to go.", secret = isGMonly};
+							Comm.deliverChatMessage(msg);
+						elseif nDistance &lt;= nTraveledBefore then
+							local msg = {font = "reference-r", text = "The Party has traveled " .. nTravelCount .. " " .. MilesorKilometers .. " in " .. nTimePassed .. " " .. DaysorHours .. " and has reached their destination", secret = isGMonly};
+							Comm.deliverChatMessage(msg);
+							local bAllow = false;
+						end
+					end
 					function onDoubleClick()
 						local bAllow = true;
 						local nValue = getValue();
@@ -1392,11 +1518,9 @@
 							isGMonly = true;
 						end
 						for i=1,nValue do
-							Debug.console("travelbyhours; nValue = " .. nValue .. "");
 							local nDistance = (window.destination.getValue() or 0);
 							local nDistanceTraveled = (window.distancetraveled.getValue() or 0) + (window.travelspeed.getValue() or 0);
 							local nTraveledBefore = (window.distancetraveled.getValue() or 0);
-							Debug.console("travelbyhours; nDistance = " .. nDistance .. "; nDistanceTraveled = " .. nDistanceTraveled .. "");
 							if nDistance &gt; nTraveledBefore then
 								if window.perlimit.getValue() == 0 then
 									DaysorHours = "hours";
@@ -1487,6 +1611,471 @@
 					end
 				</script>
 			</buttoncontrol>
+			<buttoncontrol name="slowtravel">
+				<anchored to="travel" position="righthigh" offset="0,0" width="20" height="20" />
+				<icon normal="atob_button" pressed="atob_button_down" />
+				<tooltip text="Click to Travel at a Slow Pace; NOTE: You must have a table named 'Encounter Chance Slow Travel Pace'" />
+				<script>
+					function onInit()
+						sRuleset = User.getRulesetName();
+						if sRuleset == "PFRPG" or sRuleset == "PFRPG2" or sRuleset == "3.5E" then
+							bLong = false;
+						elseif sRuleset == "5E" then
+							bLong = true;
+						else
+							setVisible(false);
+ 						end
+					end
+				
+					function onButtonPress()
+						local aViableMap = {};
+						local NewHourSpeed = 2;
+						local NewDaySpeed = 18;
+						if window.perlimit.getValue() == 0 then
+							window.travelbyhours.TravelByPace(NewHourSpeed);
+						elseif window.perlimit.getValue() == 1 then
+							window.travelbyhours.TravelByPace(NewDaySpeed);
+						end
+						local EncounterChance = "Encounter Chance Slow Travel Pace";
+						if window.encounterchance.getValue() == 1 then
+							if REGeneratorManager then
+								local sD100xrp = "1d100";
+								local BiomeTypesNode = DB.getChild("regenerator", "biometypes");
+								local sBiomeTypes = DB.getValue(BiomeTypesNode, "", "");
+								local sBiomeTypes = string.gsub(sBiomeTypes, "%W", " ");
+								Debug.console("sBiomeTypes", sBiomeTypes);
+								local nEncounterChance = window.encounterchancenum.getValue();
+								local nBattleChance = window.battlechance.getValue();
+								local sChanceExpr = sD100xrp:gsub("$PC", tostring(PartyManager.getPartyCount()));
+								local nEncounterChanceResult = StringManager.evalDiceMathExpression(sChanceExpr);
+								local nBattleChanceResult = StringManager.evalDiceMathExpression(sChanceExpr);
+								local aTableClasses = LibraryData.getMappings("table");
+								if nEncounterChanceResult &lt; nEncounterChance then
+									if nBattleChanceResult &lt; nBattleChance then
+								
+										Interface.openWindow("new_regenerator", "regenerator");
+										local REGenWin = Interface.findWindow("new_regenerator", "regenerator");
+										local aGeneratedNPCS = REGeneratorManager.generatePreview();
+										if REGenWin then
+											local aBiomeClasses = LibraryData.getMappings("biome");
+											local aImageClasses = LibraryData.getMappings("image");
+											local aViableBiome = {};
+											
+											
+											for _,ClassNode in pairs(aBiomeClasses) do
+												for _,vNode in pairs(DB.getChildrenGlobal(ClassNode)) do
+													local vNodeNameNode = DB.getChild(vNode, "name");
+													local vName = DB.getValue(vNodeNameNode, "", "");
+													local vName = string.gsub(vName, "%W", " ");
+													
+													if string.find(sBiomeTypes, vName) then
+														local aMapListNode = DB.getChild(vNode, "maplist");
+														
+														
+														for _,vMap in pairs(DB.getChildren(aMapListNode, "")) do
+															local vMapLinkNode = DB.getChild(vMap, "link");
+															local sClass, sRecord = DB.getValue(vMapLinkNode, "");
+															local sRecordNode = DB.getChild(sRecord, "");
+															table.insert(aViableMap, sRecordNode);
+														end
+													end
+												end
+											end
+											nCount = 0;
+											for k,v in pairs(aViableMap) do
+												nCount = nCount + 1;
+											end
+											if nCount == 0 or nCount == nil then
+												nCount = 1;
+											end
+											local sExpr = "1d" .. nCount;
+										
+											sExpr = sExpr:gsub("$PC", tostring(PartyManager.getPartyCount()));
+											
+											nCount = StringManager.evalDiceMathExpression(sExpr);
+											for k,v in pairs(aViableMap) do
+												local sPath = DB.getPath(v);
+												local vClass = LibraryData.getRecordDisplayClass("image", sPath);
+												
+												if k == nCount then
+													Interface.openWindow(vClass, sPath);
+												end
+											end
+											REGenWin.close();
+										end
+										REGeneratorManager.generateFromPreview(aGeneratedNPCS);
+									else
+										if sBiomeTypes ~= "" and sBiomeTypes ~= nil then
+											local bTableRolled = false;
+											local aTableNames = {};
+											for _,TableClassNode in pairs(aTableClasses) do
+												for _,vTableNode in pairs(DB.getChildrenGlobal(TableClassNode)) do
+													local vTableNameNode = DB.getChild(vTableNode, "name");
+													local sTableName = DB.getValue(vTableNameNode, "", "");
+													local sTableName2 = sTableName;
+													local sTableName = string.lower(sTableName);
+													local sTableName = string.gsub(sTableName, "%W", " ");
+													local nStarts, nEnds, sEncounterTableBiome = string.find(sTableName, "non combat ([%w+%s*]+) encounter");
+													if sEncounterTableBiome ~= nil and sEncounterTableBiome ~= "" and sBiomeTypes ~= nil and sBiomeTypes ~= "" then
+														sBiomeTypes = string.lower(sBiomeTypes);
+														if string.find(sBiomeTypes, sEncounterTableBiome) then
+															table.insert(aTableNames, sTableName2);
+														end
+													end
+												end
+											end
+											local nTableNames = 0;
+											for kTableName,vTableName in pairs(aTableNames) do
+												nTableNames = nTableNames + 1;
+											end
+											local sTableExpr = "1d" .. nTableNames;
+											sTableExpr = sTableExpr:gsub("$PC", tostring(PartyManager.getPartyCount()));
+											nTableCount = StringManager.evalDiceMathExpression(sTableExpr);
+											for kTableName,vTableName in pairs(aTableNames) do
+												if kTableName == nTableCount then
+													TableManager.processTableRoll("", vTableName);
+													bTableRolled = true;
+													break;
+												end
+											end
+										end
+										if TableManager.findTable("Non Combat Encounter") and bTableRolled == false then
+											TableManager.processTableRoll("", "Non Combat Encounter");
+										end
+									end
+								end
+							else
+								TableManager.processTableRoll("", EncounterChance);
+							end
+						end
+					end
+				</script>
+			</buttoncontrol>
+			<buttoncontrol name="normaltravel">
+				<anchored to="slowtravel" position="righthigh" offset="0,0" width="20" height="20" />
+				<icon normal="atob_button" pressed="atob_button_down" />
+				<tooltip text="Click to Travel at a Normal Pace; NOTE: You must have a table named 'Encounter Chance Normal Travel Pace'" />
+				<script>
+					function onInit()
+						sRuleset = User.getRulesetName();
+						if sRuleset == "PFRPG" or sRuleset == "PFRPG2" or sRuleset == "3.5E" then
+							bLong = false;
+						elseif sRuleset == "5E" then
+							bLong = true;
+						else
+							setVisible(false);
+ 						end
+					end
+					function onButtonPress()
+						local aViableMap = {};
+						local NewHourSpeed = 3;
+						local NewDaySpeed = 24;
+						if window.perlimit.getValue() == 0 then
+							window.travelbyhours.TravelByPace(NewHourSpeed);
+						elseif window.perlimit.getValue() == 1 then
+							window.travelbyhours.TravelByPace(NewDaySpeed);
+						end
+						local EncounterChance = "Encounter Chance Normal Travel Pace";
+						if window.encounterchance.getValue() == 1 then
+							if REGeneratorManager then
+								local sD100xrp = "1d100";
+								local BiomeTypesNode = DB.getChild("regenerator", "biometypes");
+								local sBiomeTypes = DB.getValue(BiomeTypesNode, "", "");
+								local sBiomeTypes = string.gsub(sBiomeTypes, "%W", " ");
+								Debug.console("sBiomeTypes", sBiomeTypes);
+								local nEncounterChance = window.encounterchancenum.getValue();
+								local nBattleChance = window.battlechance.getValue();
+								local sChanceExpr = sD100xrp:gsub("$PC", tostring(PartyManager.getPartyCount()));
+								local nEncounterChanceResult = StringManager.evalDiceMathExpression(sChanceExpr);
+								local nBattleChanceResult = StringManager.evalDiceMathExpression(sChanceExpr);
+								local aTableClasses = LibraryData.getMappings("table");
+								if nEncounterChanceResult &lt; nEncounterChance then
+									if nBattleChanceResult &lt; nBattleChance then
+								
+										Interface.openWindow("new_regenerator", "regenerator");
+										local REGenWin = Interface.findWindow("new_regenerator", "regenerator");
+										local aGeneratedNPCS = REGeneratorManager.generatePreview();
+										if REGenWin then
+											local aBiomeClasses = LibraryData.getMappings("biome");
+											local aImageClasses = LibraryData.getMappings("image");
+											local aViableBiome = {};
+											
+											
+											for _,ClassNode in pairs(aBiomeClasses) do
+												for _,vNode in pairs(DB.getChildrenGlobal(ClassNode)) do
+													local vNodeNameNode = DB.getChild(vNode, "name");
+													local vName = DB.getValue(vNodeNameNode, "", "");
+													local vName = string.gsub(vName, "%W", " ");
+													
+													if string.find(sBiomeTypes, vName) then
+														local aMapListNode = DB.getChild(vNode, "maplist");
+														
+														
+														for _,vMap in pairs(DB.getChildren(aMapListNode, "")) do
+															local vMapLinkNode = DB.getChild(vMap, "link");
+															local sClass, sRecord = DB.getValue(vMapLinkNode, "");
+															local sRecordNode = DB.getChild(sRecord, "");
+															table.insert(aViableMap, sRecordNode);
+														end
+													end
+												end
+											end
+											nCount = 0;
+											for k,v in pairs(aViableMap) do
+												nCount = nCount + 1;
+											end
+											if nCount == 0 or nCount == nil then
+												nCount = 1;
+											end
+											local sExpr = "1d" .. nCount;
+										
+											sExpr = sExpr:gsub("$PC", tostring(PartyManager.getPartyCount()));
+											
+											nCount = StringManager.evalDiceMathExpression(sExpr);
+											for k,v in pairs(aViableMap) do
+												local sPath = DB.getPath(v);
+												local vClass = LibraryData.getRecordDisplayClass("image", sPath);
+												
+												if k == nCount then
+													Interface.openWindow(vClass, sPath);
+												end
+											end
+											REGenWin.close();
+										end
+										REGeneratorManager.generateFromPreview(aGeneratedNPCS);
+									else
+										if sBiomeTypes ~= "" and sBiomeTypes ~= nil then
+											local bTableRolled = false;
+											local aTableNames = {};
+											for _,TableClassNode in pairs(aTableClasses) do
+												for _,vTableNode in pairs(DB.getChildrenGlobal(TableClassNode)) do
+													local vTableNameNode = DB.getChild(vTableNode, "name");
+													local sTableName = DB.getValue(vTableNameNode, "", "");
+													local sTableName2 = sTableName;
+													local sTableName = string.lower(sTableName);
+													local sTableName = string.gsub(sTableName, "%W", " ");
+													local nStarts, nEnds, sEncounterTableBiome = string.find(sTableName, "non combat ([%w+%s*]+) encounter");
+													if sEncounterTableBiome ~= nil and sEncounterTableBiome ~= "" and sBiomeTypes ~= nil and sBiomeTypes ~= "" then
+														sBiomeTypes = string.lower(sBiomeTypes);
+														if string.find(sBiomeTypes, sEncounterTableBiome) then
+															table.insert(aTableNames, sTableName2);
+														end
+													end
+												end
+											end
+											local nTableNames = 0;
+											for kTableName,vTableName in pairs(aTableNames) do
+												nTableNames = nTableNames + 1;
+											end
+											local sTableExpr = "1d" .. nTableNames;
+											sTableExpr = sTableExpr:gsub("$PC", tostring(PartyManager.getPartyCount()));
+											nTableCount = StringManager.evalDiceMathExpression(sTableExpr);
+											for kTableName,vTableName in pairs(aTableNames) do
+												if kTableName == nTableCount then
+													TableManager.processTableRoll("", vTableName);
+													bTableRolled = true;
+													break;
+												end
+											end
+										end
+										if TableManager.findTable("Non Combat Encounter") and bTableRolled == false then
+											TableManager.processTableRoll("", "Non Combat Encounter");
+										end
+									end
+								end
+							else
+								TableManager.processTableRoll("", EncounterChance);
+							end
+						end
+					end
+				</script>
+			</buttoncontrol>
+			<buttoncontrol name="fasttravel">
+				<anchored to="normaltravel" position="righthigh" offset="0,0" width="20" height="20" />
+				<icon normal="atob_button" pressed="atob_button_down" />
+				<tooltip text="Click to Travel at a Fast Pace; NOTE: You must have a table named 'Encounter Chance Fast Travel Pace'" />
+				<script>
+					function onInit()
+						sRuleset = User.getRulesetName();
+						if sRuleset == "PFRPG" or sRuleset == "PFRPG2" or sRuleset == "3.5E" then
+							bLong = false;
+						elseif sRuleset == "5E" then
+							bLong = true;
+						else
+							setVisible(false);
+ 						end
+					end
+					function onButtonPress()
+						local aViableMap = {};
+						local NewHourSpeed = 4;
+						local NewDaySpeed = 30;
+						if window.perlimit.getValue() == 0 then
+							window.travelbyhours.TravelByPace(NewHourSpeed);
+						elseif window.perlimit.getValue() == 1 then
+							window.travelbyhours.TravelByPace(NewDaySpeed);
+						end
+						local EncounterChance = "Encounter Chance Fast Travel Pace";
+						if window.encounterchance.getValue() == 1 then
+							if REGeneratorManager then
+								local sD100xrp = "1d100";
+								local BiomeTypesNode = DB.getChild("regenerator", "biometypes");
+								local sBiomeTypes = DB.getValue(BiomeTypesNode, "", "");
+								local sBiomeTypes = string.gsub(sBiomeTypes, "%W", " ");
+								Debug.console("sBiomeTypes", sBiomeTypes);
+								local nEncounterChance = window.encounterchancenum.getValue();
+								local nBattleChance = window.battlechance.getValue();
+								local sChanceExpr = sD100xrp:gsub("$PC", tostring(PartyManager.getPartyCount()));
+								local nEncounterChanceResult = StringManager.evalDiceMathExpression(sChanceExpr);
+								local nBattleChanceResult = StringManager.evalDiceMathExpression(sChanceExpr);
+								local aTableClasses = LibraryData.getMappings("table");
+								if nEncounterChanceResult &lt; nEncounterChance then
+									if nBattleChanceResult &lt; nBattleChance then
+								
+										Interface.openWindow("new_regenerator", "regenerator");
+										local REGenWin = Interface.findWindow("new_regenerator", "regenerator");
+										local aGeneratedNPCS = REGeneratorManager.generatePreview();
+										if REGenWin then
+											local aBiomeClasses = LibraryData.getMappings("biome");
+											local aImageClasses = LibraryData.getMappings("image");
+											local aViableBiome = {};
+											
+											
+											for _,ClassNode in pairs(aBiomeClasses) do
+												for _,vNode in pairs(DB.getChildrenGlobal(ClassNode)) do
+													local vNodeNameNode = DB.getChild(vNode, "name");
+													local vName = DB.getValue(vNodeNameNode, "", "");
+													local vName = string.gsub(vName, "%W", " ");
+													
+													if string.find(sBiomeTypes, vName) then
+														local aMapListNode = DB.getChild(vNode, "maplist");
+														
+														
+														for _,vMap in pairs(DB.getChildren(aMapListNode, "")) do
+															local vMapLinkNode = DB.getChild(vMap, "link");
+															local sClass, sRecord = DB.getValue(vMapLinkNode, "");
+															local sRecordNode = DB.getChild(sRecord, "");
+															table.insert(aViableMap, sRecordNode);
+														end
+													end
+												end
+											end
+											nCount = 0;
+											for k,v in pairs(aViableMap) do
+												nCount = nCount + 1;
+											end
+											if nCount == 0 or nCount == nil then
+												nCount = 1;
+											end
+											local sExpr = "1d" .. nCount;
+										
+											sExpr = sExpr:gsub("$PC", tostring(PartyManager.getPartyCount()));
+											
+											nCount = StringManager.evalDiceMathExpression(sExpr);
+											for k,v in pairs(aViableMap) do
+												local sPath = DB.getPath(v);
+												local vClass = LibraryData.getRecordDisplayClass("image", sPath);
+												
+												if k == nCount then
+													Interface.openWindow(vClass, sPath);
+												end
+											end
+											REGenWin.close();
+										end
+										REGeneratorManager.generateFromPreview(aGeneratedNPCS);
+									else
+										if sBiomeTypes ~= "" and sBiomeTypes ~= nil then
+											local bTableRolled = false;
+											local aTableNames = {};
+											for _,TableClassNode in pairs(aTableClasses) do
+												for _,vTableNode in pairs(DB.getChildrenGlobal(TableClassNode)) do
+													local vTableNameNode = DB.getChild(vTableNode, "name");
+													local sTableName = DB.getValue(vTableNameNode, "", "");
+													local sTableName2 = sTableName;
+													local sTableName = string.lower(sTableName);
+													local sTableName = string.gsub(sTableName, "%W", " ");
+													local nStarts, nEnds, sEncounterTableBiome = string.find(sTableName, "non combat ([%w+%s*]+) encounter");
+													if sEncounterTableBiome ~= nil and sEncounterTableBiome ~= "" and sBiomeTypes ~= nil and sBiomeTypes ~= "" then
+														sBiomeTypes = string.lower(sBiomeTypes);
+														if string.find(sBiomeTypes, sEncounterTableBiome) then
+															table.insert(aTableNames, sTableName2);
+														end
+													end
+												end
+											end
+											local nTableNames = 0;
+											for kTableName,vTableName in pairs(aTableNames) do
+												nTableNames = nTableNames + 1;
+											end
+											local sTableExpr = "1d" .. nTableNames;
+											sTableExpr = sTableExpr:gsub("$PC", tostring(PartyManager.getPartyCount()));
+											nTableCount = StringManager.evalDiceMathExpression(sTableExpr);
+											for kTableName,vTableName in pairs(aTableNames) do
+												if kTableName == nTableCount then
+													TableManager.processTableRoll("", vTableName);
+													bTableRolled = true;
+													break;
+												end
+											end
+										end
+										if TableManager.findTable("Non Combat Encounter") and bTableRolled == false then
+											TableManager.processTableRoll("", "Non Combat Encounter");
+										end
+									end
+								end
+							else
+								TableManager.processTableRoll("", EncounterChance);
+							end
+						end
+					end
+				</script>
+			</buttoncontrol>
+			<button_checkbox name="encounterchance">
+				<anchored width="20" height="20">
+					<top parent="fasttravel" anchor="top" offset="0" />
+					<right parent="fasttravel" anchor="right" offset="15" />
+				</anchored>
+				<values>
+					<maximum>1</maximum>
+				</values>
+				<tooltip text="Rolls an encounter chance when using Travel Speed Buttons to the left; Note: Looks for tablenames: Encounter Chance Slow Travel Pace, Encounter Chance Normal Travel Pace, or Encounter Chance Fast Travel Pace" />
+				
+			</button_checkbox>
+			<label name="encounterchance_label">
+				<anchored to="travellabel" position="belowleft" offset="0,10" height="20" width="70" />
+				<font>calendarbold</font>
+				<color>000000</color>
+				<static text="Chances" />
+			</label>
+			<basicnumber name="encounterchancenum">
+				<anchored to="encounterchance_label" position="righthigh" offset="0,0" width="20" height="30" />
+				<tooltip text="Chance of Encounter while traveling" />
+				<maximum>100</maximum>
+				<minimum>0</minimum>
+				<script>
+					function onInit()
+						if DB.findNode("regenerator") then
+							setVisible(true);
+						else
+							setVisible(false);
+ 						end
+					end
+				</script>
+			</basicnumber>
+			<basicnumber name="battlechance">
+				<anchored to="encounterchancenum" position="righthigh" offset="20,0" width="20" height="30" />
+				<maximum>100</maximum>
+				<minimum>0</minimum>
+				<tooltip text="Chance Encounter is a battle. If no battle, then rolls on table 'Non Combat Encounter' if it exists." />
+				<script>
+					function onInit()
+						if DB.findNode("regenerator") then
+							setVisible(true);
+						else
+							setVisible(false);
+ 						end
+					end
+				</script>
+			</basicnumber>
 			
 			<!--<progressbar name="travelprogress">
 				<anchored height="20" width="50">
@@ -1572,7 +2161,7 @@
 				completed.setValue(0);
 			end
 			function onTimeChanged()
-				local rActor = ActorManager.resolveActor(getDatabaseNode());
+				local rActor = getDatabaseNode();
 				local nDate = CalendarManager.getCurrentDateString();
 				local nTime = CalendarManager.getCurrentTimeString();
 				local nDateAndTime = "" .. nTime .. " " .. nDate .. "";
@@ -1650,7 +2239,7 @@
 				</anchored>
 				<script>
 					function onValueChanged()
-						local rActor = ActorManager.resolveActor(window.getDatabaseNode());
+						local rActor = window.getDatabaseNode();
 						local sName = window.name.getValue();
 						TimeManager.setStartTime(rActor, sName);
 					end
@@ -1666,7 +2255,7 @@
 				<state icon="visibilityon" tooltipres="visibilityon" />
 				<state icon="visibilityoff" tooltipres="visibilityoff" />
 			</buttonfield>
-			<basicnumber name="remindercycle" source="remindercycle">
+			<basicnumber name="remindercycle" source=".remindercycle">
 				<anchored width="40" height="20">
 					<top offset="2" />
 					<right parent="rightanchor" anchor="left" relation="relative" offset="-10" />
@@ -1675,7 +2264,7 @@
 				<tabtarget prev="location" />
 				<tooltip textres="remindercycle_tooltip" />
 			</basicnumber>
-			<buttoncontrol name="repeattimebutton" source="reminder.repeattime">
+			<buttoncontrol name="repeattimebutton" source=".repeattime">
 				<anchored width="60" height="30">
 					<top offset="2" />
 					<right parent="rightanchor" anchor="left" relation="relative" offset="-10" />
@@ -1686,38 +2275,38 @@
 				<state text="days" />
 				<default>0</default>
 				<sourcefields>
-					<current>reminder.repeattime</current>
+					<current>.repeattime</current>
 				</sourcefields>
 				<color>000000</color>
 				<script>
 					function onInit()
-						local rActor = ActorManager.resolveActor(window.getDatabaseNode());
-						local nodeActor = ActorManager.getCreatureNode(rActor);
-						setValue(DB.getValue(nodeActor, "reminder.repeattime", 0));
+						local rActor = window.getDatabaseNode();
+						local nodeActor = rActor;
+						setValue(DB.getValue(nodeActor, "repeattime", 0));
 					end
 					function onButtonPress()
-						local rActor = ActorManager.resolveActor(window.getDatabaseNode());
-						local nodeActor = ActorManager.getCreatureNode(rActor);
-						DB.setValue(nodeActor, "reminder.repeattime", "number", getValue());
+						local rActor = window.getDatabaseNode();
+						local nodeActor = rActor;
+						DB.setValue(nodeActor, "repeattime", "number", getValue());
 						window.repeattime.setValue(getValue());
 					end
 				</script>
 			</buttoncontrol>
-			<basicnumber name="repeattime" source="reminder.repeattime">
+			<basicnumber name="repeattime" source=".repeattime">
 				<anchored width="40" height="20">
 					<top offset="2" />
 					<right parent="rightanchor" anchor="left" relation="relative" offset="-10" />
 				</anchored>
 				<script>
 					function onInit()
-						local rActor = ActorManager.resolveActor(window.getDatabaseNode());
-						local nodeActor = ActorManager.getCreatureNode(rActor);
-						setValue(DB.getValue(nodeActor, "reminder.repeattime", 0));
+						local rActor = window.getDatabaseNode();
+						local nodeActor = rActor;
+						setValue(DB.getValue(nodeActor, "repeattime", 0));
 					end
 					function onValueChanged()
-						local rActor = ActorManager.resolveActor(window.getDatabaseNode());
-						local nodeActor = ActorManager.getCreatureNode(rActor);
-						DB.setValue(nodeActor, "reminder.repeattime", "number", getValue());
+						local rActor = window.getDatabaseNode();
+						local nodeActor = rActor;
+						DB.setValue(nodeActor, "repeattime", "number", getValue());
 						window.repeattimebutton.setValue(getValue());
 					end
 				</script>
@@ -1750,10 +2339,6 @@
 		<script>
 			nString = "";
 			function onLockChanged()
-				if header.subwindow then
-					header.subwindow.update();
-				end
-				
 				local bReadOnly = WindowManager.getReadOnlyState(getDatabaseNode());
 				text.setReadOnly(bReadOnly);
 				remindercycle.setReadOnly(bReadOnly);
@@ -1790,13 +2375,13 @@
 				</anchored>
 				<script>
 					function onInit()
-						local rActor = ActorManager.resolveActor(window.getDatabaseNode());
-						local nodeActor = ActorManager.getCreatureNode(rActor);
+						local rActor = window.getDatabaseNode();
+						local nodeActor = rActor;
 						setValue(DB.getValue(nodeActor, "reminder.repeattime", 0));
 					end
 					function onValueChanged()
-						local rActor = ActorManager.resolveActor(window.getDatabaseNode());
-						local nodeActor = ActorManager.getCreatureNode(rActor);
+						local rActor = window.getDatabaseNode();
+						local nodeActor = rActor;
 						DB.setValue(nodeActor, "reminder.repeattime", "number", getValue());
 						window.repeattimebutton.setValue(getValue());
 					end
@@ -1819,13 +2404,13 @@
 				<color>000000</color>
 				<script>
 					function onInit()
-						local rActor = ActorManager.resolveActor(window.getDatabaseNode());
-						local nodeActor = ActorManager.getCreatureNode(rActor);
+						local rActor = window.getDatabaseNode();
+						local nodeActor = rActor;
 						setValue(DB.getValue(nodeActor, "reminder.repeattime", 0));
 					end
 					function onButtonPress()
-						local rActor = ActorManager.resolveActor(window.getDatabaseNode());
-						local nodeActor = ActorManager.getCreatureNode(rActor);
+						local rActor = window.getDatabaseNode();
+						local nodeActor = rActor;
 						DB.setValue(nodeActor, "reminder.repeattime", "number", getValue());
 						window.repeattime.setValue(getValue());
 					end
