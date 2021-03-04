@@ -137,9 +137,16 @@ function onInit()
 	resetInit_old = CombatManager.resetInit;
 	CombatManager.resetInit = resetInit_new;
 	
-	onEffectAddStart_old = EffectManager35E.onEffectAddStart;
-	EffectManager35E.onEffectAddStart = onEffectAddStart_new;
+	if EffectManager35E then
+		onEffectAddStart_old = EffectManager35E.onEffectAddStart;
+		EffectManager35E.onEffectAddStart = onEffectAddStart_new;
+	end
 
+	if EffectManager5E then
+		onEffectAddStart_old = EffectManager5E.onEffectAddStart;
+		EffectManager5E.onEffectAddStart = onEffectAddStart_new;
+	end
+	
 	clearExpiringEffects_old = CombatManager2.clearExpiringEffects;
 	CombatManager2.clearExpiringEffects = clearExpiringEffects_new;
 
@@ -166,7 +173,8 @@ end
 
 function onClose()
 	CombatManager2.clearExpiringEffects = clearExpiringEffects_old;
-	EffectManager35E.onEffectAddStart = onEffectAddStart_old;
+	if EffectManager35E then EffectManager35E.onEffectAddStart = onEffectAddStart_old end
+	if EffectManager5E then EffectManager5E.onEffectAddStart = onEffectAddStart_old end
 	CombatManager.resetInit = resetInit_old;
 	CombatManager.nextRound = nextRound_old;
 end
