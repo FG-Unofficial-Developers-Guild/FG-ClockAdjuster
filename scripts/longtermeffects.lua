@@ -38,7 +38,7 @@ local function resetInit_new()
 end
 
 local function nextRound_new(nRounds, bTimeChanged)
-	if not Session.isHost then
+	if not Session.IsHost then
 		return;
 	end
 
@@ -124,6 +124,11 @@ local function nextRound_new(nRounds, bTimeChanged)
 	end
 end
 
+local function registerOptions()
+	OptionsManager.registerOption2('TIMEROUNDS', false, 'option_header_game', 'opt_lab_time_rounds', 'option_entry_cycler', 
+		{ labels = 'enc_opt_time_rounds_slow', values = 'slow', baselabel = 'enc_opt_time_rounds_fast', baseval = 'fast', default = 'fast' })
+end
+
 -- Function Overrides
 function onInit()
 	nextRound_old = CombatManager.nextRound;
@@ -157,11 +162,6 @@ function advanceRoundsOnTimeChanged(nRounds)
 			end
 		end
 	end
-end
-
-function registerOptions()
-	OptionsManager.registerOption2('TIMEROUNDS', false, 'option_header_game', 'opt_lab_time_rounds', 'option_entry_cycler', 
-		{ labels = 'enc_opt_time_rounds_slow', values = 'slow', baselabel = 'enc_opt_time_rounds_fast', baseval = 'fast', default = 'fast' })
 end
 
 function onClose()
