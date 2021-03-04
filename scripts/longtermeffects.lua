@@ -3,23 +3,10 @@
 --
 
 local clearExpiringEffects_old = nil
-local onEffectAddStart_old = nil
 local resetInit_old = nil
 local nextRound_old = nil
 
 local function clearExpiringEffects_new(bShort)
-end
-
-local function onEffectAddStart_new(rEffect)
-	rEffect.nDuration = rEffect.nDuration or 1;
-	if rEffect.sUnits == "minute" then
-		rEffect.nDuration = rEffect.nDuration * 10;
-	elseif rEffect.sUnits == "hour" then
-		rEffect.nDuration = rEffect.nDuration * 600;
-	elseif rEffect.sUnits == "day" then
-		rEffect.nDuration = rEffect.nDuration * 14400;
-	end
-	rEffect.sUnits = "";
 end
 
 local function resetInit_new()
@@ -133,22 +120,14 @@ end
 function onInit()
 	nextRound_old = CombatManager.nextRound;
 	CombatManager.nextRound = nextRound_new;
-	
+
 	resetInit_old = CombatManager.resetInit;
 	CombatManager.resetInit = resetInit_new;
 	
-	if EffectManager35E then
-		onEffectAddStart_old = EffectManager35E.onEffectAddStart;
-		EffectManager35E.onEffectAddStart = onEffectAddStart_new;
-	end
-
-	if EffectManager5E then
-		onEffectAddStart_old = EffectManager5E.onEffectAddStart;
-		EffectManager5E.onEffectAddStart = onEffectAddStart_new;
-	end
-	
 	clearExpiringEffects_old = CombatManager2.clearExpiringEffects;
 	CombatManager2.clearExpiringEffects = clearExpiringEffects_new;
+
+	EffectManager.setCustomOnEffectAddStart(onEffectAddStart);
 
 	registerOptions()
 end
@@ -171,10 +150,20 @@ function advanceRoundsOnTimeChanged(nRounds)
 	end
 end
 
+function onEffectAddStart(rEffect)
+	rEffect.nDuration = rEffect.nDuration or 1;
+	if rEffect.sUnits == "minute" then
+		rEffect.nDuration = rEffect.nDuration * 10;
+	elseif rEffect.sUnits == "hour" then
+		rEffect.nDuration = rEffect.nDuration * 600;
+	elseif rEffect.sUnits == "day" then
+		rEffect.nDuration = rEffect.nDuration * 14400;
+	end
+	rEffect.sUnits = "";
+end
+
 function onClose()
 	CombatManager2.clearExpiringEffects = clearExpiringEffects_old;
-	if EffectManager35E then EffectManager35E.onEffectAddStart = onEffectAddStart_old end
-	if EffectManager5E then EffectManager5E.onEffectAddStart = onEffectAddStart_old end
 	CombatManager.resetInit = resetInit_old;
 	CombatManager.nextRound = nextRound_old;
 end
