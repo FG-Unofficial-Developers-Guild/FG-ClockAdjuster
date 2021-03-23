@@ -660,7 +660,7 @@
 			</basicnumber>
 			
 			<buttoncontrol name="adv6am">
-				<anchored to="longrest" position="righthigh" offset="10,0" width="20" height="20" />
+				<anchored to="shortrest" position="righthigh" offset="10,0" width="20" height="20" />
 				<icon normal="6AM_Dark" pressed="6AM_Dark_down" />
 				<tooltip textres="desktop_adv6am_tooltip" />
 				<script>
