@@ -568,10 +568,10 @@
 				<min>0</min>
 				<tooltip textres="desktop_longrest" />
 				<script>
-					local sRuleset = User.getRulesetName();
-					local bIsDnD = (sRuleset == "PFRPG" or sRuleset == "PFRPG2" or sRuleset == "3.5E" or sRuleset == "4E" or sRuleset == "5E")
-					local bLong = false;
+					local sRuleset, bIsDnD, bLong
 					function onInit()
+						sRuleset = User.getRulesetName();
+						bIsDnD = (sRuleset == "PFRPG" or sRuleset == "PFRPG2" or sRuleset == "3.5E" or sRuleset == "4E" or sRuleset == "5E")
 						if bIsDnD then
 							bLong = true;
 						else
@@ -623,10 +623,10 @@
 				<min>0</min>
 				<tooltip textres="desktop_shortrest" />
 				<script>
-					local sRuleset = User.getRulesetName();
-					local bIsDnD = (sRuleset == "PFRPG" or sRuleset == "PFRPG2" or sRuleset == "3.5E" or sRuleset == "4E" or sRuleset == "5E")
-					local bLong = false;
+					local sRuleset, bIsDnD, bLong
 					function onInit()
+						sRuleset = User.getRulesetName();
+						bIsDnD = (sRuleset == "PFRPG" or sRuleset == "PFRPG2" or sRuleset == "3.5E" or sRuleset == "4E" or sRuleset == "5E")
 						if bIsDnD then
 							bLong = false;
 						else
