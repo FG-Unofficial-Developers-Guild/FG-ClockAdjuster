@@ -569,9 +569,10 @@
 				<tooltip textres="desktop_longrest" />
 				<script>
 					local sRuleset = User.getRulesetName();
+					local bIsDnD = (sRuleset == "PFRPG" or sRuleset == "PFRPG2" or sRuleset == "3.5E" or sRuleset == "4E" or sRuleset == "5E")
 					local bLong = false;
 					function onInit()
-						if sRuleset == "PFRPG" or sRuleset == "PFRPG2" or sRuleset == "3.5E" or sRuleset == "5E" then
+						if bIsDnD then
 							bLong = true;
 						else
 							setVisible(false);
@@ -623,9 +624,10 @@
 				<tooltip textres="desktop_shortrest" />
 				<script>
 					local sRuleset = User.getRulesetName();
+					local bIsDnD = (sRuleset == "PFRPG" or sRuleset == "PFRPG2" or sRuleset == "3.5E" or sRuleset == "4E" or sRuleset == "5E")
 					local bLong = false;
 					function onInit()
-						if sRuleset == "PFRPG" or sRuleset == "PFRPG2" or sRuleset == "3.5E" or sRuleset == "5E" then
+						if bIsDnD then
 							bLong = false;
 						else
 							setVisible(false);
