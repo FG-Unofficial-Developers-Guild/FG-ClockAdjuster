@@ -558,56 +558,8 @@
 				<center />
 			</label>
 			
-			<basicnumber name="shortrest">
-				<anchored to="addhour" width="20">
-					<left anchor="left" offset="0" />
-					<top anchor="bottom" offset="10" />
-				</anchored>
-				<font>calendarbold</font>
-				<color>000000</color>
-				<min>0</min>
-				<tooltip textres="desktop_shortrest" />
-				<script>
-					function onInit()
-						sRuleset = User.getRulesetName();
-						if sRuleset == "PFRPG" or sRuleset == "PFRPG2" or sRuleset == "3.5E" then
-							bLong = true;
-						elseif sRuleset == "5E" then
-							bLong = false;
-						else
-							setVisible(false);
- 						end
-					end
-					function onDoubleClick()
-						CalendarManager.adjustMinutes((getValue() or 0));
-						
-						if DB.getValue("calendar.check.day") == nil or DB.getValue("calendar.check.day") ~= DB.getValue("calendar.current.day") then
-							CalendarManager.outputDate();
-							DB.setValue("calendar.check.day", "number", DB.getValue("calendar.current.day"));
-						end
-
-						local nMinutes = (getValue())
-						local nRounds = (nMinutes * 10)
-						if OptionsManager.isOption('TIMEROUNDS', 'slow') then
-							CombatManager.nextRound(nRounds, true)
-						else
-							LongTermEffects.advanceRoundsOnTimeChanged(nRounds)
-						end
-						
-						CalendarManager.outputTime();
-						ChatManager.Message(Interface.getString("menu_restshort"), true);
-						CombatManager2.rest(bLong);
-						local nDateinMinutes = TimeManager.getCurrentDateinMinutes();
-						DB.setValue("calendar.dateinminutes", "number", nDateinMinutes); DB.setValue("calendar.dateinminutesstring", "string", tostring(nDateinMinutes))
-						
-						Debug.console(sRuleset, bLong);
-					end
-					
-				</script>
-			</basicnumber>
-				
 			<basicnumber name="longrest">
-				<anchored to="addminute" width="20">
+				<anchored to="addhour" width="20">
 					<left anchor="left" offset="0" />
 					<top anchor="bottom" offset="10" />
 				</anchored>
@@ -616,11 +568,10 @@
 				<min>0</min>
 				<tooltip textres="desktop_longrest" />
 				<script>
+					local sRuleset = User.getRulesetName();
+					local bLong = false;
 					function onInit()
-						sRuleset = User.getRulesetName();
-						if sRuleset == "PFRPG" or sRuleset == "PFRPG2" or sRuleset == "3.5E" then
-							bLong = false;
-						elseif sRuleset == "5E" then
+						if sRuleset == "PFRPG" or sRuleset == "PFRPG2" or sRuleset == "3.5E" or sRuleset == "5E" then
 							bLong = true;
 						else
 							setVisible(false);
@@ -653,6 +604,51 @@
 
 						CalendarManager.outputTime();
 						ChatManager.Message("Long Rest", true);
+						CombatManager2.rest(bLong);
+						local nDateinMinutes = TimeManager.getCurrentDateinMinutes();
+						DB.setValue("calendar.dateinminutes", "number", nDateinMinutes); DB.setValue("calendar.dateinminutesstring", "string", tostring(nDateinMinutes))
+						Debug.console(sRuleset, bLong);
+					end
+				</script>
+			</basicnumber>
+			
+			<basicnumber name="shortrest">
+				<anchored to="addminute" width="20">
+					<left anchor="left" offset="0" />
+					<top anchor="bottom" offset="10" />
+				</anchored>
+				<font>calendarbold</font>
+				<color>000000</color>
+				<min>0</min>
+				<tooltip textres="desktop_shortrest" />
+				<script>
+					local sRuleset = User.getRulesetName();
+					local bLong = false;
+					function onInit()
+						if sRuleset == "PFRPG" or sRuleset == "PFRPG2" or sRuleset == "3.5E" or sRuleset == "5E" then
+							bLong = false;
+						else
+							setVisible(false);
+ 						end
+					end
+					function onDoubleClick()
+						CalendarManager.adjustMinutes((getValue() or 0));
+						
+						if DB.getValue("calendar.check.day") == nil or DB.getValue("calendar.check.day") ~= DB.getValue("calendar.current.day") then
+							CalendarManager.outputDate();
+							DB.setValue("calendar.check.day", "number", DB.getValue("calendar.current.day"));
+						end
+
+						local nMinutes = (getValue())
+						local nRounds = (nMinutes * 10)
+						if OptionsManager.isOption('TIMEROUNDS', 'slow') then
+							CombatManager.nextRound(nRounds, true)
+						else
+							LongTermEffects.advanceRoundsOnTimeChanged(nRounds)
+						end
+						
+						CalendarManager.outputTime();
+						ChatManager.Message(Interface.getString("menu_restshort"), true);
 						CombatManager2.rest(bLong);
 						local nDateinMinutes = TimeManager.getCurrentDateinMinutes();
 						DB.setValue("calendar.dateinminutes", "number", nDateinMinutes); DB.setValue("calendar.dateinminutesstring", "string", tostring(nDateinMinutes))
