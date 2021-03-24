@@ -2,20 +2,20 @@
 -- Please see the LICENSE.md file included with this distribution for attribution and copyright information.
 --
 
-local nextRound_old, resetInit_old, clearExpiringEffects_old
+local nextRound_old, resetInit_old, clearExpiringEffects_old;
 
 ---	This function compiles all effects and decrements their durations when time is advanced
 function advanceRoundsOnTimeChanged(nRounds)
 	if nRounds and nRounds > 0 then
 		for _,nodeCT in pairs(DB.getChildren('combattracker.list')) do
 			for _,nodeEffect in pairs(DB.getChildren(nodeCT, 'effects')) do
-				local nodeCT = nodeEffect.getChild('...')
-				local nDuration = DB.getValue(nodeEffect, 'duration')
-				local bHasDuration = (nDuration and (nDuration ~= 0))
+				local nodeCT = nodeEffect.getChild('...');
+				local nDuration = DB.getValue(nodeEffect, 'duration');
+				local bHasDuration = (nDuration and (nDuration ~= 0));
 				if bHasDuration and (nDuration < nRounds) then
-					EffectManager.expireEffect(nodeCT, nodeEffect)
+					EffectManager.expireEffect(nodeCT, nodeEffect);
 				elseif bHasDuration then
-					DB.setValue(nodeEffect, 'duration', 'number', nDuration - nRounds)
+					DB.setValue(nodeEffect, 'duration', 'number', nDuration - nRounds);
 				end
 			end
 		end
@@ -50,96 +50,98 @@ local function resetInit_new()
 end
 
 local function filterTable(tTable, filterFunction)
-	local tFiltered = {}
+	local tFiltered = {};
 	for key, value in pairs(tTable) do
 		if filterFunction(value) then
 			table.insert(tFiltered, key, value)
 		end
 	end
-	return tFiltered
+	
+	return tFiltered;
 end
 
 local function splitEffectIntoComponentsTypes(sEffect)
-	local aEffectComps = EffectManager.parseEffect(sEffect)
-	local aComponentTypes = {}
+	local aEffectComps = EffectManager.parseEffect(sEffect);
+	local aComponentTypes = {};
 	for index, effectComp in ipairs(aEffectComps) do
 		local component = EffectManager.parseEffectCompSimple(effectComp).type
 		table.insert(aComponentTypes, index, component)
 	end
-	return aComponentTypes
+	
+	return aComponentTypes;
 end
 
-local function EffectTypeShouldBeChecked(sEffectComponentType)
-	local arrsComponentsToInclude = {'FHEAL', 'REGEN', 'DMGO'}
-	return StringManager.contains(arrsComponentsToInclude, sEffectComponentType)
+local function effectTypeShouldBeChecked(sEffectComponentType)
+	local arrsComponentsToInclude = { 'FHEAL', 'REGEN', 'DMGO' };
+	
+	return StringManager.contains(arrsComponentsToInclude, sEffectComponentType);
 end
 
-local function ActorRequiresSlowMode(rActor, arrSEffects)
-	local sActorHealth = ActorHealthManager.getHealthStatus(rActor)
+local function actorRequiresSlowMode(rActor, arrSEffects)
+	if not arrSEffects or not rActor then return; end
+	local sActorHealth = ActorHealthManager.getHealthStatus(rActor);
 
 	-- Has ongoing damage, and still lives.
 	if StringManager.contains(arrSEffects, 'DMGO') then
 		if sActorHealth ~= ActorHealthManager.STATUS_DEAD then
-			return true
+			return true;
 		end
 	end
 
 	-- Healing through Regeneration
 	if StringManager.contains(arrSEffects, 'REGEN') then
 		if sActorHealth ~= ActorHealthManager.STATUS_HEALTHY then
-			return true
+			return true;
 		end
 	end
 	-- Healing through Fast Healing
 	if StringManager.contains(arrSEffects, 'FHEAL') then
 		if sActorHealth ~= ActorHealthManager.STATUS_HEALTHY and sActorHealth ~= ActorHealthManager.STATUS_DEAD then
-			return true
+			return true;
 		end
 	end
-	return false
+	return false;
 end
 
-local function IsActorDying(rActor, bIsStable)
-	local sActorHealth = ActorHealthManager.getHealthStatus(rActor)
+local function isActorDying(rActor, bIsStable)
+	local sActorHealth = ActorHealthManager.getHealthStatus(rActor);
 	if not bIsStable and sActorHealth == ActorHealthManager.STATUS_DYING then
-		return true
+		return true;
 	end
-	return false
+	return false;
 end
 
 local function getIsStableAndEffectsToCheck(nodeCT)
 	-- Returns if node has effect stable, and flat list of all effect types.
 	-- Does two thing at once. as I dont want to iterate twice over all effects 
-	local aEffectsRequiringSlowMode = {}
-	local bIsCTStable = false
+	local bIsCTStable = false;
+	local aEffectsRequiringSlowMode = {};
 	for _, nEffect in pairs(DB.getChildren(nodeCT, 'effects')) do
-		local sEffect = EffectManager.getEffectString(nEffect, false)
+		local sEffect = EffectManager.getEffectString(nEffect, false);
 		if string.lower(sEffect) == 'stable' then
-			bIsCTStable = true
+			bIsCTStable = true;
 		else
-			local splitEffectComps = splitEffectIntoComponentsTypes(sEffect)
-			local splitSimulatedEffectComps = filterTable(splitEffectComps, EffectTypeShouldBeChecked)
+			local splitEffectComps = splitEffectIntoComponentsTypes(sEffect);
+			local splitSimulatedEffectComps = filterTable(splitEffectComps, effectTypeShouldBeChecked);
 			for _, sEffectComp in pairs(splitSimulatedEffectComps) do
-				table.insert(aEffectsRequiringSlowMode, sEffectComp)
+				table.insert(aEffectsRequiringSlowMode, sEffectComp);
 			end
 		end
 	end
-	return bIsCTStable, aEffectsRequiringSlowMode
+	return bIsCTStable, aEffectsRequiringSlowMode;
 end
 
 local function shouldSwitchToQuickSimulation()
 	for _, nodeCT in pairs(DB.getChildren('combattracker.list')) do
 		-- Debug.console(ActorManager.getName(nodeCT))
-		local bIsStable
-		local aEffectsToCheck = {}
-		local rActor = ActorManager.resolveActor(nodeCT) -- maybe extract health too, instead of doing it twice. But it makes naming functions harder. IDK.
-		bIsStable, aEffectsToCheck = getIsStableAndEffectsToCheck(nodeCT)
-		if ActorRequiresSlowMode(rActor, aEffectsToCheck) then
+		local rActor = ActorManager.resolveActor(nodeCT); -- maybe extract health too, instead of doing it twice. But it makes naming functions harder. IDK.
+		local bIsStable, aEffectsToCheck = getIsStableAndEffectsToCheck(nodeCT);
+		if actorRequiresSlowMode(rActor, aEffectsToCheck) then
 			-- leave early if there is at least one node requiring simulation
-			return
+			return;
 		end
-		if IsActorDying(rActor, bIsStable) then
-			return false
+		if isActorDying(rActor, bIsStable) then
+			return false;
 		end
 	end
 	return true
@@ -180,10 +182,10 @@ local function nextRound_new(nRounds, bTimeChanged)
 
 		-- bmos resetting rounds and advancing time
 		if (nCurrent % 10) == 9 and not bTimeChanged then
-			local nMinutes = math.floor(nCurrent / 10)
-			nCurrent = nCurrent - (nMinutes * 10)
-			CalendarManager.adjustMinutes(nMinutes)
-			CalendarManager.outputTime()
+			local nMinutes = math.floor(nCurrent / 10);
+			nCurrent = nCurrent - (nMinutes * 10);
+			CalendarManager.adjustMinutes(nMinutes);
+			CalendarManager.outputTime();
 		end
 		-- end bmos resetting rounds and advancing time
 
@@ -196,7 +198,8 @@ local function nextRound_new(nRounds, bTimeChanged)
 		-- check if full processing of rounds is unecessary
 		if shouldSwitchToQuickSimulation() then
 			-- Debug.chat("[ Skipping is ok from " .. nCurrent .. "]");
-			advanceRoundsOnTimeChanged(nRounds + 1 - i)
+			advanceRoundsOnTimeChanged(nRounds + 1 - i);
+			DB.setValue(CombatManager.CT_ROUND, 'number', nRounds - 1);
 			break
 		end
 		-- end checking for necessity of full processing of rounds
@@ -213,10 +216,10 @@ local function nextRound_new(nRounds, bTimeChanged)
 
 		-- bmos resetting rounds and advancing time
 		if (nCurrent % 10) == 9 and not bTimeChanged then
-			local nMinutes = math.floor(nCurrent / 10)
-			nCurrent = nCurrent - (nMinutes * 10)
-			CalendarManager.adjustMinutes(nMinutes)
-			CalendarManager.outputTime()
+			local nMinutes = math.floor(nCurrent / 10);
+			nCurrent = nCurrent - (nMinutes * 10);
+			CalendarManager.adjustMinutes(nMinutes);
+			CalendarManager.outputTime();
 		end
 		-- end bmos resetting rounds and advancing time
 
@@ -261,7 +264,7 @@ end
 
 function registerOptions()
 	OptionsManager.registerOption2('TIMEROUNDS', false, 'option_header_game', 'opt_lab_time_rounds', 'option_entry_cycler', 
-		{ labels = 'enc_opt_time_rounds_slow', values = 'slow', baselabel = 'enc_opt_time_rounds_fast', baseval = 'fast', default = 'fast' })
+		{ labels = 'enc_opt_time_rounds_slow', values = 'slow', baselabel = 'enc_opt_time_rounds_fast', baseval = 'fast', default = 'fast' });
 end
 
 function onClose()
