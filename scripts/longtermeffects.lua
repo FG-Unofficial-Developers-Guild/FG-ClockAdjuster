@@ -83,34 +83,34 @@ local function EffectTypeShouldBeChecked(sEffectComponentType)
 	return inTable(arrsComponentsToInclude, sEffectComponentType)
 end
 
-local function ActorRequiresSlowMode(actor, arrSEffects)
-	local actorHealth = ActorHealthManager.getHealthStatus(actor)
+local function ActorRequiresSlowMode(rActor, arrSEffects)
+	local sActorHealth = ActorHealthManager.getHealthStatus(rActor)
 
 	-- Has ongoing damage, and still lives.
 	if inTable(arrSEffects, 'DMGO') then
-		if actorHealth ~= ActorHealthManager.STATUS_DEAD then
+		if sActorHealth ~= ActorHealthManager.STATUS_DEAD then
 			return true
 		end
 	end
 
 	-- Healing through Regeneration
 	if inTable(arrSEffects, 'REGEN') then
-		if actorHealth ~= ActorHealthManager.STATUS_HEALTHY then
+		if sActorHealth ~= ActorHealthManager.STATUS_HEALTHY then
 			return true
 		end
 	end
 	-- Healing through Fast Healing
 	if inTable(arrSEffects, 'FHEAL') then
-		if actorHealth ~= ActorHealthManager.STATUS_HEALTHY and actorHealth ~= ActorHealthManager.STATUS_DEAD then
+		if sActorHealth ~= ActorHealthManager.STATUS_HEALTHY and sActorHealth ~= ActorHealthManager.STATUS_DEAD then
 			return true
 		end
 	end
 	return false
 end
 
-local function IsActorDying(actor, bIsStable)
-	local actorHealth = ActorHealthManager.getHealthStatus(actor)
-	if not bIsStable and actorHealth == ActorHealthManager.STATUS_DYING then
+local function IsActorDying(rActor, bIsStable)
+	local sActorHealth = ActorHealthManager.getHealthStatus(rActor)
+	if not bIsStable and sActorHealth == ActorHealthManager.STATUS_DYING then
 		return true
 	end
 	return false
@@ -139,14 +139,15 @@ end
 local function shouldSwitchToQuickSimulation()
 	for _, nodeCT in pairs(DB.getChildren('combattracker.list')) do
 		-- Debug.console(ActorManager.getName(nodeCT))
-		local bIsStable = false
+		local bIsStable
 		local aEffectsToCheck = {}
-		local actor = ActorManager.resolveActor(nodeCT) -- maybe extract health too, instead of doing it twice. But it makes naming functions harded. IDK.
+		local rActor = ActorManager.resolveActor(nodeCT) -- maybe extract health too, instead of doing it twice. But it makes naming functions harder. IDK.
 		bIsStable, aEffectsToCheck = getIsStableAndEffectsToCheck(nodeCT)
-		if ActorRequiresSlowMode(actor, aEffectsToCheck) then
-			return false -- we can leave early if there is at least one node requiring simulation
+		if ActorRequiresSlowMode(rActor, aEffectsToCheck) then
+			-- leave early if there is at least one node requiring simulation
+			return
 		end
-		if IsActorDying(actor, bIsStable) then
+		if IsActorDying(rActor, bIsStable) then
 			return false
 		end
 	end
@@ -255,8 +256,10 @@ end
 function onInit()
 	nextRound_old = CombatManager.nextRound;
 	CombatManager.nextRound = nextRound_new;
+	
 	resetInit_old = CombatManager.resetInit;
 	CombatManager.resetInit = resetInit_new;
+	
 	clearExpiringEffects_old = CombatManager2.clearExpiringEffects;
 	CombatManager2.clearExpiringEffects = clearExpiringEffects_new;
 
