@@ -181,11 +181,13 @@ function nextRound_new(nRounds, bTimeChanged)
 	end
 
 	for i = nStartCounter, nRounds do
+		-- check if full rounds processing is unecessary
 		if shouldSwitchToQuickSimulation() then
 			-- Debug.chat("[ Skipping is ok from " .. nCurrent .. "]");
-			LongTermEffects.advanceRoundsOnTimeChanged(nRounds - i) -- Probably force update in Combat window too?
+			advanceRoundsOnTimeChanged(nRounds - i) -- Probably force update in Combat window too?
 			break
 		end
+		-- end checking for full rounds processing
 
 		for i = 1,#aEntries do
 			CombatManager.onTurnStartEvent(aEntries[i]);
