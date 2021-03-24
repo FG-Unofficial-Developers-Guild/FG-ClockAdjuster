@@ -59,15 +59,6 @@ local function filterTable(tTable, filterFunction)
 	return tFiltered
 end
 
-local function inTable(table, checkedValue)
-	for _, value in pairs(table) do
-		if value == checkedValue then
-			return true
-		end
-	end
-	return false
-end
-
 local function splitEffectIntoComponentsTypes(sEffect)
 	local aEffectComps = EffectManager.parseEffect(sEffect)
 	local aComponentTypes = {}
@@ -80,27 +71,27 @@ end
 
 local function EffectTypeShouldBeChecked(sEffectComponentType)
 	local arrsComponentsToInclude = {'FHEAL', 'REGEN', 'DMGO'}
-	return inTable(arrsComponentsToInclude, sEffectComponentType)
+	return StringManager.contains(arrsComponentsToInclude, sEffectComponentType)
 end
 
 local function ActorRequiresSlowMode(rActor, arrSEffects)
 	local sActorHealth = ActorHealthManager.getHealthStatus(rActor)
 
 	-- Has ongoing damage, and still lives.
-	if inTable(arrSEffects, 'DMGO') then
+	if StringManager.contains(arrSEffects, 'DMGO') then
 		if sActorHealth ~= ActorHealthManager.STATUS_DEAD then
 			return true
 		end
 	end
 
 	-- Healing through Regeneration
-	if inTable(arrSEffects, 'REGEN') then
+	if StringManager.contains(arrSEffects, 'REGEN') then
 		if sActorHealth ~= ActorHealthManager.STATUS_HEALTHY then
 			return true
 		end
 	end
 	-- Healing through Fast Healing
-	if inTable(arrSEffects, 'FHEAL') then
+	if StringManager.contains(arrSEffects, 'FHEAL') then
 		if sActorHealth ~= ActorHealthManager.STATUS_HEALTHY and sActorHealth ~= ActorHealthManager.STATUS_DEAD then
 			return true
 		end
