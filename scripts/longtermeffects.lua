@@ -202,13 +202,13 @@ local function nextRound_new(nRounds, bTimeChanged)
 	end
 
 	for i = nStartCounter, nRounds do
-		-- check if full rounds processing is unecessary
+		-- check if full processing of rounds is unecessary
 		if shouldSwitchToQuickSimulation() then
 			-- Debug.chat("[ Skipping is ok from " .. nCurrent .. "]");
 			advanceRoundsOnTimeChanged(nRounds + 1 - i)
 			break
 		end
-		-- end checking for full rounds processing
+		-- end checking for necessity of full processing of rounds
 
 		for i = 1,#aEntries do
 			CombatManager.onTurnStartEvent(aEntries[i]);
