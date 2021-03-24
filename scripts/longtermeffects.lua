@@ -22,7 +22,7 @@ function advanceRoundsOnTimeChanged(nRounds)
 	end
 end
 
-function onEffectAddStart_new(rEffect)
+local function onEffectAddStart_new(rEffect)
 	rEffect.nDuration = rEffect.nDuration or 1;
 	if rEffect.sUnits == "minute" then
 		rEffect.nDuration = rEffect.nDuration * 10;
