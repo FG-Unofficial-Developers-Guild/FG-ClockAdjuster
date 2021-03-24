@@ -193,7 +193,7 @@ local function nextRound_new(nRounds, bTimeChanged)
 		-- check if full rounds processing is unecessary
 		if shouldSwitchToQuickSimulation() then
 			-- Debug.chat("[ Skipping is ok from " .. nCurrent .. "]");
-			advanceRoundsOnTimeChanged(nRounds - i) -- Probably force update in Combat window too?
+			advanceRoundsOnTimeChanged(nRounds + 1 - i)
 			break
 		end
 		-- end checking for full rounds processing
