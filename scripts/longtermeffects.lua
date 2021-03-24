@@ -37,9 +37,9 @@ local function resetInit_new()
 	CombatManager.onCombatResetEvent();
 end
 
-local function filterTable(table, filterFunction)
+local function filterTable(tTable, filterFunction)
 	local tFiltered = {}
-	for key, value in pairs(table) do
+	for key, value in pairs(tTable) do
 		if filterFunction(value) then
 			table.insert(tFiltered, key, value)
 		end
