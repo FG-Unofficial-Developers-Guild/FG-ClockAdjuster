@@ -2,33 +2,42 @@
 -- Please see the LICENSE.md file included with this distribution for attribution and copyright information.
 --
 
-local nextRound_old = nil
-local resetInit_old = nil
+local nextRound_old, resetInit_old, clearExpiringEffects_old
 
--- Function Overrides
-function onInit()
-	nextRound_old = CombatManager.nextRound;
-	CombatManager.nextRound = nextRound_new;
-	resetInit_old = CombatManager.resetInit;
-	CombatManager.resetInit = resetInit_new;
-	clearExpiringEffects_old = CombatManager2.clearExpiringEffects;
-	CombatManager2.clearExpiringEffects = clearExpiringEffects_new;
-
-	registerOptions()
+---	This function compiles all effects and decrements their durations when time is advanced
+function advanceRoundsOnTimeChanged(nRounds)
+	if nRounds and nRounds > 0 then
+		for _,nodeCT in pairs(DB.getChildren('combattracker.list')) do
+			for _,nodeEffect in pairs(DB.getChildren(nodeCT, 'effects')) do
+				local nodeCT = nodeEffect.getChild('...')
+				local nDuration = DB.getValue(nodeEffect, 'duration')
+				local bHasDuration = (nDuration and (nDuration ~= 0))
+				if bHasDuration and (nDuration < nRounds) then
+					EffectManager.expireEffect(nodeCT, nodeEffect)
+				elseif bHasDuration then
+					DB.setValue(nodeEffect, 'duration', 'number', nDuration - nRounds)
+				end
+			end
+		end
+	end
 end
 
-function registerOptions()
-	OptionsManager.registerOption2('TIME_ROUNDS', false, 'option_header_game', 'opt_lab_time_rounds', 'option_entry_cycler', 
-		{ labels = 'enc_opt_time_rounds_slow', values = 'slow', baselabel = 'enc_opt_time_rounds_fast', baseval = 'fast', default = 'fast' })
+local function resetInit_new()
+	-- De-activate all entries
+	for _,v in pairs(CombatManager.getCombatantNodes()) do
+		DB.setValue(v, "active", "number", 0);
+	end
+	
+	-- Clear GM identity additions (based on option)
+	CombatManager.clearGMIdentity();
+
+	-- Reset the round counter (bmos changed this to 0 instead of 1)
+	DB.setValue(CombatManager.CT_ROUND, "number", 0);
+	
+	CombatManager.onCombatResetEvent();
 end
 
-function onClose()
-	CombatManager.nextRound = nextRound_old;
-	CombatManager.resetInit = resetInit_old;
-	CombatManager2.clearExpiringEffects = clearExpiringEffects_old;
-end
-
-local function filterTable (table, filterFunction)
+local function filterTable(table, filterFunction)
 	local tFiltered = {}
 	for key, value in pairs(table) do
 		if filterFunction(value) then
@@ -38,7 +47,7 @@ local function filterTable (table, filterFunction)
 	return tFiltered
 end
 
-local function inTable (table, checkedValue)
+local function inTable(table, checkedValue)
 	for _, value in pairs(table) do
 		if value == checkedValue then
 			return true
@@ -116,7 +125,7 @@ local function getIsStableAndEffectsToCheck(nodeCT)
 	return bIsCTStable, aEffectsRequiringSlowMode
 end
 
-local function shouldSwitchToQuickSimulation ()
+local function shouldSwitchToQuickSimulation()
 	for _, nodeCT in pairs(DB.getChildren('combattracker.list')) do
 		-- Debug.console(ActorManager.getName(nodeCT))
 		local bIsStable = false
@@ -133,7 +142,7 @@ local function shouldSwitchToQuickSimulation ()
 	return true
 end
 
-function nextRound_new(nRounds, bTimeChanged)
+local function nextRound_new(nRounds, bTimeChanged)
 	if not Session.IsHost then
 		return;
 	end
@@ -228,38 +237,28 @@ function nextRound_new(nRounds, bTimeChanged)
 	end
 end
 
-function resetInit_new()
-	-- De-activate all entries
-	for _,v in pairs(CombatManager.getCombatantNodes()) do
-		DB.setValue(v, "active", "number", 0);
-	end
-	
-	-- Clear GM identity additions (based on option)
-	CombatManager.clearGMIdentity();
-
-	-- Reset the round counter (bmos changed this to 0 instead of 1)
-	DB.setValue(CombatManager.CT_ROUND, "number", 0);
-	
-	CombatManager.onCombatResetEvent();
+local function clearExpiringEffects_new(bShort)
 end
 
----	This function compiles all effects and decrements their durations when time is advanced
-function advanceRoundsOnTimeChanged(nRounds)
-	if nRounds and nRounds > 0 then
-		for _,nodeCT in pairs(DB.getChildren('combattracker.list')) do
-			for _,nodeEffect in pairs(DB.getChildren(nodeCT, 'effects')) do
-				local nodeCT = nodeEffect.getChild('...')
-				local nDuration = DB.getValue(nodeEffect, 'duration')
-				local bHasDuration = (nDuration and (nDuration ~= 0))
-				if bHasDuration and (nDuration < nRounds) then
-					EffectManager.expireEffect(nodeCT, nodeEffect)
-				elseif bHasDuration then
-					DB.setValue(nodeEffect, 'duration', 'number', nDuration - nRounds)
-				end
-			end
-		end
-	end
+-- Function Overrides
+function onInit()
+	nextRound_old = CombatManager.nextRound;
+	CombatManager.nextRound = nextRound_new;
+	resetInit_old = CombatManager.resetInit;
+	CombatManager.resetInit = resetInit_new;
+	clearExpiringEffects_old = CombatManager2.clearExpiringEffects;
+	CombatManager2.clearExpiringEffects = clearExpiringEffects_new;
+
+	registerOptions()
 end
 
-function clearExpiringEffects_new(bShort)
+function registerOptions()
+	OptionsManager.registerOption2('TIME_ROUNDS', false, 'option_header_game', 'opt_lab_time_rounds', 'option_entry_cycler', 
+		{ labels = 'enc_opt_time_rounds_slow', values = 'slow', baselabel = 'enc_opt_time_rounds_fast', baseval = 'fast', default = 'fast' })
+end
+
+function onClose()
+	CombatManager.nextRound = nextRound_old;
+	CombatManager.resetInit = resetInit_old;
+	CombatManager2.clearExpiringEffects = clearExpiringEffects_old;
 end
