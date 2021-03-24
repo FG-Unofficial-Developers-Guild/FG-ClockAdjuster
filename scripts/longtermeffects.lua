@@ -22,18 +22,30 @@ function advanceRoundsOnTimeChanged(nRounds)
 	end
 end
 
+function onEffectAddStart_new(rEffect)
+	rEffect.nDuration = rEffect.nDuration or 1;
+	if rEffect.sUnits == "minute" then
+		rEffect.nDuration = rEffect.nDuration * 10;
+	elseif rEffect.sUnits == "hour" then
+		rEffect.nDuration = rEffect.nDuration * 600;
+	elseif rEffect.sUnits == "day" then
+		rEffect.nDuration = rEffect.nDuration * 14400;
+	end
+	rEffect.sUnits = "";
+end
+
 local function resetInit_new()
 	-- De-activate all entries
 	for _,v in pairs(CombatManager.getCombatantNodes()) do
 		DB.setValue(v, "active", "number", 0);
 	end
-	
+
 	-- Clear GM identity additions (based on option)
 	CombatManager.clearGMIdentity();
 
 	-- Reset the round counter (bmos changed this to 0 instead of 1)
 	DB.setValue(CombatManager.CT_ROUND, "number", 0);
-	
+
 	CombatManager.onCombatResetEvent();
 end
 
@@ -72,7 +84,6 @@ local function EffectTypeShouldBeChecked(sEffectComponentType)
 end
 
 local function ActorRequiresSlowMode(actor, arrSEffects)
-
 	local actorHealth = ActorHealthManager.getHealthStatus(actor)
 
 	-- Has ongoing damage, and still lives.
@@ -167,16 +178,16 @@ local function nextRound_new(nRounds, bTimeChanged)
 				CombatManager.onTurnEndEvent(aEntries[i]);
 			end
 		end
-		
+
 		CombatManager.onInitChangeEvent(nodeActive);
 
 		nStartCounter = nStartCounter + 1;
 
 		-- Announce round
 		nCurrent = nCurrent + 1;
-		
+
 		-- bmos resetting rounds and advancing time
-		if nCurrent >= 10 and not bTimeChanged then
+		if (nCurrent % 10) == 9 and not bTimeChanged then
 			local nMinutes = math.floor(nCurrent / 10)
 			nCurrent = nCurrent - (nMinutes * 10)
 			CalendarManager.adjustMinutes(nMinutes)
@@ -202,14 +213,14 @@ local function nextRound_new(nRounds, bTimeChanged)
 			CombatManager.onTurnStartEvent(aEntries[i]);
 			CombatManager.onTurnEndEvent(aEntries[i]);
 		end
-		
+
 		CombatManager.onInitChangeEvent();
-		
+
 		-- Announce round
 		nCurrent = nCurrent + 1;
-		
+
 		-- bmos resetting rounds and advancing time
-		if nCurrent >= 10 and not bTimeChanged then
+		if (nCurrent % 10) == 9 and not bTimeChanged then
 			local nMinutes = math.floor(nCurrent / 10)
 			nCurrent = nCurrent - (nMinutes * 10)
 			CalendarManager.adjustMinutes(nMinutes)
@@ -224,10 +235,10 @@ local function nextRound_new(nRounds, bTimeChanged)
 
 	-- Update round counter
 	DB.setValue(CombatManager.CT_ROUND, "number", nCurrent);
-	
+
 	-- Custom round start callback (such as per round initiative rolling)
 	CombatManager.onRoundStartEvent(nCurrent);
-	
+
 	-- Check option to see if we should advance to first actor or stop on round start
 	if OptionsManager.isOption("RNDS", "off") then
 		local bSkipBell = (nRounds > 1);
@@ -249,11 +260,13 @@ function onInit()
 	clearExpiringEffects_old = CombatManager2.clearExpiringEffects;
 	CombatManager2.clearExpiringEffects = clearExpiringEffects_new;
 
+	EffectManager.setCustomOnEffectAddStart(onEffectAddStart_new);
+
 	registerOptions()
 end
 
 function registerOptions()
-	OptionsManager.registerOption2('TIME_ROUNDS', false, 'option_header_game', 'opt_lab_time_rounds', 'option_entry_cycler', 
+	OptionsManager.registerOption2('TIMEROUNDS', false, 'option_header_game', 'opt_lab_time_rounds', 'option_entry_cycler', 
 		{ labels = 'enc_opt_time_rounds_slow', values = 'slow', baselabel = 'enc_opt_time_rounds_fast', baseval = 'fast', default = 'fast' })
 end
 

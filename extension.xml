@@ -4,16 +4,13 @@
 
 <root version='3.3' release='3'>
 	<properties>
-		<name>Time Manager</name>
-		<version>1.9</version>
-		<author>bmos</author>
+		<name>Clock Adjuster</name>
+		<version>2.4</version>
+		<author>pr6i6est and bmos</author>
 		<description>Provides an interface for easier time management</description>
-		<ruleset name="PFRPG" />
-		<ruleset name="PFRPG2" />
-		<ruleset name="3.5E" />
 	</properties>
 	
-	<announcement text="https://github.com/bmos/FG-PFRPG-Time-Manager\rPFRPG Time Manager v1.9 WIP limited slow simulation:\rThis extension is a GM tool which provides an interface for easy time tracking and management.\nThis extension is heavily-based on Clock Adjuster which is the work of pr6i6e6st." font="emotefont" />
+	<announcement text="Clock Adjuster:\rThis extension is a GM tool which provides an interface for easy time tracking and management.\nThis extension is a combined effort of PR6I6E6ST (Troy Monteith) and bmos" font="emotefont" />
 	
 	<base>
 		<includefile source="desktop/desktop_panels.xml" />
