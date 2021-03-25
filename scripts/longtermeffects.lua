@@ -182,9 +182,7 @@ local function nextRound_new(nRounds, bTimeChanged)
 
 		-- bmos resetting rounds and advancing time
 		if (nCurrent % 10) == 9 and not bTimeChanged then
-			local nMinutes = math.floor(nCurrent / 10);
-			nCurrent = nCurrent - (nMinutes * 10);
-			CalendarManager.adjustMinutes(nMinutes);
+			CalendarManager.adjustMinutes(1);
 			CalendarManager.outputTime();
 		end
 		-- end bmos resetting rounds and advancing time
@@ -216,9 +214,7 @@ local function nextRound_new(nRounds, bTimeChanged)
 
 		-- bmos resetting rounds and advancing time
 		if (nCurrent % 10) == 9 and not bTimeChanged then
-			local nMinutes = math.floor(nCurrent / 10);
-			nCurrent = nCurrent - (nMinutes * 10);
-			CalendarManager.adjustMinutes(nMinutes);
+			CalendarManager.adjustMinutes(1);
 			CalendarManager.outputTime();
 		end
 		-- end bmos resetting rounds and advancing time
