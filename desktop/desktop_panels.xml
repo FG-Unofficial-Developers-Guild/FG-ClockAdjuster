@@ -489,6 +489,8 @@
 						bIsDnD = (sRuleset == "PFRPG" or sRuleset == "PFRPG2" or sRuleset == "3.5E" or sRuleset == "4E" or sRuleset == "5E")
 						if not bIsDnD then
 							setVisible(false);
+						else
+							setValue(DB.getValue(DB.findNode('calendar'), 'lastlongrest', 0))
  						end
 					end
 					function onDoubleClick()
@@ -515,6 +517,7 @@
 							LongTermEffects.advanceRoundsOnTimeChanged(nRounds);
 						end
 						
+						DB.setValue(DB.findNode('calendar'), 'lastlongrest', 'number', nHours)
 
 						CalendarManager.outputTime();
 						ChatManager.Message("Long Rest", true);
@@ -542,6 +545,8 @@
 						bIsDnD = (sRuleset == "PFRPG2" or sRuleset == "4E" or sRuleset == "5E")
 						if not bIsDnD then
 							setVisible(false);
+						else
+							setValue(DB.getValue(DB.findNode('calendar'), 'lastshortrest', 0))
  						end
 					end
 					function onDoubleClick()
@@ -559,6 +564,8 @@
 						else
 							LongTermEffects.advanceRoundsOnTimeChanged(nRounds)
 						end
+						
+						DB.setValue(DB.findNode('calendar'), 'lastshortrest', 'number', nMinutes)
 						
 						CalendarManager.outputTime();
 						ChatManager.Message(Interface.getString("menu_restshort"), true);
