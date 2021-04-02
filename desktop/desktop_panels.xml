@@ -542,7 +542,7 @@
 					local sRuleset, bIsDnD
 					function onInit()
 						sRuleset = User.getRulesetName();
-						bIsDnD = (sRuleset == "PFRPG2" or sRuleset == "4E" or sRuleset == "5E")
+						bIsDnD = (sRuleset == "PFRPG2" or sRuleset == "3.5E" or sRuleset == "4E" or sRuleset == "5E")
 						if not bIsDnD then
 							setVisible(false);
 						else
