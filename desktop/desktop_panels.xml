@@ -26,8 +26,8 @@
 				</stateframe>
 				<font>calendarbold</font>
 				<color>000000</color>
+				<readonly />
 				<center />
-				<tooltip textres="desktop_currenthour_tooltip" />
 				<script>
 					function onInit()
 						if DB.getValue("calendar.newcampaign") == nil or DB.getValue("calendar.newcampaign") == 0 then
@@ -70,23 +70,6 @@
 						setValue(string.format("%2d", nHour));
 						window.currentphase.setValue(sPhase);
 					end
-					function onWheel(n)
-						if not Input.isControlPressed() then
-							return false;
-						end
-						local nMinute = (n or 0);
-
-						local nRounds = (nMinute * 10)
-						if OptionsManager.isOption('TIMEROUNDS', 'slow') then
-							CombatManager.nextRound(nRounds, true)
-						else
-							LongTermEffects.advanceRoundsOnTimeChanged(nRounds)
-						end
-						CalendarManager.adjustHours(n);
-						local nDateinMinutes = TimeManager.getCurrentDateinMinutes();
-						DB.setValue("calendar.dateinminutes", "number", nDateinMinutes); DB.setValue("calendar.dateinminutesstring", "string", tostring(nDateinMinutes))
-						return true;
-					end
 				</script>
 			</label>
 			<label name="timesep">
@@ -100,7 +83,6 @@
 				<stateframe>
 					<hover name="fieldfocus" offset="7,5,7,5" />
 				</stateframe>
-				<tooltip textres="desktop_currentminute_tooltip" />
 				<font>calendarbold</font>
 				<color>000000</color>
 				<readonly />
@@ -120,24 +102,6 @@
 					function onSourceChanged()
 						setValue(string.format("%02d", DB.getValue("calendar.current.minute", 0)));
 					end
-					
-					function onWheel(n)
-						if not Input.isControlPressed() then
-							return false;
-						end
-						CalendarManager.adjustMinutes(n);
-						local nDateinMinutes = TimeManager.getCurrentDateinMinutes();
-						DB.setValue("calendar.dateinminutes", "number", nDateinMinutes); DB.setValue("calendar.dateinminutesstring", "string", tostring(nDateinMinutes))
-						local nHour = (n or 0);
-
-						local nRounds = (nHour * 600)
-						if OptionsManager.isOption('TIMEROUNDS', 'slow') then
-							CombatManager.nextRound(nRounds, true)
-						else
-							LongTermEffects.advanceRoundsOnTimeChanged(nRounds)
-						end
-						return true;
-					end
 				</script>
 			</label>
 			<label name="currentphase">
@@ -152,7 +116,6 @@
 				<stateframe>
 					<hover name="fieldfocus" offset="7,5,7,5" />
 				</stateframe>
-				<tooltip textres="desktop_currentday_tooltip" />
 				<font>calendarbold</font>
 				<color>000000</color>
 				<readonly />
@@ -172,24 +135,6 @@
 					function onSourceChanged()
 						setValue(string.format("%02d", DB.getValue("calendar.current.day", 0)));
 					end
-					
-					function onWheel(n)
-						if not Input.isControlPressed() then
-							return false;
-						end
-						CalendarManager.adjustDays(n);
-						local nDateinMinutes = TimeManager.getCurrentDateinMinutes();
-						DB.setValue("calendar.dateinminutes", "number", nDateinMinutes); DB.setValue("calendar.dateinminutesstring", "string", tostring(nDateinMinutes))
-						local nDay = (n or 0);
-
-						local nRounds = (nDay * 14400)
-						if OptionsManager.isOption('TIMEROUNDS', 'slow') then
-							CombatManager.nextRound(nRounds, true)
-						else
-							LongTermEffects.advanceRoundsOnTimeChanged(nRounds)
-						end
-						return true;
-					end
 				</script>
 			</label>
 			<label name="currentmonth">
@@ -198,7 +143,6 @@
 				<stateframe>
 					<hover name="fieldfocus" offset="7,5,7,5" />
 				</stateframe>
-				<tooltip textres="desktop_currentmonth_tooltip" />
 				<font>calendarbold</font>
 				<color>000000</color>
 				<readonly />
@@ -218,24 +162,6 @@
 					function onSourceChanged()
 						setValue(string.format("%02d", DB.getValue("calendar.current.month", 0)));
 					end
-					
-					function onWheel(n)
-						if not Input.isControlPressed() then
-							return false;
-						end
-						CalendarManager.adjustMonths(n);
-						local nDateinMinutes = TimeManager.getCurrentDateinMinutes();
-						DB.setValue("calendar.dateinminutes", "number", nDateinMinutes); DB.setValue("calendar.dateinminutesstring", "string", tostring(nDateinMinutes))
-						local nMonth = (n or 0);
-
-						local nRounds = (nMonth * 432000)
-						if OptionsManager.isOption('TIMEROUNDS', 'slow') then
-							CombatManager.nextRound(nRounds, true)
-						else
-							LongTermEffects.advanceRoundsOnTimeChanged(nRounds)
-						end
-						return true;
-					end
 				</script>
 			</label>
 			<label name="currentyear">
@@ -244,7 +170,6 @@
 				<stateframe>
 					<hover name="fieldfocus" offset="7,5,7,5" />
 				</stateframe>
-				<tooltip textres="desktop_currentyear_tooltip" />
 				<font>calendarbold</font>
 				<color>000000</color>
 				<readonly />
@@ -265,16 +190,6 @@
 					
 					function onSourceChanged()
 						setValue(string.format("%02d", DB.getValue("calendar.current.year", 0)));
-					end
-					
-					function onWheel(n)
-						if not Input.isControlPressed() then
-							return false;
-						end
-						CalendarManager.adjustYears(n);
-						local nDateinMinutes = TimeManager.getCurrentDateinMinutes();
-						DB.setValue("calendar.dateinminutes", "number", nDateinMinutes); DB.setValue("calendar.dateinminutesstring", "string", tostring(nDateinMinutes))
-						return true;
 					end
 				</script>
 			</label>
