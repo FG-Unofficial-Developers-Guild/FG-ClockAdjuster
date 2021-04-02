@@ -1,16 +1,11 @@
 <?xml version="1.0" encoding="iso-8859-1"?>
 
-<!-- 
-  Please see the license.html file included with this distribution for 
-  attribution and copyright information.
--->
+<!-- Please see the LICENSE.md file included with this distribution for attribution and copyright information. -->
 
-<root>
-
-
+<root version="3.0">	
 	<string name="desktop_panel_add">Add</string>
 	<string name="desktop_panel_up">Set</string>
-	<string name="desktop_addall_tooltip">Double-Click to adjust by fields in this row</string>
+	<string name="desktop_addall_tooltip">Double-Click to adjust by all lower fields</string>
 	<string name="desktop_upall_tooltip">Double-Click to set date</string>
 	<string name="desktop_addmonth_tooltip">Double-Click to adjust by this number of months</string>
 	<string name="desktop_upmonth_tooltip">Double-Click to set month</string>
@@ -27,9 +22,11 @@
 	<string name="desktop_currentday_tooltip">Current Day; CTRL + Mousewheel to adjust</string>
 	<string name="desktop_currentmonth_tooltip">Current Month; CTRL + Mousewheel to adjust</string>
 	<string name="desktop_currentyear_tooltip">Current Year; CTRL + Mousewheel to adjust</string>
-	<string name="desktop_adv12am_tooltip">Advance time to 12AM</string>
+	<string name="desktop_shortrest">Short Rest; Double-Click to initiate a short rest and advance the time by the number of minutes</string>
+	<string name="desktop_longrest">Long Rest; Double-Click to initiate a long rest and advance the time by the number of hours</string>
+	<string name="desktop_adv12am_tooltip">Advance time to Midnight</string>
 	<string name="desktop_adv6am_tooltip">Advance time to 6AM</string>
-	<string name="desktop_adv12pm_tooltip">Advance time to 12PM</string>
+	<string name="desktop_adv12pm_tooltip">Advance time to Noon</string>
 	<string name="desktop_adv6pm_tooltip">Advance time to 6PM</string>
 	<string name="desktop_openevents_tooltip">Open Events Manager</string>
 	<string name="desktop_openreminders_tooltip">Open Reminder Manager</string>
@@ -37,4 +34,5 @@
 	<string name="desktop_opentravel_tooltip">Open Travel Manager</string>
 	<string name="desktop_travel_tooltip">Travel</string>
 	
+	<string name="error_calendar_not_configured">Error getting current date and time\nPlease ensure you have the calendar module loaded and your calendar configured.</string>
 </root>

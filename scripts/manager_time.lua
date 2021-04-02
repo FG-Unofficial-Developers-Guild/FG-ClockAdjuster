@@ -1,35 +1,35 @@
--- 
--- Please see the license.html file included with this distribution for 
--- attribution and copyright information.
+--
+-- Please see the LICENSE.md file included with this distribution for attribution and copyright information.
 --
 
+local bNoticePosted = false
+
 function onInit()
-	
-	
 	DB.addHandler("calendar.log", "onChildUpdate", onEventsChanged);
 end
 
-         --Timer Functions--
+--- Timer Functions
 function setStartTime(rActor, sFirst)
 	--Debug.console("setStartTime called; " .. sFirst .."");
-	local sActorType, nodeActor = ActorManager.getTypeAndNode(rActor);
+	local nodeActor = rActor;
 	nStartTime = getCurrentDateinMinutes(rActor);
 	--Debug.console("setStartTime; nStartTime =", nStartTime);
-	DB.setValue(nodeActor, "" .. sFirst .. ".starttime", "number", nStartTime);
+	DB.setValue(nodeActor, "starttime", "number", nStartTime);
+	Debug.console("setStartTime", rActor, sFirst, nStartTime, DB.getValue(nodeActor, "starttime"));
 	--Debug.console("setStartTime; DB.setValue(nodeActor, " .. sFirst .. ".starttime, number, " .. nStartTime .. ") = ", DB.setValue(nodeActor, "" .. sFirst .. ".starttime", "number", nStartTime));
 end
 
 function getStartTime(rActor, sFirst)
 	--Debug.console("getStartTime called; " .. sFirst .."");
-	local sActorType, nodeActor = ActorManager.getTypeAndNode(rActor);
-	FetchStartTime = DB.getValue(nodeActor, "" .. sFirst .. ".starttime", 0);
+	local nodeActor = rActor;
+	FetchStartTime = DB.getValue(nodeActor, "starttime", 0);
 	--Debug.console("setStartTime; FetchStartTime = DB.getValue(" .. nodeActor .. ", " .. sFirst .. ".starttime, " .. nStartTime .. ") = " .. DB.getValue(nodeActor, "" .. sFirst .. ".starttime", nStartTime) .. "");
 
 	return FetchStartTime;
 end
 
 function setTimerStart(rActor, sFirst)
-	local sActorType, nodeActor = ActorManager.getTypeAndNode(rActor);
+	local nodeActor = rActor;
 	local nStartMinute, nStartHour, nStartDay, nStartMonth, nStartYear = getCurrentDate();
 	
 	DB.setValue(nodeActor, "" .. sFirst .. ".startminute", "number", nStartMinute);
@@ -39,8 +39,7 @@ function setTimerStart(rActor, sFirst)
 	DB.setValue(nodeActor, "" .. sFirst .. ".startyear", "number", nStartYear);
 end
 function getTimerStart(rActor, sFirst)
-	local sActorType, nodeActor = ActorManager.getTypeAndNode(rActor);
-		
+	local nodeActor = rActor;		
 	local nStartMinute = DB.getValue(nodeActor, "" .. sFirst .. ".startminute", 0);
 	local nStartHour = DB.getValue(nodeActor, "" .. sFirst .. ".starthour", 0);
 	local nStartDay = DB.getValue(nodeActor, "" .. sFirst .. ".startday", 0);
@@ -48,25 +47,44 @@ function getTimerStart(rActor, sFirst)
 	local nStartYear = DB.getValue(nodeActor, "" .. sFirst .. ".startyear", 0);
 	return nStartMinute, nStartHour, nStartDay, nStartMonth, nStartYear;
 end
+
+-- prints a big error message in the Chatwindow
+local function bigMessage(msgtxt, broadcast, rActor)
+	local msg = ChatManager.createBaseMessage(rActor);
+	msg.text = msg.text .. msgtxt;
+	msg.font = 'reference-header';
+
+	if broadcast then
+		Comm.deliverChatMessage(msg);
+	else
+		msg.secret = true;
+		Comm.addChatMessage(msg);
+	end
+end
 	
 function getCurrentDate()
 	--Debug.console("getCurrentDateinMinutes called;");
-	local nMinutes = DB.getValue("calendar.current.minute");
+	local nMinutes = DB.getValue("calendar.current.minute", 0);
 	--Debug.console("getCurrentDateinMinutes; nMinutes =", nMinutes);
-	local nHours = DB.getValue("calendar.current.hour");
+	local nHours = DB.getValue("calendar.current.hour", 0);
 	--Debug.console("getCurrentDateinMinutes; nHours =", nHours);
-	local nDays = DB.getValue("calendar.current.day");
+	local nDays = DB.getValue("calendar.current.day", 0);
 	--Debug.console("getCurrentDateinMinutes; nDays =", nDays);
-	local nMonths = DB.getValue("calendar.current.month");
+	local nMonths = DB.getValue("calendar.current.month", 0);
 	--Debug.console("getCurrentDateinMinutes; nMonths =", nMonths);
-	local nYears = DB.getValue("calendar.current.year");
+	local nYears = DB.getValue("calendar.current.year", 0);
+
+	if (bNoticePosted == false) and
+		(not DB.getValue("calendar.data.complete") or (not nMinutes or not nHours or not nDays or not nMonths or not nYears)) then
+		bigMessage(Interface.getString('error_calendar_not_configured'))
+		bNoticePosted = true
+	end
 
 	return nMinutes, nHours, nDays, nMonths, nYears;
 end
 
 function compareDates(rActor, sFirst)
-	local sActorType, nodeActor = ActorManager.getTypeAndNode(rActor);
-	
+	local nodeActor = rActor;	
 	local nMinutes, nHours, nDays, nMonths, nYears = getCurrentDate();
 	local nStartMinute, nStartHour, nStartDay, nStartMonth, nStartYear = getTimerStart(rActor, sFirst);
 	
@@ -80,8 +98,7 @@ function compareDates(rActor, sFirst)
 end
 
 function hasTimePassed(rActor, sFirst, sTime)
-	local sActorType, nodeActor = ActorManager.getTypeAndNode(rActor);
-	
+	local nodeActor = rActor;	
 	local nMinutes, nHours, nDays, nMonths, nYears = getCurrentDate();
 	local nStartMinute, nStartHour, nStartDay, nStartMonth, nStartYear = getTimerStart(rActor, sFirst);
 	local nMinuteDifference, nHourDifference, nDayDifference, nMonthDifference, nYearDifference = compareDates(rActor, sFirst);
@@ -105,34 +122,15 @@ end
 
 	
 function getCurrentDateinMinutes(rActor)
-	local nMinutes = 0;
-	local nHours = 0;
-	local nDays = 0;
-	local nMonths = 0;
-	local nYears = 0;
-	local nHoursinMinutes = 0;
-	local nDaysinMinutes = 0;
-	local nMonthsinMinutes = 0;
-	local nYearsinMinutes = 0;
-	--Debug.console("getCurrentDateinMinutes; nRounds =", nRounds);
-	local nMinutes = DB.getValue("calendar.current.minute", 0);
-	--Debug.console("getCurrentDateinMinutes; nMinutes =", nMinutes);
-	local nHours = DB.getValue("calendar.current.hour", 0);
-	--Debug.console("getCurrentDateinMinutes; nHours =", nHours);
-	local nDays = DB.getValue("calendar.current.day", 0);
-	--Debug.console("getCurrentDateinMinutes; nDays =", nDays);
-	local nMonths = DB.getValue("calendar.current.month", 0);
-	--Debug.console("getCurrentDateinMinutes; nMonths =", nMonths);
-	local nYears = DB.getValue("calendar.current.year", 0);
+	local nMinutes, nHours, nDays, nMonths, nYears = getCurrentDate()
 	
-	
-	nHoursinMinutes = convertHourstoMinutes(nHours);
+	local nHoursinMinutes = convertHourstoMinutes(nHours);
 	--Debug.console("getCurrentDateinMinutes; nHoursinMinutes =", nHoursinMinutes);
-	nDaysinMinutes = convertDaystoMinutes(nDays);
+	local nDaysinMinutes = convertDaystoMinutes(nDays);
 	--Debug.console("getCurrentDateinMinutes; nDaysinMinutes =", nDaysinMinutes);
-	nMonthsinMinutes = convertMonthssnowtoMinutes(nMonths, nYears);
+	local nMonthsinMinutes = convertMonthssnowtoMinutes(nMonths, nYears);
 	--Debug.console("getCurrentDateinMinutes; nMonthsinMinutes =", nMonthsinMinutes);
-	nYearsinMinutes = convertYearsnowtoMinutes(nYears);
+	local nYearsinMinutes = convertYearsnowtoMinutes(nYears);
 	--Debug.console("getCurrentDateinMinutes; nYearsinMinutes =", nYearsinMinutes);
 	
 	if nHoursinMinutes == nil then
@@ -152,16 +150,17 @@ function getCurrentDateinMinutes(rActor)
 	
 	return nDateinMinutes;
 end
-         --Compare times --
+--- Compare times
 function isTimeGreaterThan(rActor, sFirst, nCompareBy)
 	--Debug.console("isTimeGreaterThan called, sFirst = " .. sFirst .. ", nCompareBy = " .. nCompareBy .. ";");
-	local sActorType, nodeActor = ActorManager.getTypeAndNode(rActor);
+	local nodeActor = rActor;
 	local nStartTime = getStartTime(rActor, sFirst);
 	--Debug.console("isTimeGreaterThan, nStartTime = " .. rActor .. "");
 	local nCurrentTime = getCurrentDateinMinutes(rActor);
 	--Debug.console("isTimeGreaterThan, nCurrentTime = " .. nCurrentTime .. ", nCompareBy = " .. nCompareBy .. "");
 	
 	local nDifference = nCurrentTime - nStartTime;
+	Debug.console("isTimeGreaterThan", rActor, sFirst, nCompareBy, nStartTime, nCurrentTime, nDifference);
 	--Debug.console("isTimeGreaterThan; nDifference = " .. nDifference .. ", nCurrentTime = " .. nCurrentTime ..  ", nStartTime = " .. nStartTime .. "");
 	if nDifference >= nCompareBy then
 		return true;
@@ -172,8 +171,8 @@ end
 
 function getTimeDifference(rActor, sFirst, nCompareBy)
 	--Debug.console("isTimeGreaterThan called, sFirst = " .. sFirst .. ", nCompareBy = " .. nCompareBy .. ";");
-	local sActorType, nodeActor = ActorManager.getTypeAndNode(rActor);
-	local nStartTime = DB.getValue(nodeActor, "" .. sFirst .. ".starttime", 0);
+	local nodeActor = rActor;
+	local nStartTime = DB.getValue(nodeActor, "starttime", 0);
 	--Debug.console("getTimeDifference; nStartTime = DB.getValue(nodeActor, " .. sFirst .. ".starttime, 0) = " .. DB.getValue(nodeActor, "" .. sFirst .. ".starttime", nStartTime) .. "");
 	local nCurrentTime = getCurrentDateinMinutes();
 	--Debug.console("getTimeDifference, nCurrentTime = " .. nCurrentTime .. "");
@@ -192,12 +191,11 @@ function isXbiggerThanY(x, y)
 	end
 end
 
-         --convert time functions --
-
+--- Time conversion functions
 function convertSecondstoMinutes(nNumber)
-	--Debug.console("convertRoundstoMinutes called, nNumber = " .. nNumber .. "");
+	--Debug.console("convertSecondstoMinutes called, nNumber = " .. nNumber .. "");
 	local nMinutesTotaled = nNumber / 60;
-	--Debug.console("convertHourstoMinutes, nMinutesTotaled = " .. nMinutesTotaled .. "");
+	--Debug.console("convertSecondstoMinutes, nMinutesTotaled = " .. nMinutesTotaled .. "");
 	return nMinutesTotaled;
 end
 function convertHourstoMinutes(nNumber)
@@ -207,9 +205,9 @@ function convertHourstoMinutes(nNumber)
 	return nMinutesTotaled;
 end
 function convertMinutestoHours(nNumber)
-	--Debug.console("convertHourstoMinutes called, nNumber = " .. nNumber .. "");
+	--Debug.console("convertMinutestoHours called, nNumber = " .. nNumber .. "");
 	local nHoursTotaled = nNumber / 60;
-	--Debug.console("convertHourstoMinutes, nHoursTotaled = " .. nHoursTotaled .. "");
+	--Debug.console("convertMinutestoHours, nHoursTotaled = " .. nHoursTotaled .. "");
 	return nHoursTotaled;
 end
 function convertHourstoDays(nNumber)
@@ -221,7 +219,7 @@ end
 function convertDaystoHours(nNumber)
 	--Debug.console("convertDaystoHours called, nNumber = " .. nNumber .. "");
 	local nHoursTotaled = nNumber * 24;
-	--Debug.console("convertHourstoDays, nHoursTotaled = " .. nHoursTotaled .. "");
+	--Debug.console("convertDaystoHours, nHoursTotaled = " .. nHoursTotaled .. "");
 	return nHoursTotaled;
 end
 function convertMinutestoDays(nNumber)
@@ -310,7 +308,7 @@ function convertMonthssnowtoMinutes(nMonth, nYear)
 	return nMinutes;
 end
 
-        --extra calculations --
+--- Extra calculations
 function getDaysInMonth(nMonth, nYear)
 	local nVar = 0;
 	local nDays = DB.getValue("calendar.data.periods.period" .. nMonth .. ".days", 0);
@@ -333,15 +331,9 @@ function isLeapYear(nYear)
 	return nYear%4==0 and (nYear%100~=0 or nYear%400==0)
 end
 
--- 
--- Please see the license.html file included with this distribution for 
--- attribution and copyright information.
---
-
 local aEvents = {};
 local nSelMonth = 0;
 local nSelDay = 0;
-						
 
 function onClose()
 end
@@ -385,24 +377,55 @@ function addLogEntryToSelected()
 	addLogEntry(nSelMonth, nSelDay);
 end
 
-function addLogEntry(nMonth, nDay, nYear, bGMVisible, nString)
-	
+function addLogEntry(nMonth, nDay, nYear, bGMVisible, node)
 	local nodeEvent;
+	local sName = DB.getValue(node, "name", "");
+	local sString = DB.getValue(node, "text", "");
+	local nMinute = DB.getValue(node, "minute", 0);
+	local sMinute = tostring(nMinute);
+	local nHour = DB.getValue(node, "hour", 0);
+	local sHour = tostring(nHour);
+	
+	if nHour < 10 then
+		sHour = "0" .. sHour;
+	end
+	if nMinute < 10 then
+		sMinute = "0" .. sMinute;
+	end
+	
 	if aEvents[nYear] and aEvents[nYear][nMonth] and aEvents[nYear][nMonth][nDay] then
 		nodeEvent = aEvents[nYear][nMonth][nDay];
+		nodeOld = nodeEvent;
+		local EventGMLog = DB.getValue(nodeEvent, "gmlogentry", "");
+		local EventGMLogNew = string.gsub(EventGMLog, "%W", "");
+		local EventLog = DB.getValue(nodeEvent, "logentry", "");
+		local EventLogNew = string.gsub(EventLog, "%W", "");
+		local sNameNew = string.gsub(sName, "%W", "");
+		if bGMVisible == true then
+			if not string.find(EventGMLogNew, sHour .. "" .. sMinute) then
+				sString = EventGMLog .. "<h>" .. sName .. " [" .. sHour .. ":" .. sMinute .. "]" .. "</h>" .. sString;
+				DB.setValue(nodeEvent, "gmlogentry", "formattedtext", sString);
+			end
+		else
+			if not string.find(EventLogNew, sHour .. "" .. sMinute) then
+				sString = EventLog .. "<h>" .. sName .. " [" .. sHour .. ":" .. sMinute .. "]" .. "</h>" .. sString;
+				DB.setValue(nodeEvent, "logentry", "formattedtext", sString);
+			end
+		end	
 	elseif User.isHost() then
 		local nodeLog = DB.createNode("calendar.log");
 		bEnableBuild = false;
 		nodeEvent = nodeLog.createChild();
+		sString = "<h>" .. sName .. " [" .. sHour .. ":" .. sMinute .. "]" .. "</h>" .. sString;
 		
 		DB.setValue(nodeEvent, "epoch", "string", DB.getValue("calendar.current.epoch", ""));
 		DB.setValue(nodeEvent, "year", "number", nYear);
 		DB.setValue(nodeEvent, "month", "number", nMonth);
 		DB.setValue(nodeEvent, "day", "number", nDay);
 		if bGMVisible == true then
-			DB.setValue(nodeEvent, "gmlogentry", "formattedtext", nString);
+			DB.setValue(nodeEvent, "gmlogentry", "formattedtext", sString);
 		elseif bGMVisible == false then
-			DB.setValue(nodeEvent, "logentry", "formattedtext", nString);
+			DB.setValue(nodeEvent, "logentry", "formattedtext", sString);
 		end
 		
 		bEnableBuild = true;
@@ -412,6 +435,7 @@ function addLogEntry(nMonth, nDay, nYear, bGMVisible, nString)
 
 	if nodeEvent then
 		Interface.openWindow("advlogentry", nodeEvent);
+		return nodeOld;
 	end
 end
 
@@ -452,8 +476,3 @@ function onCalendarChanged()
 	list.rebuildCalendarWindows();
 	setSelectedDate(currentmonth.getValue(), currentday.getValue());
 end
-
-
-
-
-
