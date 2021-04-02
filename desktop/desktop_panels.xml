@@ -541,10 +541,10 @@
 					local sRuleset, bIsDnD, bLong
 					function onInit()
 						sRuleset = User.getRulesetName();
-						bIsDnD = (sRuleset == "PFRPG" or sRuleset == "PFRPG2" or sRuleset == "3.5E" or sRuleset == "4E" or sRuleset == "5E")
 						if bIsDnD then
 							bLong = false;
 						else
+						bIsDnD = (sRuleset == "PFRPG2" or sRuleset == "4E" or sRuleset == "5E")
 							setVisible(false);
  						end
 					end
