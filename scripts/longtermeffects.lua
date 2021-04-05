@@ -7,7 +7,7 @@ local nextRound_old, resetInit_old, clearExpiringEffects_old;
 ---	This function compiles all effects and decrements their durations when time is advanced
 function advanceRoundsOnTimeChanged(nRounds)
 	if nRounds and nRounds > 0 then
-		for _,nodeCT in pairs(DB.getChildren('combattracker.list')) do
+		for _,nodeCT in pairs(DB.getChildren(CombatManager.CT_LIST)) do
 			for _,nodeEffect in pairs(DB.getChildren(nodeCT, 'effects')) do
 				local nodeCT = nodeEffect.getChild('...');
 				local nDuration = DB.getValue(nodeEffect, 'duration');
@@ -132,7 +132,7 @@ local function getIsStableAndEffectsToCheck(nodeCT)
 end
 
 local function shouldSwitchToQuickSimulation()
-	for _, nodeCT in pairs(DB.getChildren('combattracker.list')) do
+	for _, nodeCT in pairs(DB.getChildren(CombatManager.CT_LIST)) do
 		-- Debug.console(ActorManager.getName(nodeCT))
 		local rActor = ActorManager.resolveActor(nodeCT); -- maybe extract health too, instead of doing it twice. But it makes naming functions harder. IDK.
 		local bIsStable, aEffectsToCheck = getIsStableAndEffectsToCheck(nodeCT);
