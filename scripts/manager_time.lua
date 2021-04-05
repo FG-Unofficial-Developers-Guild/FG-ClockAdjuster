@@ -121,31 +121,22 @@ function hasTimePassed(rActor, sFirst, sTime)
 end
 
 	
-function getCurrentDateinMinutes(rActor)
+function getCurrentDateinMinutes()
 	local nMinutes, nHours, nDays, nMonths, nYears = getCurrentDate()
-	
-	local nHoursinMinutes = convertHourstoMinutes(nHours);
+	local nRounds = (DB.getValue("combattracker.round", 0) % 10);
+
+	local nRoundsinMinutes = (0.1 * nRounds);
+	Debug.console("getCurrentDateinMinutes; nRoundsinMinutes =", nRoundsinMinutes);
+	local nHoursinMinutes = convertHourstoMinutes(nHours) or 0;
 	--Debug.console("getCurrentDateinMinutes; nHoursinMinutes =", nHoursinMinutes);
-	local nDaysinMinutes = convertDaystoMinutes(nDays);
+	local nDaysinMinutes = convertDaystoMinutes(nDays) or 0;
 	--Debug.console("getCurrentDateinMinutes; nDaysinMinutes =", nDaysinMinutes);
-	local nMonthsinMinutes = convertMonthssnowtoMinutes(nMonths, nYears);
+	local nMonthsinMinutes = convertMonthssnowtoMinutes(nMonths, nYears) or 0;
 	--Debug.console("getCurrentDateinMinutes; nMonthsinMinutes =", nMonthsinMinutes);
-	local nYearsinMinutes = convertYearsnowtoMinutes(nYears);
+	local nYearsinMinutes = convertYearsnowtoMinutes(nYears) or 0;
 	--Debug.console("getCurrentDateinMinutes; nYearsinMinutes =", nYearsinMinutes);
 	
-	if nHoursinMinutes == nil then
-		nHoursinMinutes = 0;
-	end
-	if nDaysinMinutes == nil then
-		nDaysinMinutes = 0;
-	end
-	if nMonthsinMinutes == nil then
-		nMonthsinMinutes = 0;
-	end
-	if nYearsinMinutes == nil then
-		nYearsinMinutes = 0;
-	end
-	nDateinMinutes = nHoursinMinutes + nDaysinMinutes + nMonthsinMinutes + nYearsinMinutes + nMinutes;
+	nDateinMinutes = nRoundsinMinutes + nHoursinMinutes + nDaysinMinutes + nMonthsinMinutes + nYearsinMinutes + nMinutes;
 	--Debug.console(getCurrentDateinMinutes);
 	
 	return nDateinMinutes;

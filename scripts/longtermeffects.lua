@@ -7,7 +7,7 @@ local nextRound_old, resetInit_old, clearExpiringEffects_old;
 ---	This function compiles all effects and decrements their durations when time is advanced
 function advanceRoundsOnTimeChanged(nRounds)
 	if nRounds and nRounds > 0 then
-		for _,nodeCT in pairs(DB.getChildren('combattracker.list')) do
+		for _,nodeCT in pairs(DB.getChildren(CombatManager.CT_LIST)) do
 			for _,nodeEffect in pairs(DB.getChildren(nodeCT, 'effects')) do
 				local nodeCT = nodeEffect.getChild('...');
 				local nDuration = DB.getValue(nodeEffect, 'duration');
@@ -44,7 +44,7 @@ local function resetInit_new()
 	CombatManager.clearGMIdentity();
 
 	-- Reset the round counter (bmos changed this to 0 instead of 1)
-	DB.setValue(CombatManager.CT_ROUND, "number", 0);
+	DB.setValue("combattracker.round", "number", 0);
 
 	CombatManager.onCombatResetEvent();
 end
@@ -132,7 +132,7 @@ local function getIsStableAndEffectsToCheck(nodeCT)
 end
 
 local function shouldSwitchToQuickSimulation()
-	for _, nodeCT in pairs(DB.getChildren('combattracker.list')) do
+	for _, nodeCT in pairs(DB.getChildren(CombatManager.CT_LIST)) do
 		-- Debug.console(ActorManager.getName(nodeCT))
 		local rActor = ActorManager.resolveActor(nodeCT); -- maybe extract health too, instead of doing it twice. But it makes naming functions harder. IDK.
 		local bIsStable, aEffectsToCheck = getIsStableAndEffectsToCheck(nodeCT);
@@ -153,7 +153,7 @@ local function nextRound_new(nRounds, bTimeChanged)
 	end
 
 	local nodeActive = CombatManager.getActiveCT();
-	local nCurrent = DB.getValue(CombatManager.CT_ROUND, 0);
+	local nCurrent = DB.getValue("combattracker.round", 0);
 
 	-- If current actor, then advance based on that
 	local nStartCounter = 1;
@@ -197,7 +197,7 @@ local function nextRound_new(nRounds, bTimeChanged)
 		if shouldSwitchToQuickSimulation() then
 			-- Debug.chat("[ Skipping is ok from " .. nCurrent .. "]");
 			advanceRoundsOnTimeChanged(nRounds + 1 - i);
-			DB.setValue(CombatManager.CT_ROUND, 'number', nRounds - 1);
+			DB.setValue("combattracker.round", 'number', nRounds - 1);
 			break
 		end
 		-- end checking for necessity of full processing of rounds
@@ -225,7 +225,7 @@ local function nextRound_new(nRounds, bTimeChanged)
 	end
 
 	-- Update round counter
-	DB.setValue(CombatManager.CT_ROUND, "number", nCurrent);
+	DB.setValue("combattracker.round", "number", nCurrent);
 
 	-- Custom round start callback (such as per round initiative rolling)
 	CombatManager.onRoundStartEvent(nCurrent);
