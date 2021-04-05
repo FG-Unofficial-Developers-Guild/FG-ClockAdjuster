@@ -126,7 +126,7 @@ function getCurrentDateinMinutes()
 	local nRounds = (DB.getValue("combattracker.round", 0) % 10);
 
 	local nRoundsinMinutes = (0.1 * nRounds);
-	Debug.console("getCurrentDateinMinutes; nRoundsinMinutes =", nRoundsinMinutes);
+	--Debug.console("getCurrentDateinMinutes; nRoundsinMinutes =", nRoundsinMinutes);
 	local nHoursinMinutes = convertHourstoMinutes(nHours) or 0;
 	--Debug.console("getCurrentDateinMinutes; nHoursinMinutes =", nHoursinMinutes);
 	local nDaysinMinutes = convertDaystoMinutes(nDays) or 0;
