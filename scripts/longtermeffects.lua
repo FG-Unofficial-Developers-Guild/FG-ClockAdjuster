@@ -11,7 +11,7 @@ function advanceRoundsOnTimeChanged(nRounds)
 			for _,nodeEffect in pairs(DB.getChildren(nodeCT, 'effects')) do
 				local nodeCT = nodeEffect.getChild('...');
 				local nDuration = DB.getValue(nodeEffect, 'duration');
-				local bHasDuration = (nDuration and (nDuration ~= 0));
+				local bHasDuration = (nDuration and nDuration ~= 0);
 				if bHasDuration and (nDuration < nRounds) then
 					EffectManager.expireEffect(nodeCT, nodeEffect);
 				elseif bHasDuration then

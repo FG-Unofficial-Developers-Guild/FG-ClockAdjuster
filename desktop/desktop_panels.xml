@@ -211,11 +211,11 @@
 						DB.setValue(getDatabaseNode(), "addhour", "number", (getValue() or 0));
 					end
 					function onDoubleClick()
-						local nHour = (window.addhour.getValue() or 0);
+						local nHour = getValue() or 0;
+						local nRounds = nHour * 600;
 
-						local nRounds = (nHour * 600)
-						if OptionsManager.isOption('TIMEROUNDS', 'slow') then
-							CombatManager.nextRound(nRounds, true)
+						if OptionsManager.isOption('TIMEROUNDS', 'slow') and nRounds &lt; 4801 then
+							CombatManager.nextRound(nRounds, true);
 						else
 							LongTermEffects.advanceRoundsOnTimeChanged(nRounds)
 						end
@@ -265,11 +265,11 @@
 						DB.setValue(getDatabaseNode(), "addminute", "number", (getValue() or 0));
 					end
 					function onDoubleClick()
-						local nMinute = (window.addminute.getValue() or 0);
+						local nMinute = getValue() or 0;
+						local nRounds = nMinute * 10;
 
-						local nRounds = (nMinute * 10)
-						if OptionsManager.isOption('TIMEROUNDS', 'slow') then
-							CombatManager.nextRound(nRounds, true)
+						if OptionsManager.isOption('TIMEROUNDS', 'slow') and nRounds &lt; 4801 then
+							CombatManager.nextRound(nRounds, true);
 						else
 							LongTermEffects.advanceRoundsOnTimeChanged(nRounds)
 						end
@@ -310,11 +310,11 @@
 					end
 					
 					function onDoubleClick()
-						local nDay = (window.addday.getValue() or 0);
+						local nDay = getValue() or 0;
+						local nRounds = nDay * 14400;
 
-						local nRounds = (nDay * 14400)
-						if OptionsManager.isOption('TIMEROUNDS', 'slow') then
-							CombatManager.nextRound(nRounds, true)
+						if OptionsManager.isOption('TIMEROUNDS', 'slow') and nRounds &lt; 4801 then
+							CombatManager.nextRound(nRounds, true);
 						else
 							LongTermEffects.advanceRoundsOnTimeChanged(nRounds)
 						end
@@ -357,11 +357,11 @@
 						DB.setValue(getDatabaseNode(), "addmonth", "number", (getValue() or 0));
 					end
 					function onDoubleClick()
-						local nMonth = (window.addmonth.getValue() or 0);
-
-						local nRounds = (nMonth * 432000)
-						if OptionsManager.isOption('TIMEROUNDS', 'slow') then
-							CombatManager.nextRound(nRounds, true)
+						local nMonth = getValue() or 0;
+						local nRounds = nMonth * 432000;
+						
+						if OptionsManager.isOption('TIMEROUNDS', 'slow') and nRounds &lt; 4801 then
+							CombatManager.nextRound(nRounds, true);
 						else
 							LongTermEffects.advanceRoundsOnTimeChanged(nRounds)
 						end
@@ -433,15 +433,15 @@
 				<tooltip textres="desktop_addall_tooltip" />
 				<script>
 					function onDoubleClick()
-						local nMinute = (window.addminute.getValue() or 0);
-						local nHour = (window.addhour.getValue() or 0);
-						local nDay = (window.addday.getValue() or 0);
-						local nMonth = (window.addmonth.getValue() or 0);
-						local nYear = (window.addyear.getValue() or 0);
+						local nMinute = window.addminute.getValue() or 0;
+						local nHour = window.addhour.getValue() or 0;
+						local nDay = window.addday.getValue() or 0;
+						local nMonth = window.addmonth.getValue() or 0;
+						local nYear = window.addyear.getValue() or 0;
+						local nRounds = (nHour * 600) + (nMinute * 10) + (nDay * 14400) + (nDay * 403200);
 
-						local nRounds = (nHour * 600) + (nMinute * 10) + (nDay * 14400) + (nDay * 403200)
-						if OptionsManager.isOption('TIMEROUNDS', 'slow') then
-							CombatManager.nextRound(nRounds, true)
+						if OptionsManager.isOption('TIMEROUNDS', 'slow') and nRounds &lt; 4801 then
+							CombatManager.nextRound(nRounds, true);
 						else
 							LongTermEffects.advanceRoundsOnTimeChanged(nRounds)
 						end
@@ -509,10 +509,11 @@
 							TableManager.processTableRoll("", "Weather Precipitation");
 						end
 
-						local nHours = (getValue())
-						local nRounds = (nHours * 600)
-						if OptionsManager.isOption('TIMEROUNDS', 'slow') then
-							CombatManager.nextRound(nRounds, true)
+						local nHours = getValue() or 0;
+						local nRounds = nHours * 600;
+						
+						if OptionsManager.isOption('TIMEROUNDS', 'slow') and nRounds &lt; 4801 then
+							CombatManager.nextRound(nRounds, true);
 						else
 							LongTermEffects.advanceRoundsOnTimeChanged(nRounds);
 						end
@@ -557,10 +558,11 @@
 							DB.setValue("calendar.check.day", "number", DB.getValue("calendar.current.day"));
 						end
 
-						local nMinutes = (getValue())
-						local nRounds = (nMinutes * 10)
-						if OptionsManager.isOption('TIMEROUNDS', 'slow') then
-							CombatManager.nextRound(nRounds, true)
+						local nMinutes = getValue() or 0
+						local nRounds = nMinutes * 10;
+						
+						if OptionsManager.isOption('TIMEROUNDS', 'slow') and nRounds &lt; 4801 then
+							CombatManager.nextRound(nRounds, true);
 						else
 							LongTermEffects.advanceRoundsOnTimeChanged(nRounds)
 						end
