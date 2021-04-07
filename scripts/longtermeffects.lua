@@ -19,6 +19,8 @@ function advanceRoundsOnTimeChanged(nRounds)
 				end
 			end
 		end
+		
+		return true
 	end
 end
 
