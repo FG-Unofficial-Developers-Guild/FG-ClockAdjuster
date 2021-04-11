@@ -233,16 +233,20 @@
 							DB.setValue("calendar.check.day", "number", DB.getValue("calendar.current.day"));
 						end
 						if nHour &gt; 0 then 
-							CalendarManager.outputTime(); 
+							CalendarManager.outputTime();
 						end
 						onUpdate();
 					end
 					local bTimeStep = false;
 					function onUpdate()
 						bTimeStep = true;
+						
 						local nDateinMinutes = TimeManager.getCurrentDateinMinutes();
 						DB.setValue("calendar.dateinminutes", "number", nDateinMinutes); DB.setValue("calendar.dateinminutesstring", "string", tostring(nDateinMinutes))
 
+						local nCurrentRound = DB.getValue("combattracker.round", 0);
+						nCurrentRound = nCurrentRound % 10
+						DB.setValue("combattracker.round", 'number', nCurrentRound);
 					end
 				</script>
 			</basicnumber>
@@ -286,8 +290,13 @@
 					local bTimeStep = false;
 					function onUpdate()
 						bTimeStep = true;
+
 						local nDateinMinutes = TimeManager.getCurrentDateinMinutes();
 						DB.setValue("calendar.dateinminutes", "number", nDateinMinutes); DB.setValue("calendar.dateinminutesstring", "string", tostring(nDateinMinutes))
+
+						local nCurrentRound = DB.getValue("combattracker.round", 0);
+						nCurrentRound = nCurrentRound % 10
+						DB.setValue("combattracker.round", 'number', nCurrentRound);
 					end
 				</script>
 			</basicnumber>
@@ -338,8 +347,13 @@
 					local bTimeStep = false;
 					function onUpdate()
 						bTimeStep = true;
+						
 						local nDateinMinutes = TimeManager.getCurrentDateinMinutes();
 						DB.setValue("calendar.dateinminutes", "number", nDateinMinutes); DB.setValue("calendar.dateinminutesstring", "string", tostring(nDateinMinutes))
+
+						local nCurrentRound = DB.getValue("combattracker.round", 0);
+						nCurrentRound = nCurrentRound % 10
+						DB.setValue("combattracker.round", 'number', nCurrentRound);
 					end
 				</script>
 			</basicnumber>
@@ -383,8 +397,13 @@
 					local bTimeStep = false;
 					function onUpdate()
 						bTimeStep = true;
+						
 						local nDateinMinutes = TimeManager.getCurrentDateinMinutes();
 						DB.setValue("calendar.dateinminutes", "number", nDateinMinutes); DB.setValue("calendar.dateinminutesstring", "string", tostring(nDateinMinutes))
+
+						local nCurrentRound = DB.getValue("combattracker.round", 0);
+						nCurrentRound = nCurrentRound % 10
+						DB.setValue("combattracker.round", 'number', nCurrentRound);
 					end
 				</script>
 			</basicnumber>
@@ -421,8 +440,13 @@
 					local bTimeStep = false;
 					function onUpdate()
 						bTimeStep = true;
+						
 						local nDateinMinutes = TimeManager.getCurrentDateinMinutes();
 						DB.setValue("calendar.dateinminutes", "number", nDateinMinutes); DB.setValue("calendar.dateinminutesstring", "string", tostring(nDateinMinutes))
+
+						local nCurrentRound = DB.getValue("combattracker.round", 0);
+						nCurrentRound = nCurrentRound % 10
+						DB.setValue("combattracker.round", 'number', nCurrentRound);
 					end
 				</script>
 			</basicnumber>
@@ -465,9 +489,13 @@
 					local bTimeStep = false;
 					function onUpdate()
 						bTimeStep = true;
+						
 						local nDateinMinutes = TimeManager.getCurrentDateinMinutes();
 						DB.setValue("calendar.dateinminutes", "number", nDateinMinutes); DB.setValue("calendar.dateinminutesstring", "string", tostring(nDateinMinutes))
 
+						local nCurrentRound = DB.getValue("combattracker.round", 0);
+						nCurrentRound = nCurrentRound % 10
+						DB.setValue("combattracker.round", 'number', nCurrentRound);
 					end
 				</script>
 				<center />
@@ -523,8 +551,14 @@
 						CalendarManager.outputTime();
 						ChatManager.Message("Long Rest", true);
 						CombatManager2.rest(bLong);
+						
 						local nDateinMinutes = TimeManager.getCurrentDateinMinutes();
 						DB.setValue("calendar.dateinminutes", "number", nDateinMinutes); DB.setValue("calendar.dateinminutesstring", "string", tostring(nDateinMinutes))
+
+						local nCurrentRound = DB.getValue("combattracker.round", 0);
+						nCurrentRound = nCurrentRound % 10
+						DB.setValue("combattracker.round", 'number', nCurrentRound);
+							
 						Debug.console(sRuleset, bLong);
 					end
 				</script>
@@ -572,8 +606,14 @@
 						CalendarManager.outputTime();
 						ChatManager.Message(Interface.getString("menu_restshort"), true);
 						CombatManager2.rest(bLong);
+						
 						local nDateinMinutes = TimeManager.getCurrentDateinMinutes();
 						DB.setValue("calendar.dateinminutes", "number", nDateinMinutes); DB.setValue("calendar.dateinminutesstring", "string", tostring(nDateinMinutes))
+
+						local nCurrentRound = DB.getValue("combattracker.round", 0);
+						nCurrentRound = nCurrentRound % 10
+						DB.setValue("combattracker.round", 'number', nCurrentRound);
+						
 						Debug.console(sRuleset, bLong);
 					end
 				</script>
@@ -614,8 +654,13 @@
 								DB.setValue("calendar.check.day", "number", DB.getValue("calendar.current.day"));
 							end
 							CalendarManager.outputTime();
+							
 							local nDateinMinutes = TimeManager.getCurrentDateinMinutes();
 							DB.setValue("calendar.dateinminutes", "number", nDateinMinutes); DB.setValue("calendar.dateinminutesstring", "string", tostring(nDateinMinutes))
+
+							local nCurrentRound = DB.getValue("combattracker.round", 0);
+							nCurrentRound = nCurrentRound % 10
+							DB.setValue("combattracker.round", 'number', nCurrentRound);
 						end
 					end
 				</script>
@@ -655,8 +700,13 @@
 								DB.setValue("calendar.check.day", "number", DB.getValue("calendar.current.day"));
 							end
 							CalendarManager.outputTime();
+						
 							local nDateinMinutes = TimeManager.getCurrentDateinMinutes();
 							DB.setValue("calendar.dateinminutes", "number", nDateinMinutes); DB.setValue("calendar.dateinminutesstring", "string", tostring(nDateinMinutes))
+
+							local nCurrentRound = DB.getValue("combattracker.round", 0);
+							nCurrentRound = nCurrentRound % 10
+							DB.setValue("combattracker.round", 'number', nCurrentRound);
 						end
 					end
 				</script>
@@ -696,8 +746,13 @@
 								DB.setValue("calendar.check.day", "number", DB.getValue("calendar.current.day"));
 							end
 							CalendarManager.outputTime();
+							
 							local nDateinMinutes = TimeManager.getCurrentDateinMinutes();
 							DB.setValue("calendar.dateinminutes", "number", nDateinMinutes); DB.setValue("calendar.dateinminutesstring", "string", tostring(nDateinMinutes))
+
+							local nCurrentRound = DB.getValue("combattracker.round", 0);
+							nCurrentRound = nCurrentRound % 10
+							DB.setValue("combattracker.round", 'number', nCurrentRound);
 						end
 					end
 				</script>
@@ -738,8 +793,13 @@
 								DB.setValue("calendar.check.day", "number", DB.getValue("calendar.current.day"));
 							end
 							CalendarManager.outputTime();
+							
 							local nDateinMinutes = TimeManager.getCurrentDateinMinutes();
 							DB.setValue("calendar.dateinminutes", "number", nDateinMinutes); DB.setValue("calendar.dateinminutesstring", "string", tostring(nDateinMinutes))
+
+							local nCurrentRound = DB.getValue("combattracker.round", 0);
+							nCurrentRound = nCurrentRound % 10
+							DB.setValue("combattracker.round", 'number', nCurrentRound);
 						end
 					end
 				</script>
