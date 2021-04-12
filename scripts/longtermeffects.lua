@@ -12,7 +12,7 @@ function advanceRoundsOnTimeChanged(nRounds)
 				local nodeCT = nodeEffect.getChild('...');
 				local nDuration = DB.getValue(nodeEffect, 'duration');
 				local bHasDuration = (nDuration and nDuration ~= 0);
-				if bHasDuration and (nDuration < nRounds) then
+				if bHasDuration and (nDuration <= nRounds) then
 					EffectManager.expireEffect(nodeCT, nodeEffect);
 				elseif bHasDuration then
 					DB.setValue(nodeEffect, 'duration', 'number', nDuration - nRounds);
