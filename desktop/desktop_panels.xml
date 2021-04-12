@@ -550,7 +550,7 @@
 
 						CalendarManager.outputTime();
 						ChatManager.Message("Long Rest", true);
-						CombatManager2.rest(bLong);
+						CombatManager2.rest(true);
 						
 						local nDateinMinutes = TimeManager.getCurrentDateinMinutes();
 						DB.setValue("calendar.dateinminutes", "number", nDateinMinutes); DB.setValue("calendar.dateinminutesstring", "string", tostring(nDateinMinutes))
@@ -559,7 +559,7 @@
 						nCurrentRound = nCurrentRound % 10
 						DB.setValue("combattracker.round", 'number', nCurrentRound);
 							
-						Debug.console(sRuleset, bLong);
+						Debug.console(sRuleset, true);
 					end
 				</script>
 			</basicnumber>
