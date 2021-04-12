@@ -511,11 +511,12 @@
 				<min>0</min>
 				<tooltip textres="desktop_longrest" />
 				<script>
-					local sRuleset, bIsDnD
+					local sRuleset, bIsbLong, bIsbShort
 					function onInit()
 						sRuleset = User.getRulesetName();
-						bIsDnD = (sRuleset == "PFRPG" or sRuleset == "PFRPG2" or sRuleset == "3.5E" or sRuleset == "4E" or sRuleset == "5E")
-						if not bIsDnD then
+						bIsbLong = (sRuleset == "4E" or sRuleset == "5E")
+						bIsbShort = (sRuleset == "PFRPG" or sRuleset == "PFRPG2" or sRuleset == "3.5E")
+						if not bIsbLong and not bIsbShort then
 							setVisible(false);
 						else
 							setValue(DB.getValue(DB.findNode('calendar'), 'lastlongrest', 0))
@@ -550,8 +551,12 @@
 
 						CalendarManager.outputTime();
 						ChatManager.Message("Long Rest", true);
-						CombatManager2.rest(true);
-						
+						if bIsbLong then
+							CombatManager2.rest(true);
+						elseif bIsbShort then
+							CombatManager2.rest(false);
+						end
+
 						local nDateinMinutes = TimeManager.getCurrentDateinMinutes();
 						DB.setValue("calendar.dateinminutes", "number", nDateinMinutes); DB.setValue("calendar.dateinminutesstring", "string", tostring(nDateinMinutes))
 
@@ -574,11 +579,12 @@
 				<min>0</min>
 				<tooltip textres="desktop_shortrest" />
 				<script>
-					local sRuleset, bIsDnD
+					local sRuleset, bIsbLong, bIsbShort
 					function onInit()
 						sRuleset = User.getRulesetName();
-						bIsDnD = (sRuleset == "PFRPG2" or sRuleset == "3.5E" or sRuleset == "4E" or sRuleset == "5E")
-						if not bIsDnD then
+						bIsbLong = (sRuleset == "4E" or sRuleset == "5E")
+						bIsbShort = (sRuleset == "PFRPG" or sRuleset == "PFRPG2" or sRuleset == "3.5E")
+						if not bIsbLong and not bIsbShort then
 							setVisible(false);
 						else
 							setValue(DB.getValue(DB.findNode('calendar'), 'lastshortrest', 0))
@@ -605,7 +611,11 @@
 						
 						CalendarManager.outputTime();
 						ChatManager.Message(Interface.getString("menu_restshort"), true);
-						CombatManager2.rest(bLong);
+						if bIsbLong then
+							CombatManager2.rest(false);
+						elseif bIsbShort then
+							CombatManager2.rest(true);
+						end
 						
 						local nDateinMinutes = TimeManager.getCurrentDateinMinutes();
 						DB.setValue("calendar.dateinminutes", "number", nDateinMinutes); DB.setValue("calendar.dateinminutesstring", "string", tostring(nDateinMinutes))
