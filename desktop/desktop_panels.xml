@@ -511,9 +511,9 @@
 				<min>0</min>
 				<tooltip textres="desktop_longrest" />
 				<script>
-					local sRuleset, bIsbLong, bIsbShort
+					local bIsbLong, bIsbShort
 					function onInit()
-						sRuleset = User.getRulesetName();
+						local sRuleset = User.getRulesetName();
 						bIsbLong = (sRuleset == "4E" or sRuleset == "5E")
 						bIsbShort = (sRuleset == "PFRPG" or sRuleset == "PFRPG2" or sRuleset == "3.5E")
 						if not bIsbLong and not bIsbShort then
@@ -578,9 +578,9 @@
 				<min>0</min>
 				<tooltip textres="desktop_shortrest" />
 				<script>
-					local sRuleset, bIsbLong, bIsbShort
+					local bIsbLong, bIsbShort
 					function onInit()
-						sRuleset = User.getRulesetName();
+						local sRuleset = User.getRulesetName();
 						bIsbLong = (sRuleset == "4E" or sRuleset == "5E")
 						bIsbShort = (sRuleset == "PFRPG" or sRuleset == "PFRPG2" or sRuleset == "3.5E")
 						if not bIsbLong and not bIsbShort then
