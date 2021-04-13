@@ -564,8 +564,6 @@
 						local nCurrentRound = DB.getValue("combattracker.round", 0);
 						nCurrentRound = nCurrentRound % 10
 						DB.setValue("combattracker.round", 'number', nCurrentRound);
-							
-						Debug.console(sRuleset, true);
 					end
 				</script>
 			</basicnumber>
@@ -625,8 +623,6 @@
 						local nCurrentRound = DB.getValue("combattracker.round", 0);
 						nCurrentRound = nCurrentRound % 10
 						DB.setValue("combattracker.round", 'number', nCurrentRound);
-						
-						Debug.console(sRuleset, bLong);
 					end
 				</script>
 			</basicnumber>
