@@ -550,11 +550,12 @@
 						DB.setValue(DB.findNode('calendar'), 'lastlongrest', 'number', nHours)
 
 						CalendarManager.outputTime();
-						ChatManager.Message("Long Rest", true);
+						ChatManager.Message(Interface.getString("ct_message_restlong") or Interface.getString("ct_message_restovernight") or Interface.getString("ct_message_restextended") or "Long Rest", true);
+
 						if bIsbLong then
 							CombatManager2.rest(true);
 						elseif bIsbShort then
-							CombatManager2.rest(false);
+							CombatManager2.rest();
 						end
 
 						local nDateinMinutes = TimeManager.getCurrentDateinMinutes();
@@ -610,9 +611,10 @@
 						DB.setValue(DB.findNode('calendar'), 'lastshortrest', 'number', nMinutes)
 						
 						CalendarManager.outputTime();
-						ChatManager.Message(Interface.getString("menu_restshort"), true);
+						ChatManager.Message(Interface.getString("ct_message_rest") or Interface.getString("menu_restshort"), true);
+
 						if bIsbLong then
-							CombatManager2.rest(false);
+							CombatManager2.rest();
 						elseif bIsbShort then
 							CombatManager2.rest(true);
 						end
