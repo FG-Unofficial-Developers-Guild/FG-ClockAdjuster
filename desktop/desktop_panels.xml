@@ -25,7 +25,6 @@
 					<hover name="fieldfocus" offset="7,5,7,5" />
 				</stateframe>
 				<font>calendarbold</font>
-				<color>000000</color>
 				<readonly />
 				<center />
 				<script>
@@ -74,7 +73,6 @@
 			</label>
 			<label name="timesep">
 				<anchored to="currenthour" position="righthigh" offset="5" />
-				<color>000000</color>
 				<static>:</static>
 			</label>
 			<label name="currentminute">
@@ -84,7 +82,6 @@
 					<hover name="fieldfocus" offset="7,5,7,5" />
 				</stateframe>
 				<font>calendarbold</font>
-				<color>000000</color>
 				<readonly />
 				<center />
 				<script>
@@ -107,7 +104,6 @@
 			<label name="currentphase">
 				<anchored to="currentminute" position="righthigh" offset="10" />
 				<font>calendarbold</font>
-				<color>000000</color>
 				<center />
 			</label>
 			<label name="currentday">
@@ -117,7 +113,6 @@
 					<hover name="fieldfocus" offset="7,5,7,5" />
 				</stateframe>
 				<font>calendarbold</font>
-				<color>000000</color>
 				<readonly />
 				<center />
 				<script>
@@ -144,7 +139,6 @@
 					<hover name="fieldfocus" offset="7,5,7,5" />
 				</stateframe>
 				<font>calendarbold</font>
-				<color>000000</color>
 				<readonly />
 				<center />
 				<script>
@@ -171,7 +165,6 @@
 					<hover name="fieldfocus" offset="7,5,7,5" />
 				</stateframe>
 				<font>calendarbold</font>
-				<color>000000</color>
 				<readonly />
 				<center />
 				<script>
@@ -200,7 +193,6 @@
 					<top anchor="bottom" offset="10" />
 				</anchored>
 				<font>calendarbold</font>
-				<color>000000</color>
 				<min>0</min>
 				<tooltip textres="desktop_addhour_tooltip" />
 				<script>
@@ -252,13 +244,11 @@
 			</basicnumber>
 			<label name="timesep2">
 				<anchored to="addhour" position="righthigh" offset="5" />
-				<color>000000</color>
 				<static>:</static>
 			</label>
 			<basicnumber name="addminute" source="addminute">
 				<anchored to="timesep2" position="righthigh" offset="6" width="20" />
 				<font>calendarbold</font>
-				<color>000000</color>
 				<min>0</min>
 				<tooltip textres="desktop_addminute_tooltip" />
 				<script>
@@ -307,7 +297,6 @@
 					<top anchor="bottom" offset="10" />
 				</anchored>
 				<font>calendarbold</font>
-				<color>000000</color>
 				<min>0</min>
 				<tooltip textres="desktop_addday_tooltip" />
 				<script>
@@ -360,7 +349,6 @@
 			<basicnumber name="addmonth" source="addmonth">
 				<anchored to="addday" position="righthigh" offset="15" width="20" />
 				<font>calendarbold</font>
-				<color>000000</color>
 				<min>0</min>
 				<tooltip textres="desktop_addmonth_tooltip" />
 				<script>
@@ -410,7 +398,6 @@
 			<basicnumber name="addyear" source="addyear">
 				<anchored to="addmonth" position="righthigh" offset="10" width="50" />
 				<font>calendarbold</font>
-				<color>000000</color>
 				<min>0</min>
 				<tooltip textres="desktop_addyears_tooltip" />
 				<script>
@@ -507,7 +494,6 @@
 					<top anchor="bottom" offset="10" />
 				</anchored>
 				<font>calendarbold</font>
-				<color>000000</color>
 				<min>0</min>
 				<tooltip textres="desktop_longrest" />
 				<script>
@@ -574,7 +560,6 @@
 					<top anchor="bottom" offset="10" />
 				</anchored>
 				<font>calendarbold</font>
-				<color>000000</color>
 				<min>0</min>
 				<tooltip textres="desktop_shortrest" />
 				<script>
@@ -1076,7 +1061,6 @@
 					<right parent="rightanchor" anchor="left" relation="relative" offset="-10" />
 					<left offset="10" />
 				</anchored>
-				<color>000000</color>
 				<tabtarget next="nonid_name" prev="count" />
 			</stringu>
 		</sheetdata>
@@ -1264,31 +1248,26 @@
 			<label name="traveledlabel">
 				<anchored position="insidetopleft" offset="10,10" height="20" width="70" />
 				<font>calendarbold</font>
-				<color>000000</color>
 				<static text="Traveled" />
 			</label>
 			<label name="totallabel">
 				<anchored to="traveledlabel" position="belowleft" offset="0,10" height="20" width="70" />
 				<font>calendarbold</font>
-				<color>000000</color>
 				<static text="Distance:" />
 			</label>
 			<label name="remaininglabel">
 				<anchored to="totallabel" position="belowleft" offset="0,10" height="20" width="70" />
 				<font>calendarbold</font>
-				<color>000000</color>
 				<static text="Remaining:" />
 			</label>
 			<label name="travelspeedlabel">
 				<anchored to="remaininglabel" position="belowleft" offset="0,10" height="20" width="70" />
 				<font>calendarbold</font>
-				<color>000000</color>
 				<static text="Speed:" />
 			</label>
 			<label name="travelbylabel">
 				<anchored to="travelspeedlabel" position="belowleft" offset="0,10" height="20" width="70" />
 				<font>calendarbold</font>
-				<color>000000</color>
 				<static text="Travel by:" />
 			</label>
 			<simplenumber name="distanceremaining" source="distance.remaining">
@@ -1351,7 +1330,6 @@
 				<sourcefields>
 					<current>distance.speedunit</current>
 				</sourcefields>
-				<color>000000</color>
 				<frame name="fielddark" offset="0,0,0,0" />
 				<script>
 					function onValueChanged()
@@ -1383,7 +1361,6 @@
 				<sourcefields>
 					<current>distance.speedunit</current>
 				</sourcefields>
-				<color>000000</color>
 				<frame name="fielddark" offset="0,0,0,0" />
 				<tooltip text="Length Factor of Speed" />
 				<script>
@@ -1405,7 +1382,6 @@
 				<sourcefields>
 					<current>distance.perlimit</current>
 				</sourcefields>
-				<color>000000</color>
 				<frame name="fielddark" offset="0,0,0,0" />
 				<script>
 					function onValueChanged()
@@ -1563,7 +1539,6 @@
 				<sourcefields>
 					<current>distance.perlimit</current>
 				</sourcefields>
-				<color>000000</color>
 				<script>
 					function onValueChanged()
 						DB.setValue("distance.perlimit", "number", getValue());
@@ -1584,7 +1559,6 @@
 			<label name="travellabel">
 				<anchored to="travelbylabel" position="belowleft" offset="0,10" height="20" width="70" />
 				<font>calendarbold</font>
-				<color>000000</color>
 				<static text="Travel" />
 			</label>
 			<buttoncontrol name="travel">
@@ -2029,7 +2003,6 @@
 			<label name="encounterchance_label">
 				<anchored to="travellabel" position="belowleft" offset="0,10" height="20" width="70" />
 				<font>calendarbold</font>
-				<color>000000</color>
 				<static text="Chances" />
 			</label>
 			<basicnumber name="encounterchancenum">
@@ -2263,7 +2236,6 @@
 				<sourcefields>
 					<current>.repeattime</current>
 				</sourcefields>
-				<color>000000</color>
 				<script>
 					function onInit()
 						local rActor = window.getDatabaseNode();
@@ -2304,7 +2276,6 @@
 					<right parent="rightanchor" anchor="left" relation="relative" offset="-10" />
 					<left offset="10" />
 				</anchored>
-				<color>000000</color>
 				<tabtarget next="nonid_name" prev="count" />
 			</stringu>
 		</sheetdata>
@@ -2387,7 +2358,6 @@
 				<sourcefields>
 					<current>reminder.repeattime</current>
 				</sourcefields>
-				<color>000000</color>
 				<script>
 					function onInit()
 						local rActor = window.getDatabaseNode();
