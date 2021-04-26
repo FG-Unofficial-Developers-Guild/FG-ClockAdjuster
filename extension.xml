@@ -10,7 +10,7 @@
 		<description>Provides an interface for easier time management</description>
 	</properties>
 	
-	<announcement text="Clock Adjuster:\rThis extension is a GM tool which provides an interface for easy time tracking and management.\nThis extension is a combined effort of PR6I6E6ST (Troy Monteith) and bmos" font="emotefont" />
+	<announcement text="Clock Adjuster:\rThis extension is a GM tool which provides an interface for easy time tracking and management.\nThis extension is a combined effort of PR6I6E6ST (Troy Monteith), bmos, and MeAndUnique" font="emotefont" />
 	
 	<base>
 		<includefile source="desktop/desktop_panels.xml" />
