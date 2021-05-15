@@ -102,7 +102,7 @@
 				</script>
 			</label>
 			<label name="currentphase">
-				<anchored to="currentminute" position="righthigh" offset="10" />
+				<anchored to="currentminute" position="righthigh" offset="10" width="20" />
 				<font>calendarbold</font>
 				<center />
 			</label>
@@ -439,7 +439,7 @@
 			</basicnumber>
 			
 			<label name="addall">
-				<anchored to="addminute" position="righthigh" offset="9" />
+				<anchored to="addminute" position="righthigh" offset="9" width="20" />
 				<static textres="desktop_panel_add" />
 				<tooltip textres="desktop_addall_tooltip" />
 				<script>
