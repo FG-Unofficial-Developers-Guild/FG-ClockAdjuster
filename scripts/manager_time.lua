@@ -10,20 +10,20 @@ end
 
 --- Timer Functions
 function setStartTime(rActor, sFirst)
-	--Debug.console("setStartTime called; " .. sFirst .."");
+	-- Debug.console("setStartTime called; " .. sFirst .."");
 	local nodeActor = rActor;
 	nStartTime = getCurrentDateinMinutes(rActor);
-	--Debug.console("setStartTime; nStartTime =", nStartTime);
+	-- Debug.console("setStartTime; nStartTime =", nStartTime);
 	DB.setValue(nodeActor, "starttime", "number", nStartTime);
 	Debug.console("setStartTime", rActor, sFirst, nStartTime, DB.getValue(nodeActor, "starttime"));
-	--Debug.console("setStartTime; DB.setValue(nodeActor, " .. sFirst .. ".starttime, number, " .. nStartTime .. ") = ", DB.setValue(nodeActor, "" .. sFirst .. ".starttime", "number", nStartTime));
+	-- Debug.console("setStartTime; DB.setValue(nodeActor, " .. sFirst .. ".starttime, number, " .. nStartTime .. ") = ", DB.setValue(nodeActor, "" .. sFirst .. ".starttime", "number", nStartTime));
 end
 
 function getStartTime(rActor, sFirst)
-	--Debug.console("getStartTime called; " .. sFirst .."");
+	-- Debug.console("getStartTime called; " .. sFirst .."");
 	local nodeActor = rActor;
 	FetchStartTime = DB.getValue(nodeActor, "starttime", 0);
-	--Debug.console("setStartTime; FetchStartTime = DB.getValue(" .. nodeActor .. ", " .. sFirst .. ".starttime, " .. nStartTime .. ") = " .. DB.getValue(nodeActor, "" .. sFirst .. ".starttime", nStartTime) .. "");
+	-- Debug.console("setStartTime; FetchStartTime = DB.getValue(" .. nodeActor .. ", " .. sFirst .. ".starttime, " .. nStartTime .. ") = " .. DB.getValue(nodeActor, "" .. sFirst .. ".starttime", nStartTime) .. "");
 
 	return FetchStartTime;
 end
@@ -63,15 +63,15 @@ local function bigMessage(msgtxt, broadcast, rActor)
 end
 	
 function getCurrentDate()
-	--Debug.console("getCurrentDateinMinutes called;");
+	-- Debug.console("getCurrentDateinMinutes called;");
 	local nMinutes = DB.getValue("calendar.current.minute", 0);
-	--Debug.console("getCurrentDateinMinutes; nMinutes =", nMinutes);
+	-- Debug.console("getCurrentDateinMinutes; nMinutes =", nMinutes);
 	local nHours = DB.getValue("calendar.current.hour", 0);
-	--Debug.console("getCurrentDateinMinutes; nHours =", nHours);
+	-- Debug.console("getCurrentDateinMinutes; nHours =", nHours);
 	local nDays = DB.getValue("calendar.current.day", 0);
-	--Debug.console("getCurrentDateinMinutes; nDays =", nDays);
+	-- Debug.console("getCurrentDateinMinutes; nDays =", nDays);
 	local nMonths = DB.getValue("calendar.current.month", 0);
-	--Debug.console("getCurrentDateinMinutes; nMonths =", nMonths);
+	-- Debug.console("getCurrentDateinMinutes; nMonths =", nMonths);
 	local nYears = DB.getValue("calendar.current.year", 0);
 
 	if (bNoticePosted == false) and
@@ -126,33 +126,33 @@ function getCurrentDateinMinutes()
 	local nRounds = (DB.getValue("combattracker.round", 0) % 10);
 
 	local nRoundsinMinutes = (0.1 * nRounds);
-	--Debug.console("getCurrentDateinMinutes; nRoundsinMinutes =", nRoundsinMinutes);
+	-- Debug.console("getCurrentDateinMinutes; nRoundsinMinutes =", nRoundsinMinutes);
 	local nHoursinMinutes = convertHourstoMinutes(nHours) or 0;
-	--Debug.console("getCurrentDateinMinutes; nHoursinMinutes =", nHoursinMinutes);
+	-- Debug.console("getCurrentDateinMinutes; nHoursinMinutes =", nHoursinMinutes);
 	local nDaysinMinutes = convertDaystoMinutes(nDays) or 0;
-	--Debug.console("getCurrentDateinMinutes; nDaysinMinutes =", nDaysinMinutes);
+	-- Debug.console("getCurrentDateinMinutes; nDaysinMinutes =", nDaysinMinutes);
 	local nMonthsinMinutes = convertMonthssnowtoMinutes(nMonths, nYears) or 0;
-	--Debug.console("getCurrentDateinMinutes; nMonthsinMinutes =", nMonthsinMinutes);
+	-- Debug.console("getCurrentDateinMinutes; nMonthsinMinutes =", nMonthsinMinutes);
 	local nYearsinMinutes = convertYearsnowtoMinutes(nYears) or 0;
-	--Debug.console("getCurrentDateinMinutes; nYearsinMinutes =", nYearsinMinutes);
+	-- Debug.console("getCurrentDateinMinutes; nYearsinMinutes =", nYearsinMinutes);
 	
 	nDateinMinutes = nRoundsinMinutes + nHoursinMinutes + nDaysinMinutes + nMonthsinMinutes + nYearsinMinutes + nMinutes;
-	--Debug.console(getCurrentDateinMinutes);
+	-- Debug.console(getCurrentDateinMinutes);
 	
 	return nDateinMinutes;
 end
 --- Compare times
 function isTimeGreaterThan(rActor, sFirst, nCompareBy)
-	--Debug.console("isTimeGreaterThan called, sFirst = " .. sFirst .. ", nCompareBy = " .. nCompareBy .. ";");
+	-- Debug.console("isTimeGreaterThan called, sFirst = " .. sFirst .. ", nCompareBy = " .. nCompareBy .. ";");
 	local nodeActor = rActor;
 	local nStartTime = getStartTime(rActor, sFirst);
-	--Debug.console("isTimeGreaterThan, nStartTime = " .. rActor .. "");
+	-- Debug.console("isTimeGreaterThan, nStartTime = " .. rActor .. "");
 	local nCurrentTime = getCurrentDateinMinutes(rActor);
-	--Debug.console("isTimeGreaterThan, nCurrentTime = " .. nCurrentTime .. ", nCompareBy = " .. nCompareBy .. "");
+	-- Debug.console("isTimeGreaterThan, nCurrentTime = " .. nCurrentTime .. ", nCompareBy = " .. nCompareBy .. "");
 	
 	local nDifference = nCurrentTime - nStartTime;
 	Debug.console("isTimeGreaterThan", rActor, sFirst, nCompareBy, nStartTime, nCurrentTime, nDifference);
-	--Debug.console("isTimeGreaterThan; nDifference = " .. nDifference .. ", nCurrentTime = " .. nCurrentTime ..  ", nStartTime = " .. nStartTime .. "");
+	-- Debug.console("isTimeGreaterThan; nDifference = " .. nDifference .. ", nCurrentTime = " .. nCurrentTime ..  ", nStartTime = " .. nStartTime .. "");
 	if nDifference >= nCompareBy then
 		return true;
 	elseif nDifference < nCompareBy then
@@ -161,15 +161,15 @@ function isTimeGreaterThan(rActor, sFirst, nCompareBy)
 end
 
 function getTimeDifference(rActor, sFirst, nCompareBy)
-	--Debug.console("isTimeGreaterThan called, sFirst = " .. sFirst .. ", nCompareBy = " .. nCompareBy .. ";");
+	-- Debug.console("isTimeGreaterThan called, sFirst = " .. sFirst .. ", nCompareBy = " .. nCompareBy .. ";");
 	local nodeActor = rActor;
 	local nStartTime = DB.getValue(nodeActor, "starttime", 0);
-	--Debug.console("getTimeDifference; nStartTime = DB.getValue(nodeActor, " .. sFirst .. ".starttime, 0) = " .. DB.getValue(nodeActor, "" .. sFirst .. ".starttime", nStartTime) .. "");
+	-- Debug.console("getTimeDifference; nStartTime = DB.getValue(nodeActor, " .. sFirst .. ".starttime, 0) = " .. DB.getValue(nodeActor, "" .. sFirst .. ".starttime", nStartTime) .. "");
 	local nCurrentTime = getCurrentDateinMinutes();
-	--Debug.console("getTimeDifference, nCurrentTime = " .. nCurrentTime .. "");
+	-- Debug.console("getTimeDifference, nCurrentTime = " .. nCurrentTime .. "");
 	
 	local nDifference = nCurrentTime - nStartTime;
-	--Debug.console("getTimeDifference, nDifference = " .. nDifference .. ", nCurrentTime = " .. nCurrentTime .. ", nStartTime = " .. nStartTime .. "");
+	-- Debug.console("getTimeDifference, nDifference = " .. nDifference .. ", nCurrentTime = " .. nCurrentTime .. ", nStartTime = " .. nStartTime .. "");
 	return nDifference;
 end
 
@@ -184,88 +184,88 @@ end
 
 --- Time conversion functions
 function convertSecondstoMinutes(nNumber)
-	--Debug.console("convertSecondstoMinutes called, nNumber = " .. nNumber .. "");
+	-- Debug.console("convertSecondstoMinutes called, nNumber = " .. nNumber .. "");
 	local nMinutesTotaled = nNumber / 60;
-	--Debug.console("convertSecondstoMinutes, nMinutesTotaled = " .. nMinutesTotaled .. "");
+	-- Debug.console("convertSecondstoMinutes, nMinutesTotaled = " .. nMinutesTotaled .. "");
 	return nMinutesTotaled;
 end
 function convertHourstoMinutes(nNumber)
-	--Debug.console("convertHourstoMinutes called, nNumber = " .. nNumber .. "");
+	-- Debug.console("convertHourstoMinutes called, nNumber = " .. nNumber .. "");
 	local nMinutesTotaled = nNumber * 60;
-	--Debug.console("convertHourstoMinutes, nMinutesTotaled = " .. nMinutesTotaled .. "");
+	-- Debug.console("convertHourstoMinutes, nMinutesTotaled = " .. nMinutesTotaled .. "");
 	return nMinutesTotaled;
 end
 function convertMinutestoHours(nNumber)
-	--Debug.console("convertMinutestoHours called, nNumber = " .. nNumber .. "");
+	-- Debug.console("convertMinutestoHours called, nNumber = " .. nNumber .. "");
 	local nHoursTotaled = nNumber / 60;
-	--Debug.console("convertMinutestoHours, nHoursTotaled = " .. nHoursTotaled .. "");
+	-- Debug.console("convertMinutestoHours, nHoursTotaled = " .. nHoursTotaled .. "");
 	return nHoursTotaled;
 end
 function convertHourstoDays(nNumber)
-	--Debug.console("convertHourstoDays called, nNumber = " .. nNumber .. "");
+	-- Debug.console("convertHourstoDays called, nNumber = " .. nNumber .. "");
 	local nDaysTotaled = nNumber / 24;
-	--Debug.console("convertHourstoDays, nDaysTotaled = " .. nDaysTotaled .. "");
+	-- Debug.console("convertHourstoDays, nDaysTotaled = " .. nDaysTotaled .. "");
 	return nDaysTotaled;
 end
 function convertDaystoHours(nNumber)
-	--Debug.console("convertDaystoHours called, nNumber = " .. nNumber .. "");
+	-- Debug.console("convertDaystoHours called, nNumber = " .. nNumber .. "");
 	local nHoursTotaled = nNumber * 24;
-	--Debug.console("convertDaystoHours, nHoursTotaled = " .. nHoursTotaled .. "");
+	-- Debug.console("convertDaystoHours, nHoursTotaled = " .. nHoursTotaled .. "");
 	return nHoursTotaled;
 end
 function convertMinutestoDays(nNumber)
-	--Debug.console("convertMinutestoDays called, nNumber = " .. nNumber .. "");
+	-- Debug.console("convertMinutestoDays called, nNumber = " .. nNumber .. "");
 	local nHoursTotaled = convertMinutestoHours(nNumber);
 	local nDaysTotaled = convertHourstoDays(nHoursTotaled);
-	--Debug.console("convertMinutestoDays, nHoursTotaled = " .. nHoursTotaled .. ", nDaysTotaled = " .. nDaysTotaled .. "");
+	-- Debug.console("convertMinutestoDays, nHoursTotaled = " .. nHoursTotaled .. ", nDaysTotaled = " .. nDaysTotaled .. "");
 	return nDaysTotaled;
 end
 function convertDaystoMinutes(nNumber)
-	--Debug.console("convertDaystoMinutes called, nNumber = " .. nNumber .. "");
+	-- Debug.console("convertDaystoMinutes called, nNumber = " .. nNumber .. "");
 	local nDaysinHours = convertDaystoHours(nNumber);
 	local nMinutesTotaled = convertHourstoMinutes(nDaysinHours);
-	--Debug.console("convertDaystoMinutes, nDaysinHours = " .. nDaysinHours .. ", nMinutesTotaled = " .. nMinutesTotaled .. "");
+	-- Debug.console("convertDaystoMinutes, nDaysinHours = " .. nDaysinHours .. ", nMinutesTotaled = " .. nMinutesTotaled .. "");
 	return nMinutesTotaled;
 end
 function convertMonthtoHours(nMonth, nYear)
-	--Debug.console("convertMonthtoHours called, nNumber = " .. nNumber .. "");
-	--Debug.console("convertMonthtoHours, nMonth = " .. nMonth .. ", nYear = " .. nYear .. "");
+	-- Debug.console("convertMonthtoHours called, nNumber = " .. nNumber .. "");
+	-- Debug.console("convertMonthtoHours, nMonth = " .. nMonth .. ", nYear = " .. nYear .. "");
 	nDays = getDaysInMonth(nMonth, nYear);
 	nHoursTotaled = convertDaystoHours(nDays);
-	--Debug.console("convertMonthtoHours, nDays = " .. nDays .. ", nHoursTotaled = " .. nHoursTotaled .. "");
+	-- Debug.console("convertMonthtoHours, nDays = " .. nDays .. ", nHoursTotaled = " .. nHoursTotaled .. "");
 	return nHoursTotaled;
 end
 function convertMonthtoMinutes(nMonth, nYear)
-	--Debug.console("convertMonthtoMinutes called, nNumber = " .. nNumber .. "");
-	--Debug.console("convertMonthtoMinutes, nDays = " .. nDays .. ", nYear = " .. nYear .. "");
+	-- Debug.console("convertMonthtoMinutes called, nNumber = " .. nNumber .. "");
+	-- Debug.console("convertMonthtoMinutes, nDays = " .. nDays .. ", nYear = " .. nYear .. "");
 	nDays = getDaysInMonth(nMonth, nYear);
 	nMinutesTotaled = convertDaystoMinutes(nDays);
-	--Debug.console("convertMonthtoMinutes, nDays = " .. nDays .. ", nMinutesTotaled = " .. nMinutesTotaled .. "");
+	-- Debug.console("convertMonthtoMinutes, nDays = " .. nDays .. ", nMinutesTotaled = " .. nMinutesTotaled .. "");
 	return nMinutesTotaled;
 end
 function convertYeartoHours(nNumber)
-	--Debug.console("convertYeartoHours called, nNumber = " .. nNumber .. "");
+	-- Debug.console("convertYeartoHours called, nNumber = " .. nNumber .. "");
 	local nYearinDays = 365;
 	bisLeapYear = isLeapYear(nNumber);
-	--Debug.console("convertYeartoHours, nYearinDays = " .. nYearinDays .. ", bisLeapYear = ", bisLeapYear);
+	-- Debug.console("convertYeartoHours, nYearinDays = " .. nYearinDays .. ", bisLeapYear = ", bisLeapYear);
 	if bisLeapYear == true then
 		nYearinDays = nYearinDays + 1;
-	--Debug.console("convertYeartoHours, nYearinHours = " .. nYearinHours .. ", nYearinDays = " .. nYearinDays .. ", bisLeapYear = ", bisLeapYear);
+	-- Debug.console("convertYeartoHours, nYearinHours = " .. nYearinHours .. ", nYearinDays = " .. nYearinDays .. ", bisLeapYear = ", bisLeapYear);
 	end
 	nYearinHours = nYearinDays * 24;
-	--Debug.console("convertYeartoHours, nYearinHours = " .. nYearinHours .. ", nYearinDays = " .. nYearinDays .. "");
+	-- Debug.console("convertYeartoHours, nYearinHours = " .. nYearinHours .. ", nYearinDays = " .. nYearinDays .. "");
 	return nYearinHours;
 end
 function convertYeartoMinutes(nNumber)
-	--Debug.console("convertYeartoMinutes called, nNumber = " .. nNumber .. "");
+	-- Debug.console("convertYeartoMinutes called, nNumber = " .. nNumber .. "");
 	local nYearinHours = convertYeartoHours(nNumber);
 	nYearinMinutes = nYearinHours * 60;
-	--Debug.console("convertYeartoMinutes, nYearinHours = " .. nYearinHours .. ", nYearinMinutes = " .. nYearinMinutes .. "");
+	-- Debug.console("convertYeartoMinutes, nYearinHours = " .. nYearinHours .. ", nYearinMinutes = " .. nYearinMinutes .. "");
 	return nYearinMinutes;
 end
 
 function convertYearsnowtoMinutes(nYear)
-	--Debug.console("convertYeartoMinutes called, nNumber = " .. nYear .. "");
+	-- Debug.console("convertYeartoMinutes called, nNumber = " .. nYear .. "");
 	local nYearCount = 0;
 	local nYearinDays = 365;
 	local nLeapYear = 0;
@@ -273,29 +273,29 @@ function convertYearsnowtoMinutes(nYear)
 	
 	for i=1,nYear do
 		if nYearCount < nYear then
-			--Debug.console("convertYearsnowtoMinutes, nYearCount = " .. nYearCount .. ", nYear = " .. nYear .. "");
+			-- Debug.console("convertYearsnowtoMinutes, nYearCount = " .. nYearCount .. ", nYear = " .. nYear .. "");
 			nYearinHours = convertYeartoHours(nYearCount);
 			nMinutesTotaled = nMinutesTotaled + convertHourstoMinutes(nYearinHours);
 			nYearCount = nYearCount + 1;
-			--Debug.console("convertYearsnowtoMinutes, nYearinHours = " .. nYearinHours .. ", nMinutesTotaled = " .. nMinutesTotaled .. ", nYearCount = " .. nYearCount .. "");
+			-- Debug.console("convertYearsnowtoMinutes, nYearinHours = " .. nYearinHours .. ", nMinutesTotaled = " .. nMinutesTotaled .. ", nYearCount = " .. nYearCount .. "");
 		end
 	end
-	--Debug.console("convertYearsnowtoMinutes, nMinutesTotaled = " .. nMinutesTotaled .. "");
+	-- Debug.console("convertYearsnowtoMinutes, nMinutesTotaled = " .. nMinutesTotaled .. "");
 	return nMinutesTotaled;
 end
 function convertMonthssnowtoMinutes(nMonth, nYear)
 	local nCount = 1;
 	local nMinutes = 0;
-	--Debug.console("convertMonthssnowtoMinutes called, nMonth = " .. nMonth .. ", nYear = " .. nYear .. "");
+	-- Debug.console("convertMonthssnowtoMinutes called, nMonth = " .. nMonth .. ", nYear = " .. nYear .. "");
 	for i=1,nMonth do
 		if nCount < nMonth then
-			--Debug.console("convertMonthssnowtoMinutes, nCount = " .. nCount .. ", nMonth = " .. nMonth .. "");
+			-- Debug.console("convertMonthssnowtoMinutes, nCount = " .. nCount .. ", nMonth = " .. nMonth .. "");
 			nMinutes = convertMonthtoMinutes(nCount, nYear) + nMinutes;
 			nCount = nCount + 1;
-			--Debug.console("convertMonthssnowtoMinutes, nMinutes = " .. nMinutes .. ", nCount = " .. nCount .. "");
+			-- Debug.console("convertMonthssnowtoMinutes, nMinutes = " .. nMinutes .. ", nCount = " .. nCount .. "");
 		end
 	end
-	--Debug.console("convertMonthssnowtoMinutes, nMinutes = " .. nMinutes .. ", nCount = " .. nCount .. "");
+	-- Debug.console("convertMonthssnowtoMinutes, nMinutes = " .. nMinutes .. ", nCount = " .. nCount .. "");
 	return nMinutes;
 end
 
@@ -303,7 +303,7 @@ end
 function getDaysInMonth(nMonth, nYear)
 	local nVar = 0;
 	local nDays = DB.getValue("calendar.data.periods.period" .. nMonth .. ".days", 0);
-	--Debug.console("getDaysInMonth called, nMonth = " .. nMonth .. ", nYear = " .. nYear .. ", nDays = " .. nDays .. "");
+	-- Debug.console("getDaysInMonth called, nMonth = " .. nMonth .. ", nYear = " .. nYear .. ", nDays = " .. nDays .. "");
 	if nMonth == 2 then
 		bisLeapYear = isLeapYear(nYear);
 		if bisLeapYear == true then
@@ -313,7 +313,7 @@ function getDaysInMonth(nMonth, nYear)
 		nVar = 0;
 	end
 	nDays = nDays + nVar;
-	--Debug.console("getDaysInMonth called, nVar = " .. nVar .. ", nYear = " .. nYear .. ", nDays = " .. nDays .. "");
+	-- Debug.console("getDaysInMonth called, nVar = " .. nVar .. ", nYear = " .. nYear .. ", nDays = " .. nDays .. "");
 	
 	return nDays;
 end
