@@ -204,6 +204,8 @@ local function nextRound_new(nRounds, bTimeChanged)
 			advanceRoundsOnTimeChanged(nRounds + 1 - i);
 			DB.setValue("combattracker.round", 'number', nRounds - 1);
 			break
+		elseif nRounds and nRounds >= 99 then
+			-- put chat message here warning it might take a while to process
 		end
 		-- end checking for necessity of full processing of rounds
 
