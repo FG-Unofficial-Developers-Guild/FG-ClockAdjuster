@@ -24,7 +24,7 @@
 				<stateframe>
 					<hover name="fieldfocus" offset="7,5,7,5" />
 				</stateframe>
-				<font>calendarbold</font>
+				<!-- <font>calendarbold</font> -->
 				<readonly />
 				<center />
 				<script>
@@ -81,7 +81,7 @@
 				<stateframe>
 					<hover name="fieldfocus" offset="7,5,7,5" />
 				</stateframe>
-				<font>calendarbold</font>
+				<!-- <font>calendarbold</font> -->
 				<readonly />
 				<center />
 				<script>
@@ -103,7 +103,7 @@
 			</label>
 			<label name="currentphase">
 				<anchored to="currentminute" position="righthigh" offset="10" width="20" />
-				<font>calendarbold</font>
+				<!-- <font>calendarbold</font> -->
 				<center />
 			</label>
 			<label name="currentday">
@@ -112,7 +112,7 @@
 				<stateframe>
 					<hover name="fieldfocus" offset="7,5,7,5" />
 				</stateframe>
-				<font>calendarbold</font>
+				<!-- <font>calendarbold</font> -->
 				<readonly />
 				<center />
 				<script>
@@ -138,7 +138,7 @@
 				<stateframe>
 					<hover name="fieldfocus" offset="7,5,7,5" />
 				</stateframe>
-				<font>calendarbold</font>
+				<!-- <font>calendarbold</font> -->
 				<readonly />
 				<center />
 				<script>
@@ -164,7 +164,7 @@
 				<stateframe>
 					<hover name="fieldfocus" offset="7,5,7,5" />
 				</stateframe>
-				<font>calendarbold</font>
+				<!-- <font>calendarbold</font> -->
 				<readonly />
 				<center />
 				<script>
@@ -192,7 +192,7 @@
 					<left anchor="left" offset="0" />
 					<top anchor="bottom" offset="10" />
 				</anchored>
-				<font>calendarbold</font>
+				<!-- <font>calendarbold</font> -->
 				<min>0</min>
 				<tooltip textres="desktop_addhour_tooltip" />
 				<script>
@@ -248,7 +248,7 @@
 			</label>
 			<basicnumber name="addminute" source="addminute">
 				<anchored to="timesep2" position="righthigh" offset="6" width="20" />
-				<font>calendarbold</font>
+				<!-- <font>calendarbold</font> -->
 				<min>0</min>
 				<tooltip textres="desktop_addminute_tooltip" />
 				<script>
@@ -296,7 +296,7 @@
 					<left anchor="left" offset="0" />
 					<top anchor="bottom" offset="10" />
 				</anchored>
-				<font>calendarbold</font>
+				<!-- <font>calendarbold</font> -->
 				<min>0</min>
 				<tooltip textres="desktop_addday_tooltip" />
 				<script>
@@ -348,7 +348,7 @@
 			</basicnumber>
 			<basicnumber name="addmonth" source="addmonth">
 				<anchored to="addday" position="righthigh" offset="15" width="20" />
-				<font>calendarbold</font>
+				<!-- <font>calendarbold</font> -->
 				<min>0</min>
 				<tooltip textres="desktop_addmonth_tooltip" />
 				<script>
@@ -397,7 +397,7 @@
 			</basicnumber>
 			<basicnumber name="addyear" source="addyear">
 				<anchored to="addmonth" position="righthigh" offset="10" width="50" />
-				<font>calendarbold</font>
+				<!-- <font>calendarbold</font> -->
 				<min>0</min>
 				<tooltip textres="desktop_addyears_tooltip" />
 				<script>
@@ -493,7 +493,7 @@
 					<left anchor="left" offset="0" />
 					<top anchor="bottom" offset="10" />
 				</anchored>
-				<font>calendarbold</font>
+				<!-- <font>calendarbold</font> -->
 				<min>0</min>
 				<tooltip textres="desktop_longrest" />
 				<script>
@@ -559,7 +559,7 @@
 					<left anchor="left" offset="0" />
 					<top anchor="bottom" offset="10" />
 				</anchored>
-				<font>calendarbold</font>
+				<!-- <font>calendarbold</font> -->
 				<min>0</min>
 				<tooltip textres="desktop_shortrest" />
 				<script>
@@ -1247,27 +1247,27 @@
 		<sheetdata>
 			<label name="traveledlabel">
 				<anchored position="insidetopleft" offset="10,10" height="20" width="70" />
-				<font>calendarbold</font>
+				<!-- <font>calendarbold</font> -->
 				<static text="Traveled" />
 			</label>
 			<label name="totallabel">
 				<anchored to="traveledlabel" position="belowleft" offset="0,10" height="20" width="70" />
-				<font>calendarbold</font>
+				<!-- <font>calendarbold</font> -->
 				<static text="Distance:" />
 			</label>
 			<label name="remaininglabel">
 				<anchored to="totallabel" position="belowleft" offset="0,10" height="20" width="70" />
-				<font>calendarbold</font>
+				<!-- <font>calendarbold</font> -->
 				<static text="Remaining:" />
 			</label>
 			<label name="travelspeedlabel">
 				<anchored to="remaininglabel" position="belowleft" offset="0,10" height="20" width="70" />
-				<font>calendarbold</font>
+				<!-- <font>calendarbold</font> -->
 				<static text="Speed:" />
 			</label>
 			<label name="travelbylabel">
 				<anchored to="travelspeedlabel" position="belowleft" offset="0,10" height="20" width="70" />
-				<font>calendarbold</font>
+				<!-- <font>calendarbold</font> -->
 				<static text="Travel by:" />
 			</label>
 			<simplenumber name="distanceremaining" source="distance.remaining">
@@ -1558,7 +1558,7 @@
 			
 			<label name="travellabel">
 				<anchored to="travelbylabel" position="belowleft" offset="0,10" height="20" width="70" />
-				<font>calendarbold</font>
+				<!-- <font>calendarbold</font> -->
 				<static text="Travel" />
 			</label>
 			<buttoncontrol name="travel">
@@ -2002,7 +2002,7 @@
 			</button_checkbox>
 			<label name="encounterchance_label">
 				<anchored to="travellabel" position="belowleft" offset="0,10" height="20" width="70" />
-				<font>calendarbold</font>
+				<!-- <font>calendarbold</font> -->
 				<static text="Chances" />
 			</label>
 			<basicnumber name="encounterchancenum">
