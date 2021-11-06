@@ -271,6 +271,8 @@ function onInit()
 		EffectManager.setCustomOnEffectAddStart(onEffectAddStart_new);
 		if sRuleset ~= '3.5E' or sRuleset ~= 'PFRPG' then
 			EffectManager35E.onEffectAddStart = onEffectAddStart_new;
+		elseif sRuleset ~= '5E' then
+			EffectManager5E.onEffectAddStart = onEffectAddStart_new;
 		end
 	end
 
