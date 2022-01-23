@@ -5,12 +5,12 @@
 <root version='3.3' release='3'>
 	<properties>
 		<name>Feature: Clock Adjuster</name>
-		<version>2.5</version>
+		<version>2.4.1</version>
 		<author>pr6i6est, bmos, and MeAndUnique</author>
 		<description>Provides an interface for easier time management</description>
 	</properties>
 	
-	<announcement text="https://www.fantasygrounds.com/forums/showthread.php?57561-Utility-Clock-Adjuster\rClock Adjuster v2.5:\rEvents, reminders, travel, and time.\rBy PR6I6E6ST, bmos, and MeAndUnique." font="emotefont" />
+	<announcement text="Clock Adjuster v2.4.1 FGC/FGU (2/9/22)\rPR6I6E6ST, bmos, MeAndUnique, Justin Freitas" font="emotefont" icon="clock_icon" />
 	
 	<base>
 		<includefile source="graphics/graphics_frames.xml" />
@@ -21,5 +21,6 @@
 		<script name="TimeManager" file="scripts/manager_time.lua" />
 		<script name="LongTermEffects" file="scripts/longtermeffects.lua" />
 		<includefile source="desktop/desktop_panels.xml" />
+		<icon name="clock_icon" file="graphics/icons/clock.png" />
 	</base>
 </root>
