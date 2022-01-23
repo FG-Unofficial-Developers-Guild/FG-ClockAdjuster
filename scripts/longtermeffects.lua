@@ -1,4 +1,4 @@
--- 
+--
 -- Please see the LICENSE.md file included with this distribution for attribution and copyright information.
 --
 
@@ -22,7 +22,7 @@ function advanceRoundsOnTimeChanged(nRounds)
 				end
 			end
 		end
-		
+
 		return true
 	end
 end
@@ -61,7 +61,7 @@ local function filterTable(tTable, filterFunction)
 			table.insert(tFiltered, key, value)
 		end
 	end
-	
+
 	return tFiltered;
 end
 
@@ -72,13 +72,12 @@ local function splitEffectIntoComponentsTypes(sEffect)
 		local component = EffectManager.parseEffectCompSimple(effectComp).type
 		table.insert(aComponentTypes, index, component)
 	end
-	
+
 	return aComponentTypes;
 end
 
 local function effectTypeShouldBeChecked(sEffectComponentType)
 	local arrsComponentsToInclude = { 'FHEAL', 'REGEN', 'DMGO' };
-	
 	return StringManager.contains(arrsComponentsToInclude, sEffectComponentType);
 end
 
@@ -87,33 +86,30 @@ local function actorRequiresSlowMode(rActor, arrSEffects)
 	local sActorHealth = ActorHealthManager.getHealthStatus(rActor);
 
 	-- Has ongoing damage, and still lives.
-	if StringManager.contains(arrSEffects, 'DMGO') then
-		if sActorHealth ~= ActorHealthManager.STATUS_DEAD then
-			return true;
-		end
+	if StringManager.contains(arrSEffects, 'DMGO') and
+	   sActorHealth ~= ActorHealthManager.STATUS_DEAD then
+		return true;
 	end
 
 	-- Healing through Regeneration
-	if StringManager.contains(arrSEffects, 'REGEN') then
-		if sActorHealth ~= ActorHealthManager.STATUS_HEALTHY then
-			return true;
-		end
+	if StringManager.contains(arrSEffects, 'REGEN') and
+	   sActorHealth ~= ActorHealthManager.STATUS_HEALTHY then
+		return true;
 	end
+
 	-- Healing through Fast Healing
-	if StringManager.contains(arrSEffects, 'FHEAL') then
-		if sActorHealth ~= ActorHealthManager.STATUS_HEALTHY and sActorHealth ~= ActorHealthManager.STATUS_DEAD then
-			return true;
-		end
+	if StringManager.contains(arrSEffects, 'FHEAL') and
+	   sActorHealth ~= ActorHealthManager.STATUS_HEALTHY
+	   and sActorHealth ~= ActorHealthManager.STATUS_DEAD then
+		return true;
 	end
+
 	return false;
 end
 
 local function isActorDying(rActor, bIsStable)
 	local sActorHealth = ActorHealthManager.getHealthStatus(rActor);
-	if not bIsStable and sActorHealth == ActorHealthManager.STATUS_DYING then
-		return true;
-	end
-	return false;
+	return not bIsStable and sActorHealth == ActorHealthManager.STATUS_DYING;
 end
 
 local function getIsStableAndEffectsToCheck(nodeCT)
@@ -133,6 +129,7 @@ local function getIsStableAndEffectsToCheck(nodeCT)
 			end
 		end
 	end
+
 	return bIsCTStable, aEffectsRequiringSlowMode;
 end
 
@@ -149,6 +146,7 @@ local function shouldSwitchToQuickSimulation()
 			return false;
 		end
 	end
+
 	return true
 end
 
@@ -212,9 +210,9 @@ local function nextRound_new(nRounds, bTimeChanged)
 		end
 		-- end checking for necessity of full processing of rounds
 
-		for i = 1,#aEntries do
-			CombatManager.onTurnStartEvent(aEntries[i]);
-			CombatManager.onTurnEndEvent(aEntries[i]);
+		for j = 1,#aEntries do
+			CombatManager.onTurnStartEvent(aEntries[j]);
+			CombatManager.onTurnEndEvent(aEntries[j]);
 		end
 
 		CombatManager.onInitChangeEvent();
@@ -261,10 +259,10 @@ function onInit()
 	if sRuleset == '3.5E' or sRuleset == 'PFRPG' or sRuleset == 'PFRPG2' or sRuleset == '5E' then
 		nextRound_old = CombatManager.nextRound;
 		CombatManager.nextRound = nextRound_new;
-		
+
 		resetInit_old = CombatManager.resetInit;
 		CombatManager.resetInit = resetInit_new;
-		
+
 		clearExpiringEffects_old = CombatManager2.clearExpiringEffects;
 		CombatManager2.clearExpiringEffects = clearExpiringEffects_new;
 
