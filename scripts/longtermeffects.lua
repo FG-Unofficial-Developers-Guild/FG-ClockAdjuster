@@ -267,7 +267,7 @@ function onInit()
 		CombatManager2.clearExpiringEffects = clearExpiringEffects_new;
 
 		EffectManager.setCustomOnEffectAddStart(onEffectAddStart_new);
-		if sRuleset == '3.5E' or sRuleset == 'PFRPG' then
+		if sRuleset == '3.5E' or sRuleset == 'PFRPG' or sRuleset == 'PFRPG2' then
 			EffectManager35E.onEffectAddStart = onEffectAddStart_new;
 		elseif sRuleset == '5E' then
 			EffectManager5E.onEffectAddStart = onEffectAddStart_new;

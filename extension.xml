@@ -10,7 +10,7 @@
 		<description>Provides an interface for easier time management</description>
 	</properties>
 	
-	<announcement text="Clock Adjuster: Open event/reminder window to enable output, it is disabled by default.\rThis extension is a combined effort of PR6I6E6ST (Troy Monteith), bmos, and MeAndUnique" font="emotefont" icon="clock_icon" />
+	<announcement text="Clock Adjuster: A combined effort of PR6I6E6ST (Troy Monteith), bmos, and MeAndUnique" font="emotefont" icon="clock_icon" />
 	
 	<base>
 		<includefile source="desktop/desktop_panels.xml" />
