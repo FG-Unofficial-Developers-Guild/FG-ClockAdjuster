@@ -667,10 +667,10 @@
 						
 							local nDateinMinutes = TimeManager.getCurrentDateinMinutes();
 							DB.setValue("calendar.dateinminutes", "number", nDateinMinutes);
-							DB.setValue("calendar.dateinminutesstring", "string", tostring(nDateinMinutes))
+							DB.setValue("calendar.dateinminutesstring", "string", tostring(nDateinMinutes));
 
 							local nCurrentRound = DB.getValue("combattracker.round", 0);
-							nCurrentRound = nCurrentRound % 10
+							nCurrentRound = nCurrentRound % 10;
 							DB.setValue("combattracker.round", 'number', nCurrentRound);
 						end
 					end
@@ -714,10 +714,10 @@
 							
 							local nDateinMinutes = TimeManager.getCurrentDateinMinutes();
 							DB.setValue("calendar.dateinminutes", "number", nDateinMinutes);
-							DB.setValue("calendar.dateinminutesstring", "string", tostring(nDateinMinutes))
+							DB.setValue("calendar.dateinminutesstring", "string", tostring(nDateinMinutes));
 
 							local nCurrentRound = DB.getValue("combattracker.round", 0);
-							nCurrentRound = nCurrentRound % 10
+							nCurrentRound = nCurrentRound % 10;
 							DB.setValue("combattracker.round", 'number', nCurrentRound);
 						end
 					end
@@ -762,10 +762,10 @@
 							
 							local nDateinMinutes = TimeManager.getCurrentDateinMinutes();
 							DB.setValue("calendar.dateinminutes", "number", nDateinMinutes);
-							DB.setValue("calendar.dateinminutesstring", "string", tostring(nDateinMinutes))
+							DB.setValue("calendar.dateinminutesstring", "string", tostring(nDateinMinutes));
 
 							local nCurrentRound = DB.getValue("combattracker.round", 0);
-							nCurrentRound = nCurrentRound % 10
+							nCurrentRound = nCurrentRound % 10;
 							DB.setValue("combattracker.round", 'number', nCurrentRound);
 						end
 					end
@@ -867,7 +867,7 @@
 					end
 					function onTimeChanged()
 						for _,w in pairs(getWindows()) do
-							w.onTimeChanged()
+							w.onTimeChanged();
 						end
 					end
 					function update()
@@ -1054,7 +1054,6 @@
 		<softclose />
 		<sharable />
 		<script>
-			nString = "";
 			function onLockChanged()
 				
 				local bReadOnly = WindowManager.getReadOnlyState(getDatabaseNode());
@@ -1064,18 +1063,18 @@
 				day.setReadOnly(bReadOnly);
 				month.setReadOnly(bReadOnly);
 				year.setReadOnly(bReadOnly);
-				nMonth = (month.getValue() or 0);
-				nDay = (day.getValue() or 0);
-				nYear = (year.getValue() or 0);
+				nMonth = month.getValue() or 0;
+				nDay = day.getValue() or 0;
+				nYear = year.getValue() or 0;
 				if bDone == nil then 
 					bDone = false; 
 				end
-				if bDone == false then
-					if bReadOnly == true then
-						nString = (text.getValue() or "");
-						TimeManager.addLogEntry(nMonth, nDay, nYear, nString);
-						bDone = true;
-					end
+
+				if bDone == false and bReadOnly == true then
+					local sText = text.getValue() or "";
+					bGMVisible = isgmonly.getValue() == 1;
+					TimeManager.addLogEntry(nMonth, nDay, nYear, bGMVisible, getDatabaseNode());
+					bDone = true;
 				end
 			end
 		</script>
@@ -1149,11 +1148,7 @@
 						nMonth = (window.month.getValue() or 0);
 						nDay = (window.day.getValue() or 0);
 						nYear = (window.year.getValue() or 0);
-						if window.isgmonly.getValue() == 1 then
-							bGMVisible = true;
-						elseif window.isgmonly.getValue() == 0 then
-							bGMVisible = false;
-						end
+						bGMVisible = window.isgmonly.getValue() == 1;
 						local sName = DB.getValue(window.getDatabaseNode(), "name", "");
 						local nodeOld = TimeManager.addLogEntry(nMonth, nDay, nYear, bGMVisible, window.getDatabaseNode());
 
