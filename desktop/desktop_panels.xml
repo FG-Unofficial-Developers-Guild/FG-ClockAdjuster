@@ -202,7 +202,7 @@
 				<tooltip textres="desktop_addhour_tooltip" />
 				<script>
 					function onInit()
-						DB.setValue(getDatabaseNode(), "addhour", "number", (getValue() or 0));
+						setValue(tonumber(OptionsManager.getOption(TimeManager.CLOCKADJUSTER_DEFAULT_HOURS)) or 0);
 					end
 					function onClose()
 						DB.setValue(getDatabaseNode(), "addhour", "number", (getValue() or 0));
@@ -258,10 +258,10 @@
 				<tooltip textres="desktop_addminute_tooltip" />
 				<script>
 					function onInit()
-						DB.setValue(getDatabaseNode(), "addminute", "number", (getValue() or 0));
+						setValue(tonumber(OptionsManager.getOption(TimeManager.CLOCKADJUSTER_DEFAULT_MINUTES)) or 0);
 					end
 					function onClose()
-						DB.setValue(getDatabaseNode(), "addminute", "number", (getValue() or 0));
+						DB.setValue(getDatabaseNode(), "addminute", "number", getValue() or 0);
 					end
 					function onDoubleClick()
 						local nMinute = getValue() or 0;
@@ -306,7 +306,7 @@
 				<tooltip textres="desktop_addday_tooltip" />
 				<script>
 					function onInit()
-						DB.setValue(getDatabaseNode(), "addday", "number", (getValue() or 0));
+						setValue(tonumber(OptionsManager.getOption(TimeManager.CLOCKADJUSTER_DEFAULT_DAYS)) or 0);
 					end
 					function onClose()
 						DB.setValue(getDatabaseNode(), "addday", "number", (getValue() or 0));
@@ -358,7 +358,7 @@
 				<tooltip textres="desktop_addmonth_tooltip" />
 				<script>
 					function onInit()
-						DB.setValue(getDatabaseNode(), "addmonth", "number", (getValue() or 0));
+						setValue(tonumber(OptionsManager.getOption(TimeManager.CLOCKADJUSTER_DEFAULT_MONTHS)) or 0);
 					end
 					function onClose()
 						DB.setValue(getDatabaseNode(), "addmonth", "number", (getValue() or 0));
@@ -407,7 +407,7 @@
 				<tooltip textres="desktop_addyears_tooltip" />
 				<script>
 					function onInit()
-						DB.setValue(getDatabaseNode(), "addyear", "number", (getValue() or 0));
+						setValue(tonumber(OptionsManager.getOption(TimeManager.CLOCKADJUSTER_DEFAULT_YEARS)) or 0);
 					end
 					function onClose()
 						DB.setValue(getDatabaseNode(), "addyear", "number", (getValue() or 0));
@@ -445,7 +445,7 @@
 			</basicnumber>
 			
 			<label name="addall">
-				<anchored to="addminute" position="righthigh" offset="9" width="20" />
+				<anchored to="addminute" position="righthigh" offset="9" width="25" />
 				<static textres="desktop_panel_add" />
 				<tooltip textres="desktop_addall_tooltip" />
 				<script>

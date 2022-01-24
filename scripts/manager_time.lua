@@ -2,10 +2,27 @@
 -- Please see the LICENSE.md file included with this distribution for attribution and copyright information.
 --
 
+CLOCKADJUSTER_DEFAULT_HOURS = "CLOCKADJUSTER_DEFAULT_HOURS"
+CLOCKADJUSTER_DEFAULT_MINUTES = "CLOCKADJUSTER_DEFAULT_MINUTES"
+CLOCKADJUSTER_DEFAULT_DAYS = "CLOCKADJUSTER_DEFAULT_DAYS"
+CLOCKADJUSTER_DEFAULT_MONTHS = "CLOCKADJUSTER_DEFAULT_MONTHS"
+CLOCKADJUSTER_DEFAULT_YEARS = "CLOCKADJUSTER_DEFAULT_YEARS"
 local bNoticePosted = false
 
 function onInit()
 	DB.addHandler("calendar.log", "onChildUpdate", onEventsChanged);
+
+	-- Options for the Clock Manager add defaults
+	OptionsManager.registerOption2(CLOCKADJUSTER_DEFAULT_HOURS, false, "option_header_CLOCKADJUSTER", "option_label_CLOCKADJUSTER_DEFAULT_HOURS", "option_entry_cycler",
+	{ baselabel = "option_val_zero_CLOCKADJUSTER", baseval = "0", labels = "option_val_one_CLOCKADJUSTER|option_val_five_CLOCKADJUSTER|option_val_ten_CLOCKADJUSTER", values = "1|5|10", default = "0" });
+	OptionsManager.registerOption2(CLOCKADJUSTER_DEFAULT_MINUTES, false, "option_header_CLOCKADJUSTER", "option_label_CLOCKADJUSTER_DEFAULT_MINUTES", "option_entry_cycler",
+	{ baselabel = "option_val_zero_CLOCKADJUSTER", baseval = "0", labels = "option_val_one_CLOCKADJUSTER|option_val_five_CLOCKADJUSTER|option_val_ten_CLOCKADJUSTER", values = "1|5|10", default = "0" });
+	OptionsManager.registerOption2(CLOCKADJUSTER_DEFAULT_DAYS, false, "option_header_CLOCKADJUSTER", "option_label_CLOCKADJUSTER_DEFAULT_DAYS", "option_entry_cycler",
+	{ baselabel = "option_val_zero_CLOCKADJUSTER", baseval = "0", labels = "option_val_one_CLOCKADJUSTER|option_val_five_CLOCKADJUSTER|option_val_ten_CLOCKADJUSTER", values = "1|5|10", default = "0" });
+	OptionsManager.registerOption2(CLOCKADJUSTER_DEFAULT_MONTHS, false, "option_header_CLOCKADJUSTER", "option_label_CLOCKADJUSTER_DEFAULT_MONTHS", "option_entry_cycler",
+	{ baselabel = "option_val_zero_CLOCKADJUSTER", baseval = "0", labels = "option_val_one_CLOCKADJUSTER|option_val_five_CLOCKADJUSTER|option_val_ten_CLOCKADJUSTER", values = "1|5|10", default = "0" });
+	OptionsManager.registerOption2(CLOCKADJUSTER_DEFAULT_YEARS, false, "option_header_CLOCKADJUSTER", "option_label_CLOCKADJUSTER_DEFAULT_YEARS", "option_entry_cycler",
+	{ baselabel = "option_val_zero_CLOCKADJUSTER", baseval = "0", labels = "option_val_one_CLOCKADJUSTER|option_val_five_CLOCKADJUSTER|option_val_ten_CLOCKADJUSTER", values = "1|5|10", default = "0" });
 end
 
 --- Timer Functions
