@@ -9,16 +9,14 @@ function onInit()
 end
 
 --- Timer Functions
-function setStartTime(rActor)
-	local nodeActor = rActor;  -- TODO: Is the input arg really an object vs a DB node?
+function setStartTime(nodeActor)
 	local nStartTime = getCurrentDateinMinutes();
 	DB.setValue(nodeActor, "starttime", "number", nStartTime);
 end
 
-function getStartTime(rActor)
-	local nodeActor = rActor;  -- TODO: Is the input arg really an object vs a DB node?
-	FetchStartTime = DB.getValue(nodeActor, "starttime", 0);
-	return FetchStartTime;
+function getStartTime(nodeActor)
+	local nStartTime = DB.getValue(nodeActor, "starttime", 0);
+	return nStartTime;
 end
 
 function setTimerStart(rActor, sFirst)
@@ -217,7 +215,6 @@ function isLeapYear(nYear)
 		   (nYear % 100 ~= 0 or nYear % 400 == 0);
 end
 
--- TODO: Figure out how these locals are consumed externally to the manager.
 local aEvents = {};
 local nSelMonth = 0;
 local nSelDay = 0;
@@ -248,18 +245,6 @@ function onEventsChanged(bListChanged)
 		buildEvents();
 	end
 end
-
---[[
-function setSelectedDate(nMonth, nDay)
-	nSelMonth = nMonth;
-	nSelDay = nDay;
-
-	Debug.console("setSelectedDate(), updateDisplay global: ", updateDisplay)
-	updateDisplay();
-	Debug.console("setSelectedDate(), list global: ", list)
-	list.scrollToCampaignDate();
-end
-]]--
 
 function addLogEntryToSelected()
 	addLogEntry(nSelMonth, nSelDay);
@@ -341,24 +326,3 @@ function onSetButtonPressed()
 		CalendarManager.setCurrentMonth(nSelMonth);
 	end
 end
-
---[[
-function onDateChanged()
-	Debug.console("onDateChanged(), list global: ", list)
-	list.scrollToCampaignDate();
-end
-
-function onYearChanged()
-	Debug.console("onYearChanged(), list global: ", list)
-	list.rebuildCalendarWindows();
-	onDateChanged();
-end
-
-function onCalendarChanged()
-	Debug.console("onCalendarChanged(), list global: ", list)
-	list.rebuildCalendarWindows();
-	Debug.console("onCalendarChanged(), currentmonth global: ", currentmonth)
-	Debug.console("onCalendarChanged(), currentday global: ", currentday)
-	setSelectedDate(currentmonth.getValue(), currentday.getValue());
-end
-]]--

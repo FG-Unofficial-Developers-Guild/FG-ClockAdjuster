@@ -2,6 +2,9 @@
 -- Please see the LICENSE.md file included with this distribution for attribution and copyright information.
 --
 
+-- Global Declarations
+RULESET = '';
+
 ---	This function compiles all effects and decrements their durations when time is advanced
 function advanceRoundsOnTimeChanged(nRounds)
 	if nRounds and nRounds > 0 then
@@ -55,7 +58,7 @@ function filterTable(tTable, filterFunction)
 	local tFiltered = {};
 	for key, value in pairs(tTable) do
 		if filterFunction(value) then
-			table.insert(tFiltered, key, value)
+			table.insert(tFiltered, key, value);
 		end
 	end
 
@@ -66,8 +69,8 @@ function splitEffectIntoComponentsTypes(sEffect)
 	local aEffectComps = EffectManager.parseEffect(sEffect);
 	local aComponentTypes = {};
 	for index, effectComp in ipairs(aEffectComps) do
-		local component = EffectManager.parseEffectCompSimple(effectComp).type
-		table.insert(aComponentTypes, index, component)
+		local component = EffectManager.parseEffectCompSimple(effectComp).type;
+		table.insert(aComponentTypes, index, component);
 	end
 
 	return aComponentTypes;
@@ -185,7 +188,7 @@ function nextRound_new(nRounds, bTimeChanged)
 			CalendarManager.outputTime();
 
 			local nDateinMinutes = TimeManager.getCurrentDateinMinutes();
-			DB.setValue("calendar.dateinminutes", "number", nDateinMinutes); DB.setValue("calendar.dateinminutesstring", "string", tostring(nDateinMinutes))
+			DB.setValue("calendar.dateinminutes", "number", nDateinMinutes); DB.setValue("calendar.dateinminutesstring", "string", tostring(nDateinMinutes));
 		end
 		-- end bmos resetting rounds and advancing time
 
@@ -219,7 +222,7 @@ function nextRound_new(nRounds, bTimeChanged)
 			CalendarManager.outputTime();
 
 			local nDateinMinutes = TimeManager.getCurrentDateinMinutes();
-			DB.setValue("calendar.dateinminutes", "number", nDateinMinutes); DB.setValue("calendar.dateinminutesstring", "string", tostring(nDateinMinutes))
+			DB.setValue("calendar.dateinminutes", "number", nDateinMinutes); DB.setValue("calendar.dateinminutesstring", "string", tostring(nDateinMinutes));
 		end
 		-- end bmos resetting rounds and advancing time
 
@@ -248,8 +251,8 @@ end
 
 -- Function Overrides
 function onInit()
-	local sRuleset = User.getRulesetName()
-	if sRuleset == '3.5E' or sRuleset == 'PFRPG' or sRuleset == 'PFRPG2' or sRuleset == '5E' then
+	RULESET = User.getRulesetName()
+	if RULESET == '3.5E' or RULESET == 'PFRPG' or RULESET == 'PFRPG2' or RULESET == '5E' then
 		CombatManager.nextRound_old = CombatManager.nextRound;
 		CombatManager.nextRound = nextRound_new;
 
@@ -260,10 +263,10 @@ function onInit()
 		CombatManager2.clearExpiringEffects = clearExpiringEffects_new;
 
 		EffectManager.setCustomOnEffectAddStart(onEffectAddStart_new);
-		if sRuleset == '3.5E' or sRuleset == 'PFRPG' or sRuleset == 'PFRPG2' then
+		if RULESET == '3.5E' or RULESET == 'PFRPG' or RULESET == 'PFRPG2' then
 			EffectManager35E.onEffectAddStart_old = EffectManager35E.onEffectAddStart;
 			EffectManager35E.onEffectAddStart = onEffectAddStart_new;
-		elseif sRuleset == '5E' then
+		elseif RULESET == '5E' then
 			EffectManager5E.onEffectAddStart_old = EffectManager5E.onEffectAddStart;
 			EffectManager5E.onEffectAddStart = onEffectAddStart_new;
 		end
@@ -276,12 +279,10 @@ function onClose()
 	CombatManager.nextRound = CombatManager.nextRound_old;
 	CombatManager.resetInit = CombatManager.resetInit_old;
 	CombatManager2.clearExpiringEffects = CombatManager2.clearExpiringEffects_old;
-	if EffectManager35E.onEffectAddStart_old ~= nil then
-		local sRuleset = User.getRulesetName()
-		if sRuleset == '3.5E' or sRuleset == 'PFRPG' or sRuleset == 'PFRPG2' then
-			EffectManager35E.onEffectAddStart = EffectManager35E.onEffectAddStart_old;
-		elseif sRuleset == '5E' then
-			EffectManager5E.onEffectAddStart = EffectManager5E.onEffectAddStart_old;
-		end
+	if (RULESET == '3.5E' or RULESET == 'PFRPG' or RULESET == 'PFRPG2') and
+		EffectManager35E ~= nil and EffectManager35E.onEffectAddStart_old ~= nil then
+		EffectManager35E.onEffectAddStart = EffectManager35E.onEffectAddStart_old;
+	elseif RULESET == '5E' and EffectManager5E ~= nil and EffectManager5E.onEffectAddStart_old ~= nil then
+		EffectManager5E.onEffectAddStart = EffectManager5E.onEffectAddStart_old;
 	end
 end
