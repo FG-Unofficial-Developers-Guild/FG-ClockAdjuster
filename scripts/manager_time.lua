@@ -277,10 +277,6 @@ function onEventsChanged(bListChanged)
 	end
 end
 
-function addLogEntryToSelected()
-	addLogEntry(nSelMonth, nSelDay);
-end
-
 function addLogEntry(nMonth, nDay, nYear, bGMVisible, node)
 	local nodeEvent;
 	local sName = DB.getValue(node, "name", "");
