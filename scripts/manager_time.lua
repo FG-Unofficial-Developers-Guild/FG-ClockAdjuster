@@ -246,6 +246,7 @@ function isLeapYear(nYear)
 		   (nYear % 100 ~= 0 or nYear % 400 == 0);
 end
 
+-- TODO: Can this storage of state be eliminated?
 local aEvents = {};
 local nSelMonth = 0;
 local nSelDay = 0;
