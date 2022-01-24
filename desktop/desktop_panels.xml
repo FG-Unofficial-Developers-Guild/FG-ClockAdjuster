@@ -505,15 +505,14 @@
 				<min>0</min>
 				<tooltip textres="desktop_longrest" />
 				<script>
-					local bIsbLong, bIsbShort
+					local bIsbLong = false
 					function onInit()
 						local sRuleset = User.getRulesetName();
-						bIsbLong = (sRuleset == "4E" or sRuleset == "5E")
-						bIsbShort = (sRuleset == "PFRPG" or sRuleset == "PFRPG2" or sRuleset == "3.5E")
-						if not bIsbLong and not bIsbShort then
-							setVisible(false);
+						bIsbLong = sRuleset == "4E" or sRuleset == "5E" or sRuleset == "PFRPG" or sRuleset == "PFRPG2" or sRuleset == "3.5E"
+						if bIsbLong then
+							setValue(tonumber(OptionsManager.getOption(TimeManager.CLOCKADJUSTER_DEFAULT_LONG)) or 0);
 						else
-							setValue(DB.getValue(DB.findNode('calendar'), 'lastlongrest', 0))
+							setVisible(false);
  						end
 					end
 					function onDoubleClick()
@@ -548,8 +547,6 @@
 
 						if bIsbLong then
 							CombatManager2.rest(true);
-						elseif bIsbShort then
-							CombatManager2.rest();
 						end
 
 						local nDateinMinutes = TimeManager.getCurrentDateinMinutes();
@@ -571,15 +568,14 @@
 				<min>0</min>
 				<tooltip textres="desktop_shortrest" />
 				<script>
-					local bIsbLong, bIsbShort
+					local bIsbShort = false
 					function onInit()
 						local sRuleset = User.getRulesetName();
-						bIsbLong = (sRuleset == "4E" or sRuleset == "5E")
-						bIsbShort = (sRuleset == "PFRPG" or sRuleset == "PFRPG2" or sRuleset == "3.5E")
-						if not bIsbLong and not bIsbShort then
-							setVisible(false);
+						bIsbShort = sRuleset == "4E" or sRuleset == "5E" or sRuleset == "PFRPG" or sRuleset == "PFRPG2" or sRuleset == "3.5E"
+						if bIsbShort then
+							setValue(tonumber(OptionsManager.getOption(TimeManager.CLOCKADJUSTER_DEFAULT_SHORT)) or 0);
 						else
-							setValue(DB.getValue(DB.findNode('calendar'), 'lastshortrest', 0))
+							setVisible(false);
  						end
 					end
 					function onDoubleClick()
@@ -604,10 +600,8 @@
 						CalendarManager.outputTime();
 						ChatManager.Message(Interface.getString("ct_message_rest") or Interface.getString("menu_restshort"), true);
 
-						if bIsbLong then
+						if bIsbShort then
 							CombatManager2.rest();
-						elseif bIsbShort then
-							CombatManager2.rest(true);
 						end
 						
 						local nDateinMinutes = TimeManager.getCurrentDateinMinutes();
