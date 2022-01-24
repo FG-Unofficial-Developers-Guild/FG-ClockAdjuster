@@ -26,6 +26,8 @@
 				</stateframe>
 				<readonly />
 				<center />
+				<!-- Opening timedevents, timedreminders, and travelmanager in onInit() allows for their
+				triggers to work correctly on campaign open, otherwise they don't work until opened manually. -->
 				<script>
 					function onInit()
 						if DB.getValue("calendar.newcampaign") == nil or DB.getValue("calendar.newcampaign") == 0 then
@@ -56,9 +58,9 @@
 						DB.addHandler("calendar.current.hour", "onUpdate", onSourceChanged);
 						onSourceChanged();
 						local nDateinMinutes = TimeManager.getCurrentDateinMinutes();
-						DB.setValue("calendar.dateinminutes", "number", nDateinMinutes); DB.setValue("calendar.dateinminutesstring", "string", tostring(nDateinMinutes));
+						DB.setValue("calendar.dateinminutes", "number", nDateinMinutes);
+						DB.setValue("calendar.dateinminutesstring", "string", tostring(nDateinMinutes));
 						
-						-- Opening these three windows allows for their triggers to work correctly on campaign open, otherwise they don't work until opened manually.
 						Interface.openWindow("timedevents", "DB");
 						Interface.openWindow("timedreminders", "DB");
 						Interface.openWindow("travelmanager", "DB");
