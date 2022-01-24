@@ -253,21 +253,21 @@ end
 function onInit()
 	RULESET = User.getRulesetName()
 	if RULESET == '3.5E' or RULESET == 'PFRPG' or RULESET == 'PFRPG2' or RULESET == '5E' then
-		CombatManager.nextRound_old = CombatManager.nextRound;
+		CombatManager.nextRound_old_clockmanager = CombatManager.nextRound;
 		CombatManager.nextRound = nextRound_new;
 
-		CombatManager.resetInit_old = CombatManager.resetInit;
+		CombatManager.resetInit_old_clockmanager = CombatManager.resetInit;
 		CombatManager.resetInit = resetInit_new;
 
-		CombatManager2.clearExpiringEffects_old = CombatManager2.clearExpiringEffects;
+		CombatManager2.clearExpiringEffects_old_clockmanager = CombatManager2.clearExpiringEffects;
 		CombatManager2.clearExpiringEffects = clearExpiringEffects_new;
 
 		EffectManager.setCustomOnEffectAddStart(onEffectAddStart_new);
 		if RULESET == '3.5E' or RULESET == 'PFRPG' or RULESET == 'PFRPG2' then
-			EffectManager35E.onEffectAddStart_old = EffectManager35E.onEffectAddStart;
+			EffectManager35E.onEffectAddStart_old_clockmanager = EffectManager35E.onEffectAddStart;
 			EffectManager35E.onEffectAddStart = onEffectAddStart_new;
 		elseif RULESET == '5E' then
-			EffectManager5E.onEffectAddStart_old = EffectManager5E.onEffectAddStart;
+			EffectManager5E.onEffectAddStart_old_clockmanager = EffectManager5E.onEffectAddStart;
 			EffectManager5E.onEffectAddStart = onEffectAddStart_new;
 		end
 	end
@@ -276,13 +276,18 @@ function onInit()
 end
 
 function onClose()
-	CombatManager.nextRound = CombatManager.nextRound_old;
-	CombatManager.resetInit = CombatManager.resetInit_old;
-	CombatManager2.clearExpiringEffects = CombatManager2.clearExpiringEffects_old;
-	if (RULESET == '3.5E' or RULESET == 'PFRPG' or RULESET == 'PFRPG2') and
-		EffectManager35E ~= nil and EffectManager35E.onEffectAddStart_old ~= nil then
-		EffectManager35E.onEffectAddStart = EffectManager35E.onEffectAddStart_old;
-	elseif RULESET == '5E' and EffectManager5E ~= nil and EffectManager5E.onEffectAddStart_old ~= nil then
-		EffectManager5E.onEffectAddStart = EffectManager5E.onEffectAddStart_old;
+	if (RULESET == '3.5E' or RULESET == 'PFRPG' or RULESET == 'PFRPG2' or RULESET == '5E') and
+	   CombatManager.nextRound_old_clockmanager ~= nil and
+	   CombatManager.resetInit_old_clockmanager ~= nil and
+	   CombatManager2.clearExpiringEffects_old_clockmanager ~= nil then
+		CombatManager.nextRound = CombatManager.nextRound_old_clockmanager;
+		CombatManager.resetInit = CombatManager.resetInit_old_clockmanager;
+		CombatManager2.clearExpiringEffects = CombatManager2.clearExpiringEffects_old_clockmanager;
+		if (RULESET == '3.5E' or RULESET == 'PFRPG' or RULESET == 'PFRPG2') and
+			EffectManager35E ~= nil and EffectManager35E.onEffectAddStart_old_clockmanager ~= nil then
+			EffectManager35E.onEffectAddStart = EffectManager35E.onEffectAddStart_old_clockmanager;
+		elseif RULESET == '5E' and EffectManager5E ~= nil and EffectManager5E.onEffectAddStart_old_clockmanager ~= nil then
+			EffectManager5E.onEffectAddStart = EffectManager5E.onEffectAddStart_old_clockmanager;
+		end
 	end
 end
