@@ -9,15 +9,14 @@ function onInit()
 end
 
 --- Timer Functions
-function setStartTime(rActor, sFirst)
-	local nodeActor = rActor;
+function setStartTime(rActor)
+	local nodeActor = rActor;  -- TODO: Is the input arg really an object vs a DB node?
 	local nStartTime = getCurrentDateinMinutes();
 	DB.setValue(nodeActor, "starttime", "number", nStartTime);
-	Debug.console("setStartTime", rActor, sFirst, nStartTime, DB.getValue(nodeActor, "starttime"));
 end
 
-function getStartTime(rActor, sFirst)
-	local nodeActor = rActor;
+function getStartTime(rActor)
+	local nodeActor = rActor;  -- TODO: Is the input arg really an object vs a DB node?
 	FetchStartTime = DB.getValue(nodeActor, "starttime", 0);
 	return FetchStartTime;
 end
@@ -86,13 +85,11 @@ end
 function hasTimePassed(rActor, sFirst, sTime)
 	local nMinutes, nHours, nMonths, nYears = getCurrentDate();
 	local nStartMinute, nStartHour, nStartMonth, nStartYear = getTimerStart(rActor, sFirst);
-	local nDayDifference;
 	return sTime == "Day" and
-		   nDayDifference ~= 0 and
-	   	   nHours >= nStartHour and
-	   	   nMinutes >= nStartMinute and
-	   	   nMonths >= nStartMonth and
-	   	   nYears >= nStartYear;
+		   nHours >= nStartHour and
+		   nMinutes >= nStartMinute and
+		   nMonths >= nStartMonth and
+		   nYears >= nStartYear;
 end
 
 function getCurrentDateinMinutes()
@@ -112,7 +109,6 @@ function isTimeGreaterThan(rActor, sFirst, nCompareBy)
 	local nStartTime = getStartTime(rActor, sFirst);
 	local nCurrentTime = getCurrentDateinMinutes();
 	local nDifference = nCurrentTime - nStartTime;
-	Debug.console("isTimeGreaterThan", rActor, sFirst, nCompareBy, nStartTime, nCurrentTime, nDifference);
 	return nDifference >= nCompareBy;
 end
 
@@ -188,12 +184,9 @@ end
 
 function convertYearsnowtoMinutes(nYear)
 	local nMinutesTotaled = 0
-	for nYearCount=0,nYear do
-		if nYearCount < nYear then
-			local nYearinHours = convertYeartoHours(nYearCount);
-			nMinutesTotaled = nMinutesTotaled + convertHourstoMinutes(nYearinHours);
-			nYearCount = nYearCount + 1;
-		end
+	for nYearCount = 1, nYear do
+		local nYearinHours = convertYeartoHours(nYearCount);
+		nMinutesTotaled = nMinutesTotaled + convertHourstoMinutes(nYearinHours);
 	end
 
 	return nMinutesTotaled;
@@ -201,11 +194,8 @@ end
 
 function convertMonthssnowtoMinutes(nMonth, nYear)
 	local nMinutes = 0;
-	for nCount=1,nMonth do
-		if nCount < nMonth then
-			nMinutes = convertMonthtoMinutes(nCount, nYear) + nMinutes;
-			nCount = nCount + 1;
-		end
+	for nCount = 1, nMonth do
+		nMinutes = convertMonthtoMinutes(nCount, nYear) + nMinutes;
 	end
 
 	return nMinutes;
@@ -231,18 +221,11 @@ end
 local aEvents = {};
 local nSelMonth = 0;
 local nSelDay = 0;
-
---[[
-function onClose()
-	Debug.console("onClose()")
-end
---]]
-
 local bEnableBuild = true;
 
 function buildEvents()
 	aEvents = {};
-	for _,v in pairs(DB.getChildren("calendar.log")) do
+	for _, v in pairs(DB.getChildren("calendar.log")) do
 		local nYear = DB.getValue(v, "year", 0);
 		local nMonth = DB.getValue(v, "month", 0);
 		local nDay = DB.getValue(v, "day", 0);
@@ -266,6 +249,7 @@ function onEventsChanged(bListChanged)
 	end
 end
 
+--[[
 function setSelectedDate(nMonth, nDay)
 	nSelMonth = nMonth;
 	nSelDay = nDay;
@@ -275,13 +259,13 @@ function setSelectedDate(nMonth, nDay)
 	Debug.console("setSelectedDate(), list global: ", list)
 	list.scrollToCampaignDate();
 end
+]]--
 
 function addLogEntryToSelected()
 	addLogEntry(nSelMonth, nSelDay);
 end
 
 function addLogEntry(nMonth, nDay, nYear, bGMVisible, node)
-	Debug.console("addLogEntry()")
 	local nodeEvent;
 	local sName = DB.getValue(node, "name", "");
 	local sString = DB.getValue(node, "text", "");
@@ -345,8 +329,6 @@ function removeLogEntry(nMonth, nDay)
 	local nYear = CalendarManager.getCurrentYear();
 	if aEvents[nYear] and aEvents[nYear][nMonth] and aEvents[nYear][nMonth][nDay] then
 		local nodeEvent = aEvents[nYear][nMonth][nDay];
-
-		local bDelete = false;
 		if Session.IsHost then
 			nodeEvent.delete();
 		end
@@ -360,6 +342,7 @@ function onSetButtonPressed()
 	end
 end
 
+--[[
 function onDateChanged()
 	Debug.console("onDateChanged(), list global: ", list)
 	list.scrollToCampaignDate();
@@ -378,3 +361,4 @@ function onCalendarChanged()
 	Debug.console("onCalendarChanged(), currentday global: ", currentday)
 	setSelectedDate(currentmonth.getValue(), currentday.getValue());
 end
+]]--

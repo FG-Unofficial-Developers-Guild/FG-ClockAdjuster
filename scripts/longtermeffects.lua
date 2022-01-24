@@ -2,16 +2,13 @@
 -- Please see the LICENSE.md file included with this distribution for attribution and copyright information.
 --
 
-local nextRound_old, resetInit_old, clearExpiringEffects_old;
-
 ---	This function compiles all effects and decrements their durations when time is advanced
 function advanceRoundsOnTimeChanged(nRounds)
 	if nRounds and nRounds > 0 then
-		for _,nodeCT in pairs(DB.getChildren(CombatManager.CT_LIST)) do
-			for _,nodeEffect in pairs(DB.getChildren(nodeCT, 'effects')) do
+		for _, nodeCT in pairs(DB.getChildren(CombatManager.CT_LIST)) do
+			for _, nodeEffect in pairs(DB.getChildren(nodeCT, 'effects')) do
 				local nActive = DB.getValue(nodeEffect, "isactive", 0);
 				if nActive ~= 0 then
-					local nodeCT = nodeEffect.getChild('...');
 					local nDuration = DB.getValue(nodeEffect, 'duration');
 					local bHasDuration = (nDuration and nDuration ~= 0);
 					if bHasDuration and (nDuration <= nRounds) then
@@ -27,7 +24,7 @@ function advanceRoundsOnTimeChanged(nRounds)
 	end
 end
 
-local function onEffectAddStart_new(rEffect)
+function onEffectAddStart_new(rEffect)
 	rEffect.nDuration = rEffect.nDuration or 1;
 	if rEffect.sUnits == "minute" then
 		rEffect.nDuration = rEffect.nDuration * 10;
@@ -36,10 +33,11 @@ local function onEffectAddStart_new(rEffect)
 	elseif rEffect.sUnits == "day" then
 		rEffect.nDuration = rEffect.nDuration * 14400;
 	end
+
 	rEffect.sUnits = "";
 end
 
-local function resetInit_new()
+function resetInit_new()
 	-- De-activate all entries
 	for _,v in pairs(CombatManager.getCombatantNodes()) do
 		DB.setValue(v, "active", "number", 0);
@@ -50,11 +48,10 @@ local function resetInit_new()
 
 	-- Reset the round counter (bmos changed this to 0 instead of 1)
 	DB.setValue("combattracker.round", "number", 0);
-
 	CombatManager.onCombatResetEvent();
 end
 
-local function filterTable(tTable, filterFunction)
+function filterTable(tTable, filterFunction)
 	local tFiltered = {};
 	for key, value in pairs(tTable) do
 		if filterFunction(value) then
@@ -65,7 +62,7 @@ local function filterTable(tTable, filterFunction)
 	return tFiltered;
 end
 
-local function splitEffectIntoComponentsTypes(sEffect)
+function splitEffectIntoComponentsTypes(sEffect)
 	local aEffectComps = EffectManager.parseEffect(sEffect);
 	local aComponentTypes = {};
 	for index, effectComp in ipairs(aEffectComps) do
@@ -76,12 +73,12 @@ local function splitEffectIntoComponentsTypes(sEffect)
 	return aComponentTypes;
 end
 
-local function effectTypeShouldBeChecked(sEffectComponentType)
+function effectTypeShouldBeChecked(sEffectComponentType)
 	local arrsComponentsToInclude = { 'FHEAL', 'REGEN', 'DMGO' };
 	return StringManager.contains(arrsComponentsToInclude, sEffectComponentType);
 end
 
-local function actorRequiresSlowMode(rActor, arrSEffects)
+function actorRequiresSlowMode(rActor, arrSEffects)
 	if not arrSEffects or not rActor then return; end
 	local sActorHealth = ActorHealthManager.getHealthStatus(rActor);
 
@@ -107,14 +104,14 @@ local function actorRequiresSlowMode(rActor, arrSEffects)
 	return false;
 end
 
-local function isActorDying(rActor, bIsStable)
+function isActorDying(rActor, bIsStable)
 	local sActorHealth = ActorHealthManager.getHealthStatus(rActor);
 	return not bIsStable and sActorHealth == ActorHealthManager.STATUS_DYING;
 end
 
-local function getIsStableAndEffectsToCheck(nodeCT)
+function getIsStableAndEffectsToCheck(nodeCT)
 	-- Returns if node has effect stable, and flat list of all effect types.
-	-- Does two thing at once. as I dont want to iterate twice over all effects 
+	-- Does two thing at once. as I dont want to iterate twice over all effects
 	local bIsCTStable = false;
 	local aEffectsRequiringSlowMode = {};
 	for _, nEffect in pairs(DB.getChildren(nodeCT, 'effects')) do
@@ -133,9 +130,8 @@ local function getIsStableAndEffectsToCheck(nodeCT)
 	return bIsCTStable, aEffectsRequiringSlowMode;
 end
 
-local function shouldSwitchToQuickSimulation()
+function shouldSwitchToQuickSimulation()
 	for _, nodeCT in pairs(DB.getChildren(CombatManager.CT_LIST)) do
-		-- Debug.console(ActorManager.getName(nodeCT))
 		local rActor = ActorManager.resolveActor(nodeCT); -- maybe extract health too, instead of doing it twice. But it makes naming functions harder. IDK.
 		local bIsStable, aEffectsToCheck = getIsStableAndEffectsToCheck(nodeCT);
 		if actorRequiresSlowMode(rActor, aEffectsToCheck) then
@@ -150,7 +146,7 @@ local function shouldSwitchToQuickSimulation()
 	return true
 end
 
-local function nextRound_new(nRounds, bTimeChanged)
+function nextRound_new(nRounds, bTimeChanged)
 	if not Session.IsHost then
 		return;
 	end
@@ -201,18 +197,15 @@ local function nextRound_new(nRounds, bTimeChanged)
 	for i = nStartCounter, nRounds do
 		-- check if full processing of rounds is unecessary
 		if shouldSwitchToQuickSimulation() then
-			-- Debug.chat("[ Skipping is ok from " .. nCurrent .. "]");
 			advanceRoundsOnTimeChanged(nRounds + 1 - i);
 			DB.setValue("combattracker.round", 'number', nRounds - 1);
-			break
-		elseif nRounds and nRounds >= 99 then
-			-- put chat message here warning it might take a while to process
+			break;
 		end
 		-- end checking for necessity of full processing of rounds
 
-		for j = 1,#aEntries do
-			CombatManager.onTurnStartEvent(aEntries[j]);
-			CombatManager.onTurnEndEvent(aEntries[j]);
+		for _, nodeCT in ipairs(aEntries) do
+			CombatManager.onTurnStartEvent(nodeCT);
+			CombatManager.onTurnEndEvent(nodeCT);
 		end
 
 		CombatManager.onInitChangeEvent();
@@ -250,26 +243,28 @@ local function nextRound_new(nRounds, bTimeChanged)
 	end
 end
 
-local function clearExpiringEffects_new(bShort)
+function clearExpiringEffects_new()
 end
 
 -- Function Overrides
 function onInit()
 	local sRuleset = User.getRulesetName()
 	if sRuleset == '3.5E' or sRuleset == 'PFRPG' or sRuleset == 'PFRPG2' or sRuleset == '5E' then
-		nextRound_old = CombatManager.nextRound;
+		CombatManager.nextRound_old = CombatManager.nextRound;
 		CombatManager.nextRound = nextRound_new;
 
-		resetInit_old = CombatManager.resetInit;
+		CombatManager.resetInit_old = CombatManager.resetInit;
 		CombatManager.resetInit = resetInit_new;
 
-		clearExpiringEffects_old = CombatManager2.clearExpiringEffects;
+		CombatManager2.clearExpiringEffects_old = CombatManager2.clearExpiringEffects;
 		CombatManager2.clearExpiringEffects = clearExpiringEffects_new;
 
 		EffectManager.setCustomOnEffectAddStart(onEffectAddStart_new);
 		if sRuleset == '3.5E' or sRuleset == 'PFRPG' or sRuleset == 'PFRPG2' then
+			EffectManager35E.onEffectAddStart_old = EffectManager35E.onEffectAddStart;
 			EffectManager35E.onEffectAddStart = onEffectAddStart_new;
 		elseif sRuleset == '5E' then
+			EffectManager5E.onEffectAddStart_old = EffectManager5E.onEffectAddStart;
 			EffectManager5E.onEffectAddStart = onEffectAddStart_new;
 		end
 	end
@@ -278,7 +273,15 @@ function onInit()
 end
 
 function onClose()
-	CombatManager.nextRound = nextRound_old;
-	CombatManager.resetInit = resetInit_old;
-	CombatManager2.clearExpiringEffects = clearExpiringEffects_old;
+	CombatManager.nextRound = CombatManager.nextRound_old;
+	CombatManager.resetInit = CombatManager.resetInit_old;
+	CombatManager2.clearExpiringEffects = CombatManager2.clearExpiringEffects_old;
+	if EffectManager35E.onEffectAddStart_old ~= nil then
+		local sRuleset = User.getRulesetName()
+		if sRuleset == '3.5E' or sRuleset == 'PFRPG' or sRuleset == 'PFRPG2' then
+			EffectManager35E.onEffectAddStart = EffectManager35E.onEffectAddStart_old;
+		elseif sRuleset == '5E' then
+			EffectManager5E.onEffectAddStart = EffectManager5E.onEffectAddStart_old;
+		end
+	end
 end
