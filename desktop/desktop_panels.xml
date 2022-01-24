@@ -7,7 +7,6 @@
 		<class>chattime</class>
 		<bounds>10,100,260,110</bounds>
 		<dynamic />
-		<locked />
 	</panel>
 
 	<windowclass name="chattime">
