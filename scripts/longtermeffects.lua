@@ -274,20 +274,3 @@ function onInit()
 
 	OptionsManager.registerOption2('TIMEROUNDS', false, 'option_header_game', 'opt_lab_time_rounds', 'option_entry_cycler', { labels = 'enc_opt_time_rounds_slow', values = 'slow', baselabel = 'enc_opt_time_rounds_fast', baseval = 'fast', default = 'fast' });
 end
-
-function onClose()
-	if (RULESET == '3.5E' or RULESET == 'PFRPG' or RULESET == 'PFRPG2' or RULESET == '5E') and
-	   CombatManager.nextRound_old_clockmanager ~= nil and
-	   CombatManager.resetInit_old_clockmanager ~= nil and
-	   CombatManager2.clearExpiringEffects_old_clockmanager ~= nil then
-		CombatManager.nextRound = CombatManager.nextRound_old_clockmanager;
-		CombatManager.resetInit = CombatManager.resetInit_old_clockmanager;
-		CombatManager2.clearExpiringEffects = CombatManager2.clearExpiringEffects_old_clockmanager;
-		if (RULESET == '3.5E' or RULESET == 'PFRPG' or RULESET == 'PFRPG2') and
-			EffectManager35E ~= nil and EffectManager35E.onEffectAddStart_old_clockmanager ~= nil then
-			EffectManager35E.onEffectAddStart = EffectManager35E.onEffectAddStart_old_clockmanager;
-		elseif RULESET == '5E' and EffectManager5E ~= nil and EffectManager5E.onEffectAddStart_old_clockmanager ~= nil then
-			EffectManager5E.onEffectAddStart = EffectManager5E.onEffectAddStart_old_clockmanager;
-		end
-	end
-end

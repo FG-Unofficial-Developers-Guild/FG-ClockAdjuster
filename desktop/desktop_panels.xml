@@ -68,11 +68,7 @@
 						Interface.openWindow("travelmanager", "DB");
 						Interface.toggleWindow("travelmanager", "DB")
 					end
-					
-					function onClose()
-						DB.removeHandler("calendar.current.hour", "onUpdate", onSourceChanged);
-					end
-					
+
 					function onSourceChanged()
 						local nHour, sPhase = CalendarManager.getDisplayHour();
 						setValue(string.format("%2d", nHour));
@@ -100,11 +96,7 @@
 						DB.setValue("calendar.dateinminutes", "number", nDateinMinutes);
 						DB.setValue("calendar.dateinminutesstring", "string", tostring(nDateinMinutes))
 					end
-					
-					function onClose()
-						DB.removeHandler("calendar.current.minute", "onUpdate", onSourceChanged);
-					end
-					
+
 					function onSourceChanged()
 						setValue(string.format("%02d", DB.getValue("calendar.current.minute", 0)));
 					end
@@ -130,11 +122,7 @@
 						DB.setValue("calendar.dateinminutes", "number", nDateinMinutes);
 						DB.setValue("calendar.dateinminutesstring", "string", tostring(nDateinMinutes))
 					end
-					
-					function onClose()
-						DB.removeHandler("calendar.current.day", "onUpdate", onSourceChanged);
-					end
-					
+
 					function onSourceChanged()
 						setValue(string.format("%02d", DB.getValue("calendar.current.day", 0)));
 					end
@@ -156,11 +144,7 @@
 						DB.setValue("calendar.dateinminutes", "number", nDateinMinutes);
 						DB.setValue("calendar.dateinminutesstring", "string", tostring(nDateinMinutes))
 					end
-					
-					function onClose()
-						DB.removeHandler("calendar.current.month", "onUpdate", onSourceChanged);
-					end
-					
+
 					function onSourceChanged()
 						setValue(string.format("%02d", DB.getValue("calendar.current.month", 0)));
 					end
@@ -182,14 +166,7 @@
 						DB.setValue("calendar.dateinminutes", "number", nDateinMinutes);
 						DB.setValue("calendar.dateinminutesstring", "string", tostring(nDateinMinutes))
 					end
-					
-					function onClose()
-						DB.removeHandler("calendar.current.year", "onUpdate", onSourceChanged);
-						local nDateinMinutes = TimeManager.getCurrentDateinMinutes();
-						DB.setValue("calendar.dateinminutes", "number", nDateinMinutes);
-						DB.setValue("calendar.dateinminutesstring", "string", tostring(nDateinMinutes))
-					end
-					
+
 					function onSourceChanged()
 						setValue(string.format("%02d", DB.getValue("calendar.current.year", 0)));
 					end
@@ -207,9 +184,7 @@
 					function onInit()
 						setValue(tonumber(OptionsManager.getOption(TimeManager.CLOCKADJUSTER_DEFAULT_HOURS)) or 0);
 					end
-					function onClose()
-						DB.setValue(getDatabaseNode(), "addhour", "number", (getValue() or 0));
-					end
+
 					function onDoubleClick()
 						local nHour = getValue() or 0;
 						local nRounds = nHour * 600;
@@ -263,9 +238,7 @@
 					function onInit()
 						setValue(tonumber(OptionsManager.getOption(TimeManager.CLOCKADJUSTER_DEFAULT_MINUTES)) or 0);
 					end
-					function onClose()
-						DB.setValue(getDatabaseNode(), "addminute", "number", getValue() or 0);
-					end
+
 					function onDoubleClick()
 						local nMinute = getValue() or 0;
 						local nRounds = nMinute * 10;
@@ -311,10 +284,7 @@
 					function onInit()
 						setValue(tonumber(OptionsManager.getOption(TimeManager.CLOCKADJUSTER_DEFAULT_DAYS)) or 0);
 					end
-					function onClose()
-						DB.setValue(getDatabaseNode(), "addday", "number", (getValue() or 0));
-					end
-					
+
 					function onDoubleClick()
 						local nDay = getValue() or 0;
 						local nRounds = nDay * 14400;
@@ -363,9 +333,7 @@
 					function onInit()
 						setValue(tonumber(OptionsManager.getOption(TimeManager.CLOCKADJUSTER_DEFAULT_MONTHS)) or 0);
 					end
-					function onClose()
-						DB.setValue(getDatabaseNode(), "addmonth", "number", (getValue() or 0));
-					end
+
 					function onDoubleClick()
 						local nMonth = getValue() or 0;
 						local nRounds = nMonth * 432000;
@@ -412,9 +380,7 @@
 					function onInit()
 						setValue(tonumber(OptionsManager.getOption(TimeManager.CLOCKADJUSTER_DEFAULT_YEARS)) or 0);
 					end
-					function onClose()
-						DB.setValue(getDatabaseNode(), "addyear", "number", (getValue() or 0));
-					end
+
 					function onDoubleClick()
 						local nYear = (window.addyear.getValue() or 0);
 						
