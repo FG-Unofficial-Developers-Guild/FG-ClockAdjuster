@@ -200,7 +200,7 @@ end
 
 function convertYeartoHours(nNumber)
 	local nYearinDays = 365;
-	if isLeapYear(nNumber) == true then
+	if isLeapYear(nNumber) then
 		nYearinDays = nYearinDays + 1;
 	end
 
@@ -234,7 +234,7 @@ end
 function getDaysInMonth(nMonth, nYear)
 	local nVar = 0;
 	local nDays = DB.getValue("calendar.data.periods.period" .. nMonth .. ".days", 0);
-	if nMonth == 2 and isLeapYear(nYear) == true then
+	if nMonth == 2 and isLeapYear(nYear) then
 		nVar = nVar + 1;
 	end
 
@@ -273,7 +273,7 @@ function buildEvents()
 end
 
 function onEventsChanged(bListChanged)
-	if bListChanged == true and bEnableBuild == true then
+	if bListChanged and bEnableBuild then
 		buildEvents();
 	end
 end
@@ -301,7 +301,7 @@ function addLogEntry(nMonth, nDay, nYear, bGMVisible, node)
 		local EventGMLogNew = string.gsub(EventGMLog, "%W", "");
 		local EventLog = DB.getValue(nodeEvent, "logentry", "");
 		local EventLogNew = string.gsub(EventLog, "%W", "");
-		if bGMVisible == true then
+		if bGMVisible then
 			if not string.find(EventGMLogNew, sHour .. "" .. sMinute) then
 				sString = EventGMLog .. "<h>" .. sName .. " [" .. sHour .. ":" .. sMinute .. "]" .. "</h>" .. sString;
 				DB.setValue(nodeEvent, "gmlogentry", "formattedtext", sString);
@@ -321,7 +321,7 @@ function addLogEntry(nMonth, nDay, nYear, bGMVisible, node)
 		DB.setValue(nodeEvent, "year", "number", nYear);
 		DB.setValue(nodeEvent, "month", "number", nMonth);
 		DB.setValue(nodeEvent, "day", "number", nDay);
-		if bGMVisible == true then
+		if bGMVisible then
 			DB.setValue(nodeEvent, "gmlogentry", "formattedtext", sString);
 		else
 			DB.setValue(nodeEvent, "logentry", "formattedtext", sString);
