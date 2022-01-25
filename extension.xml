@@ -10,7 +10,7 @@
 		<description>Provides an interface for easier time management</description>
 	</properties>
 	
-	<announcement text="Clock Adjuster v2.6 (1/23/22) for FGC/FGU\rBy PR6I6E6ST, bmos, and MeAndUnique" font="emotefont" icon="clock_icon" />
+	<announcement text="https://www.fantasygrounds.com/forums/showthread.php?57561-Utility-Clock-Adjuster\rClock Adjuster v2.6 (1/24/22) for FGC/FGU\rBy PR6I6E6ST, bmos, and MeAndUnique" font="emotefont" />
 	
 	<base>
 		<includefile source="desktop/desktop_panels.xml" />
@@ -21,7 +21,6 @@
 		<includefile source="strings/strings_timedevents.xml" />
 		<script name="TimeManager" file="scripts/manager_time.lua" />
 		<script name="LongTermEffects" file="scripts/longtermeffects.lua" />
-		<icon name="clock_icon" file="graphics/icons/clock.png" />
 		<string name="option_header_CLOCKADJUSTER">Clock Adjuster (GM)</string>
 		<string name="option_label_CLOCKADJUSTER_DEFAULT_HOURS">Default Hours</string>
 		<string name="option_label_CLOCKADJUSTER_DEFAULT_MINUTES">Default Minutes</string>
