@@ -3,13 +3,13 @@
 --
 
 -- Global Declarations
-RULESET = '';
+RULESET = "";
 
 ---	This function compiles all effects and decrements their durations when time is advanced
 function advanceRoundsOnTimeChanged(nRounds)
 	if nRounds and nRounds > 0 then
-		for _, nodeCT in pairs(DB.getChildren(CombatManager.CT_LIST)) do
-			for _, nodeEffect in pairs(DB.getChildren(nodeCT, 'effects')) do
+		for _,nodeCT in pairs(DB.getChildren(CombatManager.CT_LIST)) do
+			for _,nodeEffect in pairs(DB.getChildren(nodeCT, 'effects')) do
 				local nActive = DB.getValue(nodeEffect, "isactive", 0);
 				if nActive ~= 0 then
 					local nDuration = DB.getValue(nodeEffect, 'duration');
@@ -27,7 +27,7 @@ function advanceRoundsOnTimeChanged(nRounds)
 	end
 end
 
-function onEffectAddStart_new(rEffect)
+local function onEffectAddStart_new(rEffect)
 	rEffect.nDuration = rEffect.nDuration or 1;
 	if rEffect.sUnits == "minute" then
 		rEffect.nDuration = rEffect.nDuration * 10;
@@ -36,11 +36,10 @@ function onEffectAddStart_new(rEffect)
 	elseif rEffect.sUnits == "day" then
 		rEffect.nDuration = rEffect.nDuration * 14400;
 	end
-
 	rEffect.sUnits = "";
 end
 
-function resetInit_new()
+local function resetInit_new()
 	-- De-activate all entries
 	for _,v in pairs(CombatManager.getCombatantNodes()) do
 		DB.setValue(v, "active", "number", 0);
@@ -51,37 +50,38 @@ function resetInit_new()
 
 	-- Reset the round counter (bmos changed this to 0 instead of 1)
 	DB.setValue("combattracker.round", "number", 0);
+
 	CombatManager.onCombatResetEvent();
 end
 
-function filterTable(tTable, filterFunction)
+local function filterTable(tTable, filterFunction)
 	local tFiltered = {};
 	for key, value in pairs(tTable) do
 		if filterFunction(value) then
-			table.insert(tFiltered, key, value);
+			table.insert(tFiltered, key, value)
 		end
 	end
 
 	return tFiltered;
 end
 
-function splitEffectIntoComponentsTypes(sEffect)
+local function splitEffectIntoComponentsTypes(sEffect)
 	local aEffectComps = EffectManager.parseEffect(sEffect);
 	local aComponentTypes = {};
 	for index, effectComp in ipairs(aEffectComps) do
-		local component = EffectManager.parseEffectCompSimple(effectComp).type;
-		table.insert(aComponentTypes, index, component);
+		local component = EffectManager.parseEffectCompSimple(effectComp).type
+		table.insert(aComponentTypes, index, component)
 	end
 
 	return aComponentTypes;
 end
 
-function effectTypeShouldBeChecked(sEffectComponentType)
+local function effectTypeShouldBeChecked(sEffectComponentType)
 	local arrsComponentsToInclude = { 'FHEAL', 'REGEN', 'DMGO' };
 	return StringManager.contains(arrsComponentsToInclude, sEffectComponentType);
 end
 
-function actorRequiresSlowMode(rActor, arrSEffects)
+local function actorRequiresSlowMode(rActor, arrSEffects)
 	if not arrSEffects or not rActor then return; end
 	local sActorHealth = ActorHealthManager.getHealthStatus(rActor);
 
@@ -107,14 +107,14 @@ function actorRequiresSlowMode(rActor, arrSEffects)
 	return false;
 end
 
-function isActorDying(rActor, bIsStable)
+local function isActorDying(rActor, bIsStable)
 	local sActorHealth = ActorHealthManager.getHealthStatus(rActor);
 	return not bIsStable and sActorHealth == ActorHealthManager.STATUS_DYING;
 end
 
-function getIsStableAndEffectsToCheck(nodeCT)
+local function getIsStableAndEffectsToCheck(nodeCT)
 	-- Returns if node has effect stable, and flat list of all effect types.
-	-- Does two thing at once. as I dont want to iterate twice over all effects
+	-- Does two thing at once. as I dont want to iterate twice over all effects 
 	local bIsCTStable = false;
 	local aEffectsRequiringSlowMode = {};
 	for _, nEffect in pairs(DB.getChildren(nodeCT, 'effects')) do
@@ -129,12 +129,12 @@ function getIsStableAndEffectsToCheck(nodeCT)
 			end
 		end
 	end
-
 	return bIsCTStable, aEffectsRequiringSlowMode;
 end
 
-function shouldSwitchToQuickSimulation()
+local function shouldSwitchToQuickSimulation()
 	for _, nodeCT in pairs(DB.getChildren(CombatManager.CT_LIST)) do
+		-- Debug.console(ActorManager.getName(nodeCT))
 		local rActor = ActorManager.resolveActor(nodeCT); -- maybe extract health too, instead of doing it twice. But it makes naming functions harder. IDK.
 		local bIsStable, aEffectsToCheck = getIsStableAndEffectsToCheck(nodeCT);
 		if actorRequiresSlowMode(rActor, aEffectsToCheck) then
@@ -145,11 +145,10 @@ function shouldSwitchToQuickSimulation()
 			return false;
 		end
 	end
-
 	return true
 end
 
-function nextRound_new(nRounds, bTimeChanged)
+local function nextRound_new(nRounds, bTimeChanged)
 	if not Session.IsHost then
 		return;
 	end
@@ -188,7 +187,7 @@ function nextRound_new(nRounds, bTimeChanged)
 			CalendarManager.outputTime();
 
 			local nDateinMinutes = TimeManager.getCurrentDateinMinutes();
-			DB.setValue("calendar.dateinminutes", "number", nDateinMinutes); DB.setValue("calendar.dateinminutesstring", "string", tostring(nDateinMinutes));
+			DB.setValue("calendar.dateinminutes", "number", nDateinMinutes); DB.setValue("calendar.dateinminutesstring", "string", tostring(nDateinMinutes))
 		end
 		-- end bmos resetting rounds and advancing time
 
@@ -200,9 +199,12 @@ function nextRound_new(nRounds, bTimeChanged)
 	for i = nStartCounter, nRounds do
 		-- check if full processing of rounds is unecessary
 		if shouldSwitchToQuickSimulation() then
+			-- Debug.chat("[ Skipping is ok from " .. nCurrent .. "]");
 			advanceRoundsOnTimeChanged(nRounds + 1 - i);
 			DB.setValue("combattracker.round", 'number', nRounds - 1);
-			break;
+			break
+		elseif nRounds and nRounds >= 99 then
+			-- put chat message here warning it might take a while to process
 		end
 		-- end checking for necessity of full processing of rounds
 
@@ -222,7 +224,7 @@ function nextRound_new(nRounds, bTimeChanged)
 			CalendarManager.outputTime();
 
 			local nDateinMinutes = TimeManager.getCurrentDateinMinutes();
-			DB.setValue("calendar.dateinminutes", "number", nDateinMinutes); DB.setValue("calendar.dateinminutesstring", "string", tostring(nDateinMinutes));
+			DB.setValue("calendar.dateinminutes", "number", nDateinMinutes); DB.setValue("calendar.dateinminutesstring", "string", tostring(nDateinMinutes))
 		end
 		-- end bmos resetting rounds and advancing time
 
