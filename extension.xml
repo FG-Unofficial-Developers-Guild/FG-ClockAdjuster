@@ -5,12 +5,12 @@
 <root version='3.3' release='3'>
 	<properties>
 		<name>Feature: Clock Adjuster</name>
-		<version>2.6</version>
+		<version>2.5</version>
 		<author>pr6i6est, bmos, and MeAndUnique</author>
 		<description>Provides an interface for easier time management</description>
 	</properties>
 	
-	<announcement text="https://www.fantasygrounds.com/forums/showthread.php?57561-Utility-Clock-Adjuster\rClock Adjuster v2.6 (1/24/22) for FGC/FGU\rBy PR6I6E6ST, bmos, and MeAndUnique" font="emotefont" />
+	<announcement text="https://www.fantasygrounds.com/forums/showthread.php?57561-Utility-Clock-Adjuster\rClock Adjuster v2.5:\rEvents, reminders, travel, and time\rBy PR6I6E6ST, bmos, and MeAndUnique" font="emotefont" />
 	
 	<base>
 		<includefile source="desktop/desktop_panels.xml" />
