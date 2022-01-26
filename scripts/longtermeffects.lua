@@ -78,6 +78,7 @@ end
 
 local function effectTypeShouldBeChecked(sEffectComponentType)
 	local arrsComponentsToInclude = { 'FHEAL', 'REGEN', 'DMGO' };
+	
 	return StringManager.contains(arrsComponentsToInclude, sEffectComponentType);
 end
 
@@ -86,24 +87,24 @@ local function actorRequiresSlowMode(rActor, arrSEffects)
 	local sActorHealth = ActorHealthManager.getHealthStatus(rActor);
 
 	-- Has ongoing damage, and still lives.
-	if StringManager.contains(arrSEffects, 'DMGO') and
-	   sActorHealth ~= ActorHealthManager.STATUS_DEAD then
-		return true;
+	if StringManager.contains(arrSEffects, 'DMGO') then
+		if sActorHealth ~= ActorHealthManager.STATUS_DEAD then
+			return true;
+		end
 	end
 
 	-- Healing through Regeneration
-	if StringManager.contains(arrSEffects, 'REGEN') and
-	   sActorHealth ~= ActorHealthManager.STATUS_HEALTHY then
-		return true;
+	if StringManager.contains(arrSEffects, 'REGEN') then
+		if sActorHealth ~= ActorHealthManager.STATUS_HEALTHY then
+			return true;
+		end
 	end
-
 	-- Healing through Fast Healing
-	if StringManager.contains(arrSEffects, 'FHEAL') and
-	   sActorHealth ~= ActorHealthManager.STATUS_HEALTHY
-	   and sActorHealth ~= ActorHealthManager.STATUS_DEAD then
-		return true;
+	if StringManager.contains(arrSEffects, 'FHEAL') then
+		if sActorHealth ~= ActorHealthManager.STATUS_HEALTHY and sActorHealth ~= ActorHealthManager.STATUS_DEAD then
+			return true;
+		end
 	end
-
 	return false;
 end
 
@@ -208,9 +209,9 @@ local function nextRound_new(nRounds, bTimeChanged)
 		end
 		-- end checking for necessity of full processing of rounds
 
-		for _, nodeCT in ipairs(aEntries) do
-			CombatManager.onTurnStartEvent(nodeCT);
-			CombatManager.onTurnEndEvent(nodeCT);
+		for i = 1,#aEntries do
+			CombatManager.onTurnStartEvent(aEntries[i]);
+			CombatManager.onTurnEndEvent(aEntries[i]);
 		end
 
 		CombatManager.onInitChangeEvent();
