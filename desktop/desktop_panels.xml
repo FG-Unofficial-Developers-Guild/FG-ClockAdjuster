@@ -59,8 +59,7 @@
 						DB.addHandler("calendar.current.hour", "onUpdate", onSourceChanged);
 						onSourceChanged();
 						local nDateinMinutes = TimeManager.getCurrentDateinMinutes();
-						DB.setValue("calendar.dateinminutes", "number", nDateinMinutes);
-						DB.setValue("calendar.dateinminutesstring", "string", tostring(nDateinMinutes));
+						DB.setValue("calendar.dateinminutes", "number", nDateinMinutes); DB.setValue("calendar.dateinminutesstring", "string", tostring(nDateinMinutes));
 						
 						Interface.openWindow("timedevents", "DB");
 						Interface.toggleWindow("timedevents", "DB")
@@ -99,8 +98,7 @@
 						DB.addHandler("calendar.current.minute", "onUpdate", onSourceChanged);
 						onSourceChanged();
 						local nDateinMinutes = TimeManager.getCurrentDateinMinutes();
-						DB.setValue("calendar.dateinminutes", "number", nDateinMinutes);
-						DB.setValue("calendar.dateinminutesstring", "string", tostring(nDateinMinutes))
+						DB.setValue("calendar.dateinminutes", "number", nDateinMinutes); DB.setValue("calendar.dateinminutesstring", "string", tostring(nDateinMinutes))
 					end
 					
 					function onClose()
@@ -131,8 +129,7 @@
 						DB.addHandler("calendar.current.day", "onUpdate", onSourceChanged);
 						onSourceChanged();
 						local nDateinMinutes = TimeManager.getCurrentDateinMinutes();
-						DB.setValue("calendar.dateinminutes", "number", nDateinMinutes);
-						DB.setValue("calendar.dateinminutesstring", "string", tostring(nDateinMinutes))
+						DB.setValue("calendar.dateinminutes", "number", nDateinMinutes); DB.setValue("calendar.dateinminutesstring", "string", tostring(nDateinMinutes))
 					end
 					
 					function onClose()
@@ -158,8 +155,7 @@
 						DB.addHandler("calendar.current.month", "onUpdate", onSourceChanged);
 						onSourceChanged();
 						local nDateinMinutes = TimeManager.getCurrentDateinMinutes();
-						DB.setValue("calendar.dateinminutes", "number", nDateinMinutes);
-						DB.setValue("calendar.dateinminutesstring", "string", tostring(nDateinMinutes))
+						DB.setValue("calendar.dateinminutes", "number", nDateinMinutes); DB.setValue("calendar.dateinminutesstring", "string", tostring(nDateinMinutes))
 					end
 					
 					function onClose()
@@ -185,8 +181,7 @@
 						DB.addHandler("calendar.current.year", "onUpdate", onSourceChanged);
 						onSourceChanged();
 						local nDateinMinutes = TimeManager.getCurrentDateinMinutes();
-						DB.setValue("calendar.dateinminutes", "number", nDateinMinutes);
-						DB.setValue("calendar.dateinminutesstring", "string", tostring(nDateinMinutes))
+						DB.setValue("calendar.dateinminutes", "number", nDateinMinutes); DB.setValue("calendar.dateinminutesstring", "string", tostring(nDateinMinutes))
 					end
 					
 					function onClose()
@@ -248,8 +243,7 @@
 						bTimeStep = true;
 						
 						local nDateinMinutes = TimeManager.getCurrentDateinMinutes();
-						DB.setValue("calendar.dateinminutes", "number", nDateinMinutes);
-						DB.setValue("calendar.dateinminutesstring", "string", tostring(nDateinMinutes))
+						DB.setValue("calendar.dateinminutes", "number", nDateinMinutes); DB.setValue("calendar.dateinminutesstring", "string", tostring(nDateinMinutes))
 
 						local nCurrentRound = DB.getValue("combattracker.round", 0);
 						nCurrentRound = nCurrentRound % 10
@@ -297,8 +291,7 @@
 						bTimeStep = true;
 
 						local nDateinMinutes = TimeManager.getCurrentDateinMinutes();
-						DB.setValue("calendar.dateinminutes", "number", nDateinMinutes);
-						DB.setValue("calendar.dateinminutesstring", "string", tostring(nDateinMinutes))
+						DB.setValue("calendar.dateinminutes", "number", nDateinMinutes); DB.setValue("calendar.dateinminutesstring", "string", tostring(nDateinMinutes))
 
 						local nCurrentRound = DB.getValue("combattracker.round", 0);
 						nCurrentRound = nCurrentRound % 10
@@ -354,8 +347,7 @@
 						bTimeStep = true;
 						
 						local nDateinMinutes = TimeManager.getCurrentDateinMinutes();
-						DB.setValue("calendar.dateinminutes", "number", nDateinMinutes);
-						DB.setValue("calendar.dateinminutesstring", "string", tostring(nDateinMinutes))
+						DB.setValue("calendar.dateinminutes", "number", nDateinMinutes); DB.setValue("calendar.dateinminutesstring", "string", tostring(nDateinMinutes))
 
 						local nCurrentRound = DB.getValue("combattracker.round", 0);
 						nCurrentRound = nCurrentRound % 10
@@ -404,8 +396,7 @@
 						bTimeStep = true;
 						
 						local nDateinMinutes = TimeManager.getCurrentDateinMinutes();
-						DB.setValue("calendar.dateinminutes", "number", nDateinMinutes);
-						DB.setValue("calendar.dateinminutesstring", "string", tostring(nDateinMinutes))
+						DB.setValue("calendar.dateinminutes", "number", nDateinMinutes); DB.setValue("calendar.dateinminutesstring", "string", tostring(nDateinMinutes))
 
 						local nCurrentRound = DB.getValue("combattracker.round", 0);
 						nCurrentRound = nCurrentRound % 10
@@ -447,8 +438,7 @@
 						bTimeStep = true;
 						
 						local nDateinMinutes = TimeManager.getCurrentDateinMinutes();
-						DB.setValue("calendar.dateinminutes", "number", nDateinMinutes);
-						DB.setValue("calendar.dateinminutesstring", "string", tostring(nDateinMinutes))
+						DB.setValue("calendar.dateinminutes", "number", nDateinMinutes); DB.setValue("calendar.dateinminutesstring", "string", tostring(nDateinMinutes))
 
 						local nCurrentRound = DB.getValue("combattracker.round", 0);
 						nCurrentRound = nCurrentRound % 10
@@ -497,8 +487,7 @@
 						bTimeStep = true;
 						
 						local nDateinMinutes = TimeManager.getCurrentDateinMinutes();
-						DB.setValue("calendar.dateinminutes", "number", nDateinMinutes);
-						DB.setValue("calendar.dateinminutesstring", "string", tostring(nDateinMinutes))
+						DB.setValue("calendar.dateinminutes", "number", nDateinMinutes); DB.setValue("calendar.dateinminutesstring", "string", tostring(nDateinMinutes))
 
 						local nCurrentRound = DB.getValue("combattracker.round", 0);
 						nCurrentRound = nCurrentRound % 10
@@ -562,8 +551,7 @@
 						end
 
 						local nDateinMinutes = TimeManager.getCurrentDateinMinutes();
-						DB.setValue("calendar.dateinminutes", "number", nDateinMinutes);
-						DB.setValue("calendar.dateinminutesstring", "string", tostring(nDateinMinutes))
+						DB.setValue("calendar.dateinminutes", "number", nDateinMinutes); DB.setValue("calendar.dateinminutesstring", "string", tostring(nDateinMinutes))
 
 						local nCurrentRound = DB.getValue("combattracker.round", 0);
 						nCurrentRound = nCurrentRound % 10
@@ -577,6 +565,7 @@
 					<left anchor="left" offset="0" />
 					<top anchor="bottom" offset="10" />
 				</anchored>
+				<!-- <font>calendarbold</font> -->
 				<min>0</min>
 				<tooltip textres="desktop_shortrest" />
 				<script>
@@ -617,8 +606,7 @@
 						end
 						
 						local nDateinMinutes = TimeManager.getCurrentDateinMinutes();
-						DB.setValue("calendar.dateinminutes", "number", nDateinMinutes);
-						DB.setValue("calendar.dateinminutesstring", "string", tostring(nDateinMinutes))
+						DB.setValue("calendar.dateinminutes", "number", nDateinMinutes); DB.setValue("calendar.dateinminutesstring", "string", tostring(nDateinMinutes))
 
 						local nCurrentRound = DB.getValue("combattracker.round", 0);
 						nCurrentRound = nCurrentRound % 10
@@ -664,8 +652,7 @@
 							CalendarManager.outputTime();
 							
 							local nDateinMinutes = TimeManager.getCurrentDateinMinutes();
-							DB.setValue("calendar.dateinminutes", "number", nDateinMinutes);
-							DB.setValue("calendar.dateinminutesstring", "string", tostring(nDateinMinutes))
+							DB.setValue("calendar.dateinminutes", "number", nDateinMinutes); DB.setValue("calendar.dateinminutesstring", "string", tostring(nDateinMinutes))
 
 							local nCurrentRound = DB.getValue("combattracker.round", 0);
 							nCurrentRound = nCurrentRound % 10
@@ -711,11 +698,10 @@
 							CalendarManager.outputTime();
 						
 							local nDateinMinutes = TimeManager.getCurrentDateinMinutes();
-							DB.setValue("calendar.dateinminutes", "number", nDateinMinutes);
-							DB.setValue("calendar.dateinminutesstring", "string", tostring(nDateinMinutes));
+							DB.setValue("calendar.dateinminutes", "number", nDateinMinutes); DB.setValue("calendar.dateinminutesstring", "string", tostring(nDateinMinutes))
 
 							local nCurrentRound = DB.getValue("combattracker.round", 0);
-							nCurrentRound = nCurrentRound % 10;
+							nCurrentRound = nCurrentRound % 10
 							DB.setValue("combattracker.round", 'number', nCurrentRound);
 						end
 					end
@@ -758,11 +744,10 @@
 							CalendarManager.outputTime();
 							
 							local nDateinMinutes = TimeManager.getCurrentDateinMinutes();
-							DB.setValue("calendar.dateinminutes", "number", nDateinMinutes);
-							DB.setValue("calendar.dateinminutesstring", "string", tostring(nDateinMinutes));
+							DB.setValue("calendar.dateinminutes", "number", nDateinMinutes); DB.setValue("calendar.dateinminutesstring", "string", tostring(nDateinMinutes))
 
 							local nCurrentRound = DB.getValue("combattracker.round", 0);
-							nCurrentRound = nCurrentRound % 10;
+							nCurrentRound = nCurrentRound % 10
 							DB.setValue("combattracker.round", 'number', nCurrentRound);
 						end
 					end
@@ -806,11 +791,10 @@
 							CalendarManager.outputTime();
 							
 							local nDateinMinutes = TimeManager.getCurrentDateinMinutes();
-							DB.setValue("calendar.dateinminutes", "number", nDateinMinutes);
-							DB.setValue("calendar.dateinminutesstring", "string", tostring(nDateinMinutes));
+							DB.setValue("calendar.dateinminutes", "number", nDateinMinutes); DB.setValue("calendar.dateinminutesstring", "string", tostring(nDateinMinutes))
 
 							local nCurrentRound = DB.getValue("combattracker.round", 0);
-							nCurrentRound = nCurrentRound % 10;
+							nCurrentRound = nCurrentRound % 10
 							DB.setValue("combattracker.round", 'number', nCurrentRound);
 						end
 					end
@@ -912,7 +896,7 @@
 					end
 					function onTimeChanged()
 						for _,w in pairs(getWindows()) do
-							w.onTimeChanged();
+							w.onTimeChanged()
 						end
 					end
 					function update()
@@ -1108,9 +1092,9 @@
 				day.setReadOnly(bReadOnly);
 				month.setReadOnly(bReadOnly);
 				year.setReadOnly(bReadOnly);
-				nMonth = month.getValue() or 0;
-				nDay = day.getValue() or 0;
-				nYear = year.getValue() or 0;
+				nMonth = (month.getValue() or 0);
+				nDay = (day.getValue() or 0);
+				nYear = (year.getValue() or 0);
 				if bDone == nil then 
 					bDone = false; 
 				end
