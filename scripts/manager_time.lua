@@ -53,15 +53,15 @@ end
 function setTimerStart(rActor, sFirst)
 	local nodeActor = rActor;
 	local nStartMinute, nStartHour, nStartDay, nStartMonth, nStartYear = getCurrentDate();
+	
 	DB.setValue(nodeActor, "" .. sFirst .. ".startminute", "number", nStartMinute);
 	DB.setValue(nodeActor, "" .. sFirst .. ".starthour", "number", nStartHour);
 	DB.setValue(nodeActor, "" .. sFirst .. ".startday", "number", nStartDay);
 	DB.setValue(nodeActor, "" .. sFirst .. ".startmonth", "number", nStartMonth);
 	DB.setValue(nodeActor, "" .. sFirst .. ".startyear", "number", nStartYear);
 end
-
 function getTimerStart(rActor, sFirst)
-	local nodeActor = rActor;
+	local nodeActor = rActor;		
 	local nStartMinute = DB.getValue(nodeActor, "" .. sFirst .. ".startminute", 0);
 	local nStartHour = DB.getValue(nodeActor, "" .. sFirst .. ".starthour", 0);
 	local nStartDay = DB.getValue(nodeActor, "" .. sFirst .. ".startday", 0);
@@ -83,18 +83,23 @@ local function bigMessage(msgtxt, broadcast, rActor)
 		Comm.addChatMessage(msg);
 	end
 end
-
+	
 function getCurrentDate()
+	-- Debug.console("getCurrentDateinMinutes called;");
 	local nMinutes = DB.getValue("calendar.current.minute", 0);
+	-- Debug.console("getCurrentDateinMinutes; nMinutes =", nMinutes);
 	local nHours = DB.getValue("calendar.current.hour", 0);
+	-- Debug.console("getCurrentDateinMinutes; nHours =", nHours);
 	local nDays = DB.getValue("calendar.current.day", 0);
+	-- Debug.console("getCurrentDateinMinutes; nDays =", nDays);
 	local nMonths = DB.getValue("calendar.current.month", 0);
+	-- Debug.console("getCurrentDateinMinutes; nMonths =", nMonths);
 	local nYears = DB.getValue("calendar.current.year", 0);
 
-	if bNoticePosted == false and
-	   (not DB.getValue("calendar.data.complete") or (not nMinutes or not nHours or not nDays or not nMonths or not nYears)) then
-		bigMessage(Interface.getString('error_calendar_not_configured'));
-		bNoticePosted = true;
+	if (bNoticePosted == false) and
+		(not DB.getValue("calendar.data.complete") or (not nMinutes or not nHours or not nDays or not nMonths or not nYears)) then
+		bigMessage(Interface.getString('error_calendar_not_configured'))
+		bNoticePosted = true
 	end
 
 	return nMinutes, nHours, nDays, nMonths, nYears;
@@ -103,11 +108,13 @@ end
 function compareDates(rActor, sFirst)
 	local nMinutes, nHours, nDays, nMonths, nYears = getCurrentDate();
 	local nStartMinute, nStartHour, nStartDay, nStartMonth, nStartYear = getTimerStart(rActor, sFirst);
+	
 	local nMinuteDifference = nMinutes - nStartMinute;
 	local nHourDifference = nHours - nStartHour;
 	local nDayDifference = nDays - nStartDay;
 	local nMonthDifference = nMonths - nStartMonth;
 	local nYearDifference = nYears - nStartYear;
+	
 	return nMinuteDifference, nHourDifference, nDayDifference, nMonthDifference, nYearDifference;
 end
 
@@ -121,18 +128,27 @@ function hasTimePassed(rActor, sFirst, sTime)
 		   nYears >= nStartYear;
 end
 
+	
 function getCurrentDateinMinutes()
 	local nMinutes, nHours, nDays, nMonths, nYears = getCurrentDate()
 	local nRounds = (DB.getValue("combattracker.round", 0) % 10);
-	local nRoundsinMinutes = 0.1 * nRounds;
-	local nHoursinMinutes = convertHourstoMinutes(nHours);
-	local nDaysinMinutes = convertDaystoMinutes(nDays);
-	local nMonthsinMinutes = convertMonthssnowtoMinutes(nMonths, nYears);
-	local nYearsinMinutes = convertYearsnowtoMinutes(nYears);
+
+	local nRoundsinMinutes = (0.1 * nRounds);
+	-- Debug.console("getCurrentDateinMinutes; nRoundsinMinutes =", nRoundsinMinutes);
+	local nHoursinMinutes = convertHourstoMinutes(nHours) or 0;
+	-- Debug.console("getCurrentDateinMinutes; nHoursinMinutes =", nHoursinMinutes);
+	local nDaysinMinutes = convertDaystoMinutes(nDays) or 0;
+	-- Debug.console("getCurrentDateinMinutes; nDaysinMinutes =", nDaysinMinutes);
+	local nMonthsinMinutes = convertMonthssnowtoMinutes(nMonths, nYears) or 0;
+	-- Debug.console("getCurrentDateinMinutes; nMonthsinMinutes =", nMonthsinMinutes);
+	local nYearsinMinutes = convertYearsnowtoMinutes(nYears) or 0;
+	-- Debug.console("getCurrentDateinMinutes; nYearsinMinutes =", nYearsinMinutes);
+	
 	local nDateinMinutes = nRoundsinMinutes + nHoursinMinutes + nDaysinMinutes + nMonthsinMinutes + nYearsinMinutes + nMinutes;
+	-- Debug.console(getCurrentDateinMinutes);
+	
 	return nDateinMinutes;
 end
-
 --- Compare times
 function isTimeGreaterThan(rActor, sFirst, nCompareBy)
 	local nStartTime = getStartTime(rActor);
@@ -175,26 +191,33 @@ function convertDaystoHours(nNumber)
 end
 
 function convertMinutestoDays(nNumber)
+	-- Debug.console("convertMinutestoDays called, nNumber = " .. nNumber .. "");
 	local nHoursTotaled = convertMinutestoHours(nNumber);
 	local nDaysTotaled = convertHourstoDays(nHoursTotaled);
+	-- Debug.console("convertMinutestoDays, nHoursTotaled = " .. nHoursTotaled .. ", nDaysTotaled = " .. nDaysTotaled .. "");
 	return nDaysTotaled;
 end
-
 function convertDaystoMinutes(nNumber)
+	-- Debug.console("convertDaystoMinutes called, nNumber = " .. nNumber .. "");
 	local nDaysinHours = convertDaystoHours(nNumber);
 	local nMinutesTotaled = convertHourstoMinutes(nDaysinHours);
+	-- Debug.console("convertDaystoMinutes, nDaysinHours = " .. nDaysinHours .. ", nMinutesTotaled = " .. nMinutesTotaled .. "");
 	return nMinutesTotaled;
 end
-
 function convertMonthtoHours(nMonth, nYear)
+	-- Debug.console("convertMonthtoHours called, nNumber = " .. nNumber .. "");
+	-- Debug.console("convertMonthtoHours, nMonth = " .. nMonth .. ", nYear = " .. nYear .. "");
 	local nDays = getDaysInMonth(nMonth, nYear);
 	local nHoursTotaled = convertDaystoHours(nDays);
+	-- Debug.console("convertMonthtoHours, nDays = " .. nDays .. ", nHoursTotaled = " .. nHoursTotaled .. "");
 	return nHoursTotaled;
 end
-
 function convertMonthtoMinutes(nMonth, nYear)
+	-- Debug.console("convertMonthtoMinutes called, nNumber = " .. nNumber .. "");
+	-- Debug.console("convertMonthtoMinutes, nDays = " .. nDays .. ", nYear = " .. nYear .. "");
 	local nDays = getDaysInMonth(nMonth, nYear);
 	local nMinutesTotaled = convertDaystoMinutes(nDays);
+	-- Debug.console("convertMonthtoMinutes, nDays = " .. nDays .. ", nMinutesTotaled = " .. nMinutesTotaled .. "");
 	return nMinutesTotaled;
 end
 
@@ -246,7 +269,6 @@ function isLeapYear(nYear)
 		   (nYear % 100 ~= 0 or nYear % 400 == 0);
 end
 
--- TODO: Can this storage of state be eliminated?
 local aEvents = {};
 local nSelMonth = 0;
 local nSelDay = 0;
@@ -254,18 +276,17 @@ local bEnableBuild = true;
 
 function buildEvents()
 	aEvents = {};
-	for _, v in pairs(DB.getChildren("calendar.log")) do
+	
+	for _,v in pairs(DB.getChildren("calendar.log")) do
 		local nYear = DB.getValue(v, "year", 0);
 		local nMonth = DB.getValue(v, "month", 0);
 		local nDay = DB.getValue(v, "day", 0);
 		if not aEvents[nYear] then
 			aEvents[nYear] = {};
 		end
-
 		if not aEvents[nYear][nMonth] then
 			aEvents[nYear][nMonth] = {};
 		end
-
 		aEvents[nYear][nMonth][nDay] = v;
 	end
 
@@ -286,15 +307,14 @@ function addLogEntry(nMonth, nDay, nYear, bGMVisible, node)
 	local sMinute = tostring(nMinute);
 	local nHour = DB.getValue(node, "hour", 0);
 	local sHour = tostring(nHour);
-
+	
 	if nHour < 10 then
 		sHour = "0" .. sHour;
 	end
-
 	if nMinute < 10 then
 		sMinute = "0" .. sMinute;
 	end
-
+	
 	if aEvents[nYear] and aEvents[nYear][nMonth] and aEvents[nYear][nMonth][nDay] then
 		nodeEvent = aEvents[nYear][nMonth][nDay];
 		local EventGMLog = DB.getValue(nodeEvent, "gmlogentry", "");
@@ -316,7 +336,7 @@ function addLogEntry(nMonth, nDay, nYear, bGMVisible, node)
 		local nodeLog = DB.createNode("calendar.log");
 		nodeEvent = nodeLog.createChild();
 		sString = "<h>" .. sName .. " [" .. sHour .. ":" .. sMinute .. "]" .. "</h>" .. sString;
-
+		
 		DB.setValue(nodeEvent, "epoch", "string", DB.getValue("calendar.current.epoch", ""));
 		DB.setValue(nodeEvent, "year", "number", nYear);
 		DB.setValue(nodeEvent, "month", "number", nMonth);
@@ -328,6 +348,7 @@ function addLogEntry(nMonth, nDay, nYear, bGMVisible, node)
 		end
 
 		bEnableBuild = true;
+
 		onEventsChanged();
 	end
 
@@ -340,6 +361,7 @@ end
 
 function removeLogEntry(nMonth, nDay)
 	local nYear = CalendarManager.getCurrentYear();
+	
 	if aEvents[nYear] and aEvents[nYear][nMonth] and aEvents[nYear][nMonth][nDay] then
 		local nodeEvent = aEvents[nYear][nMonth][nDay];
 		if Session.IsHost then
