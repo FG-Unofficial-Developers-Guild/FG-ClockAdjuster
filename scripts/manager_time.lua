@@ -354,7 +354,7 @@ function addLogEntry(nMonth, nDay, nYear, bGMVisible, node)
 		DB.setValue(nodeEvent, "year", "number", nYear);
 		DB.setValue(nodeEvent, "month", "number", nMonth);
 		DB.setValue(nodeEvent, "day", "number", nDay);
-		if bGMVisible then
+		if bGMVisible == true then
 			DB.setValue(nodeEvent, "gmlogentry", "formattedtext", sString);
 		else
 			DB.setValue(nodeEvent, "logentry", "formattedtext", sString);
