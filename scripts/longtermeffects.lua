@@ -2,9 +2,6 @@
 -- Please see the LICENSE.md file included with this distribution for attribution and copyright information.
 --
 
--- Global Declarations
-RULESET = '';
-
 ---	This function compiles all effects and decrements their durations when time is advanced
 function advanceRoundsOnTimeChanged(nRounds)
 	if nRounds and nRounds > 0 then
@@ -251,26 +248,19 @@ end
 
 -- Function Overrides
 function onInit()
-	RULESET = User.getRulesetName()
-	if RULESET == '3.5E' or RULESET == 'PFRPG' or RULESET == 'PFRPG2' or RULESET == '5E' then
-		CombatManager.nextRound_old_clockmanager = CombatManager.nextRound;
+	local sRuleset = User.getRulesetName()
+	if sRuleset == '3.5E' or sRuleset == 'PFRPG' or sRuleset == 'PFRPG2' or sRuleset == '5E' then
 		CombatManager.nextRound = nextRound_new;
-
-		CombatManager.resetInit_old_clockmanager = CombatManager.resetInit;
 		CombatManager.resetInit = resetInit_new;
-
-		CombatManager2.clearExpiringEffects_old_clockmanager = CombatManager2.clearExpiringEffects;
 		CombatManager2.clearExpiringEffects = clearExpiringEffects_new;
-
 		EffectManager.setCustomOnEffectAddStart(onEffectAddStart_new);
-		if RULESET == '3.5E' or RULESET == 'PFRPG' or RULESET == 'PFRPG2' then
-			EffectManager35E.onEffectAddStart_old_clockmanager = EffectManager35E.onEffectAddStart;
+		if sRuleset == '3.5E' or sRuleset == 'PFRPG' then
 			EffectManager35E.onEffectAddStart = onEffectAddStart_new;
-		elseif RULESET == '5E' then
-			EffectManager5E.onEffectAddStart_old_clockmanager = EffectManager5E.onEffectAddStart;
+		elseif sRuleset == '5E' then
 			EffectManager5E.onEffectAddStart = onEffectAddStart_new;
 		end
 	end
 
-	OptionsManager.registerOption2('TIMEROUNDS', false, 'option_header_game', 'opt_lab_time_rounds', 'option_entry_cycler', { labels = 'enc_opt_time_rounds_slow', values = 'slow', baselabel = 'enc_opt_time_rounds_fast', baseval = 'fast', default = 'fast' });
+	OptionsManager.registerOption2('TIMEROUNDS', false, 'option_header_game', 'opt_lab_time_rounds', 'option_entry_cycler',
+		{ labels = 'enc_opt_time_rounds_slow', values = 'slow', baselabel = 'enc_opt_time_rounds_fast', baseval = 'fast', default = 'fast' });
 end
