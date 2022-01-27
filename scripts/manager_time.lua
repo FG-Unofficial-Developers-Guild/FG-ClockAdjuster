@@ -171,25 +171,35 @@ end
 
 --- Time conversion functions
 function convertSecondstoMinutes(nNumber)
-	return nNumber / 60;
+	-- Debug.console("convertSecondstoMinutes called, nNumber = " .. nNumber .. "");
+	local nMinutesTotaled = nNumber / 60;
+	-- Debug.console("convertSecondstoMinutes, nMinutesTotaled = " .. nMinutesTotaled .. "");
+	return nMinutesTotaled;
 end
-
 function convertHourstoMinutes(nNumber)
-	return nNumber * 60;
+	-- Debug.console("convertHourstoMinutes called, nNumber = " .. nNumber .. "");
+	local nMinutesTotaled = nNumber * 60;
+	-- Debug.console("convertHourstoMinutes, nMinutesTotaled = " .. nMinutesTotaled .. "");
+	return nMinutesTotaled;
 end
-
 function convertMinutestoHours(nNumber)
-	return nNumber / 60;
+	-- Debug.console("convertMinutestoHours called, nNumber = " .. nNumber .. "");
+	local nHoursTotaled = nNumber / 60;
+	-- Debug.console("convertMinutestoHours, nHoursTotaled = " .. nHoursTotaled .. "");
+	return nHoursTotaled;
 end
-
 function convertHourstoDays(nNumber)
-	return nNumber / 24;
+	-- Debug.console("convertHourstoDays called, nNumber = " .. nNumber .. "");
+	local nDaysTotaled = nNumber / 24;
+	-- Debug.console("convertHourstoDays, nDaysTotaled = " .. nDaysTotaled .. "");
+	return nDaysTotaled;
 end
-
 function convertDaystoHours(nNumber)
-	return nNumber * 24;
+	-- Debug.console("convertDaystoHours called, nNumber = " .. nNumber .. "");
+	local nHoursTotaled = nNumber * 24;
+	-- Debug.console("convertDaystoHours, nHoursTotaled = " .. nHoursTotaled .. "");
+	return nHoursTotaled;
 end
-
 function convertMinutestoDays(nNumber)
 	-- Debug.console("convertMinutestoDays called, nNumber = " .. nNumber .. "");
 	local nHoursTotaled = convertMinutestoHours(nNumber);
@@ -220,7 +230,6 @@ function convertMonthtoMinutes(nMonth, nYear)
 	-- Debug.console("convertMonthtoMinutes, nDays = " .. nDays .. ", nMinutesTotaled = " .. nMinutesTotaled .. "");
 	return nMinutesTotaled;
 end
-
 function convertYeartoHours(nNumber)
 	local nYearinDays = 365;
 	if isLeapYear(nNumber) then
@@ -229,9 +238,12 @@ function convertYeartoHours(nNumber)
 
 	return nYearinDays * 24;
 end
-
 function convertYeartoMinutes(nNumber)
-	return convertYeartoHours(nNumber) * 60;
+	-- Debug.console("convertYeartoMinutes called, nNumber = " .. nNumber .. "");
+	local nYearinHours = convertYeartoHours(nNumber);
+	local nYearinMinutes = nYearinHours * 60;
+	-- Debug.console("convertYeartoMinutes, nYearinHours = " .. nYearinHours .. ", nYearinMinutes = " .. nYearinMinutes .. "");
+	return nYearinMinutes;
 end
 
 function convertYearsnowtoMinutes(nYear)
@@ -281,6 +293,7 @@ function buildEvents()
 		local nYear = DB.getValue(v, "year", 0);
 		local nMonth = DB.getValue(v, "month", 0);
 		local nDay = DB.getValue(v, "day", 0);
+		
 		if not aEvents[nYear] then
 			aEvents[nYear] = {};
 		end
@@ -346,7 +359,7 @@ function addLogEntry(nMonth, nDay, nYear, bGMVisible, node)
 		else
 			DB.setValue(nodeEvent, "logentry", "formattedtext", sString);
 		end
-
+		
 		bEnableBuild = true;
 
 		onEventsChanged();
