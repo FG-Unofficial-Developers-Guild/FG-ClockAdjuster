@@ -277,8 +277,7 @@ function getDaysInMonth(nMonth, nYear)
 end
 
 function isLeapYear(nYear)
-	return nYear % 4 == 0 and
-		   (nYear % 100 ~= 0 or nYear % 400 == 0);
+	return nYear%4==0 and (nYear%100~=0 or nYear%400==0)
 end
 
 local aEvents = {};
