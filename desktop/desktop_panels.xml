@@ -35,22 +35,27 @@
 							if nYear == nil or nYear == 0 then
 								DB.setValue("calendar.current.year", "number", 1);
 							end
+
 							local nMonth = DB.getValue("calendar.current.month", 0);
 							if nMonth == nil or nMonth == 0 then
 								DB.setValue("calendar.current.month", "number", 1);
 							end
+
 							local nDay = DB.getValue("calendar.current.day", 0);
 							if nDay == nil or nDay == 0 then
 								DB.setValue("calendar.current.day", "number", 1);
 							end
+
 							local nMinute = DB.getValue("calendar.current.minute", 0);
 							if nMinute == nil then
 								DB.setValue("calendar.current.minute", "number", 0);
 							end
+
 							local nHour = DB.getValue("calendar.current.hour", 0);
 							if nHour == nil then
 								DB.setValue("calendar.current.hour", "number", 0);
 							end
+							
 							Interface.openWindow("calendar", "DB");
 							DB.setValue("calendar.newcampaign", "number", 1);
 						end
