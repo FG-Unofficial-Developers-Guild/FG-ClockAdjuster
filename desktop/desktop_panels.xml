@@ -173,12 +173,12 @@
 					function onDoubleClick()
 						local nHour = getValue() or 0;
 						local nRounds = nHour * 600;
-
 						if OptionsManager.isOption('TIMEROUNDS', 'slow') and nRounds &lt; 4801 then
 							CombatManager.nextRound(nRounds, true);
 						else
 							LongTermEffects.advanceRoundsOnTimeChanged(nRounds)
 						end
+
 						CalendarManager.adjustHours(nHour);
 						if window.checkweather.getValue() == 1 then
 							local WeatherWind = "Weather - Wind";
@@ -188,21 +188,17 @@
 							TableManager.processTableRoll("", "Weather Temperature");
 							TableManager.processTableRoll("", "Weather Precipitation");
 						end
+
 						if DB.getValue("calendar.check.day") == nil or DB.getValue("calendar.check.day") ~= DB.getValue("calendar.current.day") then
 							CalendarManager.outputDate();
 							DB.setValue("calendar.check.day", "number", DB.getValue("calendar.current.day"));
 						end
+
 						if nHour &gt; 0 then 
 							CalendarManager.outputTime();
 						end
-						onUpdate();
-					end
 
-					function onUpdate()
-						DB.setValue("calendar.dateinminutes", "number", DB.getValue("calendar.dateinminutes", 0) + 1);
-						local nCurrentRound = DB.getValue(CombatManager.CT_ROUND, 0);
-						nCurrentRound = nCurrentRound % 10
-						DB.setValue(CombatManager.CT_ROUND, 'number', nCurrentRound);
+						TimeManager.onUpdateAddControl();
 					end
 				</script>
 			</basicnumber>
@@ -222,28 +218,23 @@
 					function onDoubleClick()
 						local nMinute = getValue() or 0;
 						local nRounds = nMinute * 10;
-
 						if OptionsManager.isOption('TIMEROUNDS', 'slow') and nRounds &lt; 4801 then
 							CombatManager.nextRound(nRounds, true);
 						else
 							LongTermEffects.advanceRoundsOnTimeChanged(nRounds)
 						end
+
 						CalendarManager.adjustMinutes(nMinute);
 						if DB.getValue("calendar.check.day") == nil or DB.getValue("calendar.check.day") ~= DB.getValue("calendar.current.day") then
 							CalendarManager.outputDate();
 							DB.setValue("calendar.check.day", "number", DB.getValue("calendar.current.day"));
 						end
+
 						if nMinute &gt; 0 then 
 							CalendarManager.outputTime(); 
 						end
-						onUpdate();
-					end
 
-					function onUpdate()
-						DB.setValue("calendar.dateinminutes", "number", DB.getValue("calendar.dateinminutes", 0) + 1);
-						local nCurrentRound = DB.getValue(CombatManager.CT_ROUND, 0);
-						nCurrentRound = nCurrentRound % 10
-						DB.setValue(CombatManager.CT_ROUND, 'number', nCurrentRound);
+						TimeManager.onUpdateAddControl();
 					end
 				</script>
 			</basicnumber>
@@ -263,12 +254,12 @@
 					function onDoubleClick()
 						local nDay = getValue() or 0;
 						local nRounds = nDay * 14400;
-
 						if OptionsManager.isOption('TIMEROUNDS', 'slow') and nRounds &lt; 4801 then
 							CombatManager.nextRound(nRounds, true);
 						else
 							LongTermEffects.advanceRoundsOnTimeChanged(nRounds)
 						end
+
 						CalendarManager.adjustDays(nDay);
 						if window.checkweather.getValue() == 1 then
 							local WeatherWind = "Weather - Wind";
@@ -278,20 +269,16 @@
 							TableManager.processTableRoll("", "Weather Temperature");
 							TableManager.processTableRoll("", "Weather Precipitation");
 						end
+
 						if DB.getValue("calendar.check.day") == nil or DB.getValue("calendar.check.day") ~= DB.getValue("calendar.current.day") then
 							DB.setValue("calendar.check.day", "number", DB.getValue("calendar.current.day"));
 						end
+
 						if nDay &gt; 0 then 
 							CalendarManager.outputDate(); 
 						end
-						onUpdate();
-					end
 
-					function onUpdate()
-						DB.setValue("calendar.dateinminutes", "number", DB.getValue("calendar.dateinminutes", 0) + 1);
-						local nCurrentRound = DB.getValue(CombatManager.CT_ROUND, 0);
-						nCurrentRound = nCurrentRound % 10
-						DB.setValue(CombatManager.CT_ROUND, 'number', nCurrentRound);
+						TimeManager.onUpdateAddControl();
 					end
 				</script>
 			</basicnumber>
@@ -307,7 +294,6 @@
 					function onDoubleClick()
 						local nMonth = getValue() or 0;
 						local nRounds = nMonth * 432000;
-						
 						if OptionsManager.isOption('TIMEROUNDS', 'slow') and nRounds &lt; 4801 then
 							CombatManager.nextRound(nRounds, true);
 						else
@@ -323,17 +309,12 @@
 							TableManager.processTableRoll("", "Weather Temperature");
 							TableManager.processTableRoll("", "Weather Precipitation");
 						end
+
 						if nMonth &gt; 0 then 
 							CalendarManager.outputDate(); 
 						end
-						onUpdate();
-					end
 
-					function onUpdate()
-						DB.setValue("calendar.dateinminutes", "number", DB.getValue("calendar.dateinminutes", 0) + 1);
-						local nCurrentRound = DB.getValue(CombatManager.CT_ROUND, 0);
-						nCurrentRound = nCurrentRound % 10
-						DB.setValue(CombatManager.CT_ROUND, 'number', nCurrentRound);
+						TimeManager.onUpdateAddControl();
 					end
 				</script>
 			</basicnumber>
@@ -362,14 +343,7 @@
 							CalendarManager.outputDate(); 
 						end
 
-						onUpdate();
-					end
-
-					function onUpdate()
-						DB.setValue("calendar.dateinminutes", "number", DB.getValue("calendar.dateinminutes", 0) + 1);
-						local nCurrentRound = DB.getValue(CombatManager.CT_ROUND, 0);
-						nCurrentRound = nCurrentRound % 10
-						DB.setValue(CombatManager.CT_ROUND, 'number', nCurrentRound);
+						TimeManager.onUpdateAddControl();
 					end
 				</script>
 			</basicnumber>
@@ -386,12 +360,12 @@
 						local nMonth = window.addmonth.getValue() or 0;
 						local nYear = window.addyear.getValue() or 0;
 						local nRounds = (nHour * 600) + (nMinute * 10) + (nDay * 14400) + (nDay * 403200);
-
 						if OptionsManager.isOption('TIMEROUNDS', 'slow') and nRounds &lt; 4801 then
 							CombatManager.nextRound(nRounds, true);
 						else
 							LongTermEffects.advanceRoundsOnTimeChanged(nRounds)
 						end
+
 						if window.checkweather.getValue() == 1 then
 							local WeatherWind = "Weather - Wind";
 							local WeatherTemp = "Weather - Temperature";
@@ -400,6 +374,7 @@
 							TableManager.processTableRoll("", "Weather Temperature");
 							TableManager.processTableRoll("", "Weather Precipitation");
 						end
+
 						CalendarManager.adjustMinutes(nMinute);
 						CalendarManager.adjustHours(nHour);
 						CalendarManager.adjustDays(nDay);
@@ -407,14 +382,7 @@
 						CalendarManager.adjustYears(nYear);
 						CalendarManager.outputDate();
 						CalendarManager.outputTime();
-						onUpdate();
-					end
-
-					function onUpdate()
-						DB.setValue("calendar.dateinminutes", "number", DB.getValue("calendar.dateinminutes", 0) + 1);
-						local nCurrentRound = DB.getValue(CombatManager.CT_ROUND, 0);
-						nCurrentRound = nCurrentRound % 10
-						DB.setValue(CombatManager.CT_ROUND, 'number', nCurrentRound);
+						TimeManager.onUpdateAddControl();
 					end
 				</script>
 				<center />
@@ -664,7 +632,7 @@
 								CalendarManager.outputDate();
 								DB.setValue("calendar.check.day", "number", DB.getValue("calendar.current.day"));
 							end
-							
+
 							CalendarManager.outputTime();
 							DB.setValue("calendar.dateinminutes", "number", DB.getValue("calendar.dateinminutes", 0) + 1);
 							local nCurrentRound = DB.getValue(CombatManager.CT_ROUND, 0);

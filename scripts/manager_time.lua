@@ -280,6 +280,13 @@ function onEventsChanged(_, nodeChildUpdated)
 	buildEvents();
 end
 
+function onUpdateAddControl()
+	DB.setValue("calendar.dateinminutes", "number", DB.getValue("calendar.dateinminutes", 0) + 1);
+	local nCurrentRound = DB.getValue(CombatManager.CT_ROUND, 0);
+	nCurrentRound = nCurrentRound % 10
+	DB.setValue(CombatManager.CT_ROUND, 'number', nCurrentRound);
+end
+
 function addLogEntry(nMonth, nDay, nYear, bGMVisible, node)
 	local nodeEvent;
 	local sName = DB.getValue(node, "name", "");
