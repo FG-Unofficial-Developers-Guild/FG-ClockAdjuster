@@ -447,7 +447,7 @@
 							CombatManager2.rest(true);
 						end
 
-						DB.setValue("calendar.dateinminutes", "number", DB.getValue("calendar.dateinminutes", 0) + 1);
+						TimeManager.notifyControlsOfUpdate();
 						local nCurrentRound = DB.getValue(CombatManager.CT_ROUND, 0);
 						nCurrentRound = nCurrentRound % 10
 						DB.setValue(CombatManager.CT_ROUND, 'number', nCurrentRound);
@@ -501,7 +501,7 @@
 							CombatManager2.rest();
 						end
 						
-						DB.setValue("calendar.dateinminutes", "number", DB.getValue("calendar.dateinminutes", 0) + 1);
+						TimeManager.notifyControlsOfUpdate();
 						local nCurrentRound = DB.getValue(CombatManager.CT_ROUND, 0);
 						nCurrentRound = nCurrentRound % 10
 						DB.setValue(CombatManager.CT_ROUND, 'number', nCurrentRound);
@@ -547,7 +547,7 @@
 							end
 
 							CalendarManager.outputTime();
-							DB.setValue("calendar.dateinminutes", "number", DB.getValue("calendar.dateinminutes", 0) + 1);
+							TimeManager.notifyControlsOfUpdate();
 							local nCurrentRound = DB.getValue(CombatManager.CT_ROUND, 0);
 							nCurrentRound = nCurrentRound % 10
 							DB.setValue(CombatManager.CT_ROUND, 'number', nCurrentRound);
@@ -593,7 +593,7 @@
 							end
 
 							CalendarManager.outputTime();
-							DB.setValue("calendar.dateinminutes", "number", DB.getValue("calendar.dateinminutes", 0) + 1);
+							TimeManager.notifyControlsOfUpdate();
 							local nCurrentRound = DB.getValue(CombatManager.CT_ROUND, 0);
 							nCurrentRound = nCurrentRound % 10
 							DB.setValue(CombatManager.CT_ROUND, 'number', nCurrentRound);
@@ -639,7 +639,7 @@
 							end
 
 							CalendarManager.outputTime();
-							DB.setValue("calendar.dateinminutes", "number", DB.getValue("calendar.dateinminutes", 0) + 1);
+							TimeManager.notifyControlsOfUpdate();
 							local nCurrentRound = DB.getValue(CombatManager.CT_ROUND, 0);
 							nCurrentRound = nCurrentRound % 10
 							DB.setValue(CombatManager.CT_ROUND, 'number', nCurrentRound);
@@ -685,7 +685,7 @@
 							end
 
 							CalendarManager.outputTime();
-							DB.setValue("calendar.dateinminutes", "number", DB.getValue("calendar.dateinminutes", 0) + 1);
+							TimeManager.notifyControlsOfUpdate();
 							local nCurrentRound = DB.getValue(CombatManager.CT_ROUND, 0);
 							nCurrentRound = nCurrentRound % 10
 							DB.setValue(CombatManager.CT_ROUND, 'number', nCurrentRound);
@@ -782,11 +782,11 @@
 				<allowdelete />
 				<script>
 					function onInit()
-						DB.addHandler("calendar.dateinminutes", "onUpdate", onTimeChanged);
+						DB.addHandler(TimeManager.CAL_DATEINMIN, "onUpdate", onTimeChanged);
 					end
 
 					function onClose()
-						DB.removeHandler("calendar.dateinminutes", "onUpdate", onTimeChanged);
+						DB.removeHandler(TimeManager.CAL_DATEINMIN, "onUpdate", onTimeChanged);
 					end
 
 					function onTimeChanged()
@@ -1910,11 +1910,11 @@
 				<allowdelete />
 				<script>
 					function onInit()
-						DB.addHandler("calendar.dateinminutes", "onUpdate", onTimeChanged);
+						DB.addHandler(TimeManager.CAL_DATEINMIN, "onUpdate", onTimeChanged);
 					end
 
 					function onClose()
-						DB.removeHandler("calendar.dateinminutes", "onUpdate", onTimeChanged);
+						DB.removeHandler(TimeManager.CAL_DATEINMIN, "onUpdate", onTimeChanged);
 					end
 
 					function onTimeChanged()

@@ -172,7 +172,7 @@ function nextRound_new(nRounds, bTimeChanged)
 		if nCurrent ~= 0 and (nCurrent % 10) == 0 and not bTimeChanged then
 			CalendarManager.adjustMinutes(1);
 			CalendarManager.outputTime();
-			DB.setValue("calendar.dateinminutes", "number", DB.getValue("calendar.dateinminutes", 0) + 1);
+			TimeManager.notifyControlsOfUpdate();
 		end
 		-- end bmos resetting rounds and advancing time
 
@@ -204,7 +204,7 @@ function nextRound_new(nRounds, bTimeChanged)
 		if nCurrent ~= 0 and (nCurrent % 10) == 0 and not bTimeChanged then
 			CalendarManager.adjustMinutes(1);
 			CalendarManager.outputTime();
-			DB.setValue("calendar.dateinminutes", "number", DB.getValue("calendar.dateinminutes", 0) + 1);
+			TimeManager.notifyControlsOfUpdate();
 		end
 		-- end bmos resetting rounds and advancing time
 
@@ -228,16 +228,12 @@ function nextRound_new(nRounds, bTimeChanged)
 	end
 end
 
-function clearExpiringEffects_new()
-end
-
 -- Function Overrides
 function onInit()
 	local sRuleset = User.getRulesetName()
 	if sRuleset == '3.5E' or sRuleset == 'PFRPG' or sRuleset == 'PFRPG2' or sRuleset == '5E' then
 		CombatManager.nextRound = nextRound_new;
 		CombatManager.setCustomCombatReset(onCustomCombatReset);
-		CombatManager2.clearExpiringEffects = clearExpiringEffects_new;
 		EffectManager.setCustomOnEffectAddStart(onEffectAddStart_new);
 		if sRuleset == '3.5E' or sRuleset == 'PFRPG' then
 			EffectManager35E.onEffectAddStart = onEffectAddStart_new;
