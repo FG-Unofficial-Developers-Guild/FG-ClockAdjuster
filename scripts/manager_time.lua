@@ -305,19 +305,19 @@ function addLogEntry(nMonth, nDay, nYear, bGMVisible, node)
 		local EventLogNew = string.gsub(EventLog, "%W", "");
 		if bGMVisible then
 			if not string.find(EventGMLogNew, sHour .. "" .. sMinute) then
-				sString = EventGMLog .. "<h>" .. sName .. " [" .. sHour .. ":" .. sMinute .. "]" .. "</h>" .. sString;
+				sString = EventGMLog .. "<h>" .. sName .. " [" .. sHour .. " hr : " .. sMinute .. " min]" .. "</h>" .. sString;
 				DB.setValue(nodeEvent, "gmlogentry", "formattedtext", sString);
 			end
 		else
 			if not string.find(EventLogNew, sHour .. "" .. sMinute) then
-				sString = EventLog .. "<h>" .. sName .. " [" .. sHour .. ":" .. sMinute .. "]" .. "</h>" .. sString;
+				sString = EventLog .. "<h>" .. sName .. " [" .. sHour .. " hr : " .. sMinute .. " min]" .. "</h>" .. sString;
 				DB.setValue(nodeEvent, "logentry", "formattedtext", sString);
 			end
 		end
 	elseif Session.IsHost then
 		local nodeLog = DB.createNode("calendar.log");
 		nodeEvent = nodeLog.createChild();
-		sString = "<h>" .. sName .. " [" .. sHour .. ":" .. sMinute .. "]" .. "</h>" .. sString;
+		sString = "<h>" .. sName .. " [" .. sHour .. " hr : " .. sMinute .. " min]" .. "</h>" .. sString;
 
 		DB.setValue(nodeEvent, "epoch", "string", DB.getValue("calendar.current.epoch", ""));
 		DB.setValue(nodeEvent, "year", "number", nYear);
