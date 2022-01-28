@@ -117,11 +117,10 @@ function isTimeGreaterThan(nodeTimedReminder, nRepeatTime, nReminderCycle)
 	local nStartTime, nStartTimeYear = getStartTime(nodeTimedReminder);
 	local nCurrentTime = getCurrentDateWithoutYearsInMinutes();
 	local nCurrentYear = getCurrentYear();
-	local nDifferenceYear = nCurrentYear - nStartTimeYear;
-	local nDifferenceYearInMinutes = nDifferenceYear * 365 * 24 * 60;
+	local nDifferenceYearInMinutes = convertYearsnowtoMinutes(nCurrentYear) - convertYearsnowtoMinutes(nStartTimeYear);
 	local nDifference = math.abs(nCurrentTime - nStartTime); -- Fix for current/saved getting swapped.
 	if nDifference + nDifferenceYearInMinutes >= nCompareBy then
-		setStartTime(nodeTimedReminder, math.max(nCurrentTime, nStartTime), math.max(nCurrentYear, nStartTimeYear));
+		setStartTime(nodeTimedReminder, nCurrentTime, nCurrentYear);
 		return true;
 	end
 
