@@ -1,4 +1,4 @@
-# PFRPG: Clock Adjuster
+# CoreRPG, 3.5E, 5E, PFRPG, PF2RPG: Clock Adjuster v2.5
 This extension is a GM tool which provides an interface for easy time tracking and management.
 
 # Compatibility and Instructions
