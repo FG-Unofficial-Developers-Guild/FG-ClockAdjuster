@@ -4,23 +4,21 @@
 
 ---	This function compiles all effects and decrements their durations when time is advanced
 function advanceRoundsOnTimeChanged(nRounds)
-	if nRounds and nRounds > 0 then
-		for _, nodeCT in pairs(DB.getChildren(CombatManager.CT_LIST)) do
-			for _, nodeEffect in pairs(DB.getChildren(nodeCT, 'effects')) do
-				local nActive = DB.getValue(nodeEffect, "isactive", 0);
-				if nActive ~= 0 then
-					local nDuration = DB.getValue(nodeEffect, 'duration');
-					local bHasDuration = (nDuration and nDuration ~= 0);
-					if bHasDuration and (nDuration <= nRounds) then
-						EffectManager.expireEffect(nodeCT, nodeEffect);
-					elseif bHasDuration then
-						DB.setValue(nodeEffect, 'duration', 'number', nDuration - nRounds);
-					end
+	if nRounds <= 0 then return end
+
+	for _, nodeCT in pairs(DB.getChildren(CombatManager.CT_LIST)) do
+		for _, nodeEffect in pairs(DB.getChildren(nodeCT, 'effects')) do
+			local nActive = DB.getValue(nodeEffect, "isactive", 0);
+			if nActive ~= 0 then
+				local nDuration = DB.getValue(nodeEffect, 'duration', 0);
+				local bHasDuration = nDuration ~= 0;
+				if bHasDuration and nDuration <= nRounds then
+					EffectManager.expireEffect(nodeCT, nodeEffect);
+				elseif bHasDuration then
+					DB.setValue(nodeEffect, 'duration', 'number', nDuration - nRounds);
 				end
 			end
 		end
-
-		return true
 	end
 end
 
