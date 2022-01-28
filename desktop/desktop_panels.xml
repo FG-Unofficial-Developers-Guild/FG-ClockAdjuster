@@ -55,7 +55,7 @@
 							if nHour == nil then
 								DB.setValue("calendar.current.hour", "number", 0);
 							end
-							
+
 							Interface.openWindow("calendar", "DB");
 							DB.setValue("calendar.newcampaign", "number", 1);
 						end
@@ -181,7 +181,7 @@
 						if OptionsManager.isOption('TIMEROUNDS', 'slow') and nRounds &lt; 4801 then
 							CombatManager.nextRound(nRounds, true);
 						else
-							LongTermEffects.advanceRoundsOnTimeChanged(nRounds)
+							LongTermEffects.advanceRoundsOnTimeChanged(nRounds);
 						end
 
 						CalendarManager.adjustHours(nHour);
@@ -226,7 +226,7 @@
 						if OptionsManager.isOption('TIMEROUNDS', 'slow') and nRounds &lt; 4801 then
 							CombatManager.nextRound(nRounds, true);
 						else
-							LongTermEffects.advanceRoundsOnTimeChanged(nRounds)
+							LongTermEffects.advanceRoundsOnTimeChanged(nRounds);
 						end
 
 						CalendarManager.adjustMinutes(nMinute);
@@ -262,7 +262,7 @@
 						if OptionsManager.isOption('TIMEROUNDS', 'slow') and nRounds &lt; 4801 then
 							CombatManager.nextRound(nRounds, true);
 						else
-							LongTermEffects.advanceRoundsOnTimeChanged(nRounds)
+							LongTermEffects.advanceRoundsOnTimeChanged(nRounds);
 						end
 
 						CalendarManager.adjustDays(nDay);
@@ -302,7 +302,7 @@
 						if OptionsManager.isOption('TIMEROUNDS', 'slow') and nRounds &lt; 4801 then
 							CombatManager.nextRound(nRounds, true);
 						else
-							LongTermEffects.advanceRoundsOnTimeChanged(nRounds)
+							LongTermEffects.advanceRoundsOnTimeChanged(nRounds);
 						end
 						
 						CalendarManager.adjustMonths(nMonth);
@@ -368,7 +368,7 @@
 						if OptionsManager.isOption('TIMEROUNDS', 'slow') and nRounds &lt; 4801 then
 							CombatManager.nextRound(nRounds, true);
 						else
-							LongTermEffects.advanceRoundsOnTimeChanged(nRounds)
+							LongTermEffects.advanceRoundsOnTimeChanged(nRounds);
 						end
 
 						if window.checkweather.getValue() == 1 then
@@ -483,13 +483,13 @@
 							DB.setValue("calendar.check.day", "number", DB.getValue("calendar.current.day"));
 						end
 
-						local nMinutes = getValue() or 0
+						local nMinutes = getValue() or 0;
 						local nRounds = nMinutes * 10;
 						
 						if OptionsManager.isOption('TIMEROUNDS', 'slow') and nRounds &lt; 4801 then
 							CombatManager.nextRound(nRounds, true);
 						else
-							LongTermEffects.advanceRoundsOnTimeChanged(nRounds)
+							LongTermEffects.advanceRoundsOnTimeChanged(nRounds);
 						end
 						
 						DB.setValue(DB.findNode('calendar'), 'lastshortrest', 'number', nMinutes)
