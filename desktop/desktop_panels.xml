@@ -31,7 +31,6 @@
 				<script>
 					function onInit()
 						if DB.getValue("calendar.newcampaign") == nil or DB.getValue("calendar.newcampaign") == 0 then
-												
 							local nYear = DB.getValue("calendar.current.year", 0);
 							if nYear == nil or nYear == 0 then
 								DB.setValue("calendar.current.year", "number", 1);
@@ -55,18 +54,16 @@
 							Interface.openWindow("calendar", "DB");
 							DB.setValue("calendar.newcampaign", "number", 1);
 						end
-						DB.addHandler("calendar.current.hour", "onUpdate", onSourceChanged);
-						onSourceChanged();
-						local nDateinMinutes = TimeManager.getCurrentDateinMinutes();
-						DB.setValue("calendar.dateinminutes", "number", nDateinMinutes);
-						DB.setValue("calendar.dateinminutesstring", "string", tostring(nDateinMinutes));
-						
+
 						Interface.openWindow("timedevents", "DB");
 						Interface.toggleWindow("timedevents", "DB")
 						Interface.openWindow("timedreminders", "DB");
 						Interface.toggleWindow("timedreminders", "DB")
 						Interface.openWindow("travelmanager", "DB");
 						Interface.toggleWindow("travelmanager", "DB")
+
+						DB.addHandler("calendar.current.hour", "onUpdate", onSourceChanged);
+						onSourceChanged();
 					end
 
 					function onSourceChanged()
@@ -92,9 +89,6 @@
 					function onInit()
 						DB.addHandler("calendar.current.minute", "onUpdate", onSourceChanged);
 						onSourceChanged();
-						local nDateinMinutes = TimeManager.getCurrentDateinMinutes();
-						DB.setValue("calendar.dateinminutes", "number", nDateinMinutes);
-						DB.setValue("calendar.dateinminutesstring", "string", tostring(nDateinMinutes))
 					end
 
 					function onSourceChanged()
@@ -118,9 +112,6 @@
 					function onInit()
 						DB.addHandler("calendar.current.day", "onUpdate", onSourceChanged);
 						onSourceChanged();
-						local nDateinMinutes = TimeManager.getCurrentDateinMinutes();
-						DB.setValue("calendar.dateinminutes", "number", nDateinMinutes);
-						DB.setValue("calendar.dateinminutesstring", "string", tostring(nDateinMinutes))
 					end
 
 					function onSourceChanged()
@@ -140,9 +131,6 @@
 					function onInit()
 						DB.addHandler("calendar.current.month", "onUpdate", onSourceChanged);
 						onSourceChanged();
-						local nDateinMinutes = TimeManager.getCurrentDateinMinutes();
-						DB.setValue("calendar.dateinminutes", "number", nDateinMinutes);
-						DB.setValue("calendar.dateinminutesstring", "string", tostring(nDateinMinutes))
 					end
 
 					function onSourceChanged()
@@ -162,9 +150,6 @@
 					function onInit()
 						DB.addHandler("calendar.current.year", "onUpdate", onSourceChanged);
 						onSourceChanged();
-						local nDateinMinutes = TimeManager.getCurrentDateinMinutes();
-						DB.setValue("calendar.dateinminutes", "number", nDateinMinutes);
-						DB.setValue("calendar.dateinminutesstring", "string", tostring(nDateinMinutes))
 					end
 
 					function onSourceChanged()
@@ -212,17 +197,12 @@
 						end
 						onUpdate();
 					end
-					local bTimeStep = false;
-					function onUpdate()
-						bTimeStep = true;
-						
-						local nDateinMinutes = TimeManager.getCurrentDateinMinutes();
-						DB.setValue("calendar.dateinminutes", "number", nDateinMinutes);
-						DB.setValue("calendar.dateinminutesstring", "string", tostring(nDateinMinutes))
 
-						local nCurrentRound = DB.getValue("combattracker.round", 0);
+					function onUpdate()
+						DB.setValue("calendar.dateinminutes", "number", DB.getValue("calendar.dateinminutes", 0) + 1);
+						local nCurrentRound = DB.getValue(CombatManager.CT_ROUND, 0);
 						nCurrentRound = nCurrentRound % 10
-						DB.setValue("combattracker.round", 'number', nCurrentRound);
+						DB.setValue(CombatManager.CT_ROUND, 'number', nCurrentRound);
 					end
 				</script>
 			</basicnumber>
@@ -258,17 +238,12 @@
 						end
 						onUpdate();
 					end
-					local bTimeStep = false;
+
 					function onUpdate()
-						bTimeStep = true;
-
-						local nDateinMinutes = TimeManager.getCurrentDateinMinutes();
-						DB.setValue("calendar.dateinminutes", "number", nDateinMinutes);
-						DB.setValue("calendar.dateinminutesstring", "string", tostring(nDateinMinutes))
-
-						local nCurrentRound = DB.getValue("combattracker.round", 0);
+						DB.setValue("calendar.dateinminutes", "number", DB.getValue("calendar.dateinminutes", 0) + 1);
+						local nCurrentRound = DB.getValue(CombatManager.CT_ROUND, 0);
 						nCurrentRound = nCurrentRound % 10
-						DB.setValue("combattracker.round", 'number', nCurrentRound);
+						DB.setValue(CombatManager.CT_ROUND, 'number', nCurrentRound);
 					end
 				</script>
 			</basicnumber>
@@ -311,17 +286,12 @@
 						end
 						onUpdate();
 					end
-					local bTimeStep = false;
-					function onUpdate()
-						bTimeStep = true;
-						
-						local nDateinMinutes = TimeManager.getCurrentDateinMinutes();
-						DB.setValue("calendar.dateinminutes", "number", nDateinMinutes);
-						DB.setValue("calendar.dateinminutesstring", "string", tostring(nDateinMinutes))
 
-						local nCurrentRound = DB.getValue("combattracker.round", 0);
+					function onUpdate()
+						DB.setValue("calendar.dateinminutes", "number", DB.getValue("calendar.dateinminutes", 0) + 1);
+						local nCurrentRound = DB.getValue(CombatManager.CT_ROUND, 0);
 						nCurrentRound = nCurrentRound % 10
-						DB.setValue("combattracker.round", 'number', nCurrentRound);
+						DB.setValue(CombatManager.CT_ROUND, 'number', nCurrentRound);
 					end
 				</script>
 			</basicnumber>
@@ -358,17 +328,12 @@
 						end
 						onUpdate();
 					end
-					local bTimeStep = false;
-					function onUpdate()
-						bTimeStep = true;
-						
-						local nDateinMinutes = TimeManager.getCurrentDateinMinutes();
-						DB.setValue("calendar.dateinminutes", "number", nDateinMinutes);
-						DB.setValue("calendar.dateinminutesstring", "string", tostring(nDateinMinutes))
 
-						local nCurrentRound = DB.getValue("combattracker.round", 0);
+					function onUpdate()
+						DB.setValue("calendar.dateinminutes", "number", DB.getValue("calendar.dateinminutes", 0) + 1);
+						local nCurrentRound = DB.getValue(CombatManager.CT_ROUND, 0);
 						nCurrentRound = nCurrentRound % 10
-						DB.setValue("combattracker.round", 'number', nCurrentRound);
+						DB.setValue(CombatManager.CT_ROUND, 'number', nCurrentRound);
 					end
 				</script>
 			</basicnumber>
@@ -382,8 +347,7 @@
 					end
 
 					function onDoubleClick()
-						local nYear = (window.addyear.getValue() or 0);
-						
+						local nYear = window.addyear.getValue() or 0;
 						CalendarManager.adjustYears(nYear);
 						if window.checkweather.getValue() == 1 then
 							local WeatherWind = "Weather - Wind";
@@ -393,22 +357,19 @@
 							TableManager.processTableRoll("", "Weather Temperature");
 							TableManager.processTableRoll("", "Weather Precipitation");
 						end
+
 						if nYear &gt; 0 then 
 							CalendarManager.outputDate(); 
 						end
+
 						onUpdate();
 					end
-					local bTimeStep = false;
-					function onUpdate()
-						bTimeStep = true;
-						
-						local nDateinMinutes = TimeManager.getCurrentDateinMinutes();
-						DB.setValue("calendar.dateinminutes", "number", nDateinMinutes);
-						DB.setValue("calendar.dateinminutesstring", "string", tostring(nDateinMinutes))
 
-						local nCurrentRound = DB.getValue("combattracker.round", 0);
+					function onUpdate()
+						DB.setValue("calendar.dateinminutes", "number", DB.getValue("calendar.dateinminutes", 0) + 1);
+						local nCurrentRound = DB.getValue(CombatManager.CT_ROUND, 0);
 						nCurrentRound = nCurrentRound % 10
-						DB.setValue("combattracker.round", 'number', nCurrentRound);
+						DB.setValue(CombatManager.CT_ROUND, 'number', nCurrentRound);
 					end
 				</script>
 			</basicnumber>
@@ -448,17 +409,12 @@
 						CalendarManager.outputTime();
 						onUpdate();
 					end
-					local bTimeStep = false;
-					function onUpdate()
-						bTimeStep = true;
-						
-						local nDateinMinutes = TimeManager.getCurrentDateinMinutes();
-						DB.setValue("calendar.dateinminutes", "number", nDateinMinutes);
-						DB.setValue("calendar.dateinminutesstring", "string", tostring(nDateinMinutes))
 
-						local nCurrentRound = DB.getValue("combattracker.round", 0);
+					function onUpdate()
+						DB.setValue("calendar.dateinminutes", "number", DB.getValue("calendar.dateinminutes", 0) + 1);
+						local nCurrentRound = DB.getValue(CombatManager.CT_ROUND, 0);
 						nCurrentRound = nCurrentRound % 10
-						DB.setValue("combattracker.round", 'number', nCurrentRound);
+						DB.setValue(CombatManager.CT_ROUND, 'number', nCurrentRound);
 					end
 				</script>
 				<center />
@@ -472,7 +428,8 @@
 				<min>0</min>
 				<tooltip textres="desktop_longrest" />
 				<script>
-					local bIsbLong = false
+					local bIsbLong = false;
+
 					function onInit()
 						local sRuleset = User.getRulesetName();
 						bIsbLong = sRuleset == "4E" or sRuleset == "5E" or sRuleset == "PFRPG" or sRuleset == "PFRPG2" or sRuleset == "3.5E"
@@ -482,6 +439,7 @@
 							setVisible(false);
  						end
 					end
+					
 					function onDoubleClick()
 						CalendarManager.adjustHours((getValue() or 0));
 						
@@ -516,13 +474,10 @@
 							CombatManager2.rest(true);
 						end
 
-						local nDateinMinutes = TimeManager.getCurrentDateinMinutes();
-						DB.setValue("calendar.dateinminutes", "number", nDateinMinutes);
-						DB.setValue("calendar.dateinminutesstring", "string", tostring(nDateinMinutes))
-
-						local nCurrentRound = DB.getValue("combattracker.round", 0);
+						DB.setValue("calendar.dateinminutes", "number", DB.getValue("calendar.dateinminutes", 0) + 1);
+						local nCurrentRound = DB.getValue(CombatManager.CT_ROUND, 0);
 						nCurrentRound = nCurrentRound % 10
-						DB.setValue("combattracker.round", 'number', nCurrentRound);
+						DB.setValue(CombatManager.CT_ROUND, 'number', nCurrentRound);
 					end
 				</script>
 			</basicnumber>
@@ -535,7 +490,8 @@
 				<min>0</min>
 				<tooltip textres="desktop_shortrest" />
 				<script>
-					local bIsbShort = false
+					local bIsbShort = false;
+
 					function onInit()
 						local sRuleset = User.getRulesetName();
 						bIsbShort = sRuleset == "4E" or sRuleset == "5E" or sRuleset == "PFRPG" or sRuleset == "PFRPG2" or sRuleset == "3.5E"
@@ -545,6 +501,7 @@
 							setVisible(false);
  						end
 					end
+
 					function onDoubleClick()
 						CalendarManager.adjustMinutes((getValue() or 0));
 						
@@ -571,13 +528,10 @@
 							CombatManager2.rest();
 						end
 						
-						local nDateinMinutes = TimeManager.getCurrentDateinMinutes();
-						DB.setValue("calendar.dateinminutes", "number", nDateinMinutes);
-						DB.setValue("calendar.dateinminutesstring", "string", tostring(nDateinMinutes))
-
-						local nCurrentRound = DB.getValue("combattracker.round", 0);
+						DB.setValue("calendar.dateinminutes", "number", DB.getValue("calendar.dateinminutes", 0) + 1);
+						local nCurrentRound = DB.getValue(CombatManager.CT_ROUND, 0);
 						nCurrentRound = nCurrentRound % 10
-						DB.setValue("combattracker.round", 'number', nCurrentRound);
+						DB.setValue(CombatManager.CT_ROUND, 'number', nCurrentRound);
 					end
 				</script>
 			</basicnumber>
@@ -604,6 +558,7 @@
 									DB.setValue("calendar.current.minute", "number", 0);
 								end
 							end
+
 							if window.checkweather.getValue() == 1 then
 								local WeatherWind = "Weather - Wind";
 								local WeatherTemp = "Weather - Temperature";
@@ -612,19 +567,17 @@
 								TableManager.processTableRoll("", "Weather Temperature");
 								TableManager.processTableRoll("", "Weather Precipitation");
 							end
+
 							if DB.getValue("calendar.check.day") == nil or DB.getValue("calendar.check.day") ~= DB.getValue("calendar.current.day") then
 								CalendarManager.outputDate();
 								DB.setValue("calendar.check.day", "number", DB.getValue("calendar.current.day"));
 							end
-							CalendarManager.outputTime();
-							
-							local nDateinMinutes = TimeManager.getCurrentDateinMinutes();
-							DB.setValue("calendar.dateinminutes", "number", nDateinMinutes);
-							DB.setValue("calendar.dateinminutesstring", "string", tostring(nDateinMinutes))
 
-							local nCurrentRound = DB.getValue("combattracker.round", 0);
+							CalendarManager.outputTime();
+							DB.setValue("calendar.dateinminutes", "number", DB.getValue("calendar.dateinminutes", 0) + 1);
+							local nCurrentRound = DB.getValue(CombatManager.CT_ROUND, 0);
 							nCurrentRound = nCurrentRound % 10
-							DB.setValue("combattracker.round", 'number', nCurrentRound);
+							DB.setValue(CombatManager.CT_ROUND, 'number', nCurrentRound);
 						end
 					end
 				</script>
@@ -651,6 +604,7 @@
 									DB.setValue("calendar.current.minute", "number", 0);
 								end
 							end
+
 							if window.checkweather.getValue() == 1 then
 								local WeatherWind = "Weather - Wind";
 								local WeatherTemp = "Weather - Temperature";
@@ -659,19 +613,17 @@
 								TableManager.processTableRoll("", "Weather Temperature");
 								TableManager.processTableRoll("", "Weather Precipitation");
 							end
+
 							if DB.getValue("calendar.check.day") == nil or DB.getValue("calendar.check.day") ~= DB.getValue("calendar.current.day") then
 								CalendarManager.outputDate();
 								DB.setValue("calendar.check.day", "number", DB.getValue("calendar.current.day"));
 							end
-							CalendarManager.outputTime();
-						
-							local nDateinMinutes = TimeManager.getCurrentDateinMinutes();
-							DB.setValue("calendar.dateinminutes", "number", nDateinMinutes);
-							DB.setValue("calendar.dateinminutesstring", "string", tostring(nDateinMinutes));
 
-							local nCurrentRound = DB.getValue("combattracker.round", 0);
-							nCurrentRound = nCurrentRound % 10;
-							DB.setValue("combattracker.round", 'number', nCurrentRound);
+							CalendarManager.outputTime();
+							DB.setValue("calendar.dateinminutes", "number", DB.getValue("calendar.dateinminutes", 0) + 1);
+							local nCurrentRound = DB.getValue(CombatManager.CT_ROUND, 0);
+							nCurrentRound = nCurrentRound % 10
+							DB.setValue(CombatManager.CT_ROUND, 'number', nCurrentRound);
 						end
 					end
 				</script>
@@ -698,6 +650,7 @@
 									DB.setValue("calendar.current.minute", "number", 0);
 								end
 							end
+
 							if window.checkweather.getValue() == 1 then
 								local WeatherWind = "Weather - Wind";
 								local WeatherTemp = "Weather - Temperature";
@@ -706,19 +659,17 @@
 								TableManager.processTableRoll("", "Weather Temperature");
 								TableManager.processTableRoll("", "Weather Precipitation");
 							end
+
 							if DB.getValue("calendar.check.day") == nil or DB.getValue("calendar.check.day") ~= DB.getValue("calendar.current.day") then
 								CalendarManager.outputDate();
 								DB.setValue("calendar.check.day", "number", DB.getValue("calendar.current.day"));
 							end
-							CalendarManager.outputTime();
 							
-							local nDateinMinutes = TimeManager.getCurrentDateinMinutes();
-							DB.setValue("calendar.dateinminutes", "number", nDateinMinutes);
-							DB.setValue("calendar.dateinminutesstring", "string", tostring(nDateinMinutes));
-
-							local nCurrentRound = DB.getValue("combattracker.round", 0);
-							nCurrentRound = nCurrentRound % 10;
-							DB.setValue("combattracker.round", 'number', nCurrentRound);
+							CalendarManager.outputTime();
+							DB.setValue("calendar.dateinminutes", "number", DB.getValue("calendar.dateinminutes", 0) + 1);
+							local nCurrentRound = DB.getValue(CombatManager.CT_ROUND, 0);
+							nCurrentRound = nCurrentRound % 10
+							DB.setValue(CombatManager.CT_ROUND, 'number', nCurrentRound);
 						end
 					end
 				</script>
@@ -754,19 +705,17 @@
 								TableManager.processTableRoll("", "Weather Temperature");
 								TableManager.processTableRoll("", "Weather Precipitation");
 							end
+
 							if DB.getValue("calendar.check.day") == nil or DB.getValue("calendar.check.day") ~= DB.getValue("calendar.current.day") then
 								CalendarManager.outputDate();
 								DB.setValue("calendar.check.day", "number", DB.getValue("calendar.current.day"));
 							end
-							CalendarManager.outputTime();
-							
-							local nDateinMinutes = TimeManager.getCurrentDateinMinutes();
-							DB.setValue("calendar.dateinminutes", "number", nDateinMinutes);
-							DB.setValue("calendar.dateinminutesstring", "string", tostring(nDateinMinutes));
 
-							local nCurrentRound = DB.getValue("combattracker.round", 0);
-							nCurrentRound = nCurrentRound % 10;
-							DB.setValue("combattracker.round", 'number', nCurrentRound);
+							CalendarManager.outputTime();
+							DB.setValue("calendar.dateinminutes", "number", DB.getValue("calendar.dateinminutes", 0) + 1);
+							local nCurrentRound = DB.getValue(CombatManager.CT_ROUND, 0);
+							nCurrentRound = nCurrentRound % 10
+							DB.setValue(CombatManager.CT_ROUND, 'number', nCurrentRound);
 						end
 					end
 				</script>
@@ -860,16 +809,19 @@
 				<allowdelete />
 				<script>
 					function onInit()
-						DB.addHandler("calendar.dateinminutesstring", "onUpdate", onTimeChanged);
+						DB.addHandler("calendar.dateinminutes", "onUpdate", onTimeChanged);
 					end
+
 					function onClose()
-						DB.removeHandler("calendar.dateinminutesstring", "onUpdate", onTimeChanged);
+						DB.removeHandler("calendar.dateinminutes", "onUpdate", onTimeChanged);
 					end
+
 					function onTimeChanged()
 						for _,w in pairs(getWindows()) do
 							w.onTimeChanged();
 						end
 					end
+
 					function update()
 						onTimeChanged();
 					end
@@ -887,49 +839,27 @@
 		<margins control="0,0,0,2" />
 		<softclose />
 		<script>
-			function onInit()
-			end
 			function update()
 				windowlist.update();
-				if isgmonly.getValue() == 1 then
-					if not Session.IsHost == true then
-						setVisible(false);
-					end
+				if not Session.IsHost then
+					setVisible(false);
 				end
+
 				completed.setValue(0);
 			end
+
 			function onTimeChanged()
-				local nCurrentDateinMinutes = TimeManager.getCurrentDateinMinutes();
-				local nMyMinute = (minute.getValue() or 0);
-				local nMyHour = (hour.getValue() or 0);
-				local nMyDay = (day.getValue() or 0);
-				local nMyMonth = (month.getValue() or 0);
-				local nMyYear = (year.getValue() or 0);
-				local Visible = isgmonly.getValue();
-				local sName = (name.getValue() or "");
+				local sName = name.getValue() or "";
 				local nCompleted = completed.getValue();
-				local nHoursinMinutes = TimeManager.convertHourstoMinutes(nMyHour);
-				local nDaysinMinutes = TimeManager.convertDaystoMinutes(nMyDay);
-				local nMonthsinMinutes = TimeManager.convertMonthssnowtoMinutes(nMyMonth, nMyYear);
-				local nYearsinMinutes = TimeManager.convertYearsnowtoMinutes(nMyYear);
-				local nDateinMinutes = nHoursinMinutes + nDaysinMinutes + nMonthsinMinutes + nYearsinMinutes + nMyMinute;
-				
-				if Visible == 1 then
-					bBoolean = true;
-				elseif Visible == 0 then
-					bBoolean = false;
-				end
-				if nCurrentDateinMinutes &gt;= nDateinMinutes then
-					if nCompleted == 0 then
-						local msg = {font = "reference-r", text = "[" .. nMyHour .. ":" .. nMyMinute .. "/" .. nMyDay .. "/" .. nMyMonth .. "/" .. nMyYear .. "] " .. sName .. "", secret = bBoolean};
-						Comm.deliverChatMessage(msg);
-						completed.setValue(1);
-						if TableManager.findTable(sName) then
-							TableManager.processTableRoll("", sName);
-						end
-					end
-				elseif nCurrentDateinMinutes &lt; nDateinMinutes then
-					completed.setValue(0);
+				local nVisibleAll = visibleall.getValue();
+				local nEventMinute = minute.getValue() or 0;
+				local nEventHour = hour.getValue() or 0;
+				local nEventDay = day.getValue() or 0;
+				local nEventMonth = month.getValue() or 0;
+				local nEventYear = year.getValue() or 0;
+				local nodeDB = getDatabaseNode();
+				if TimeManager.onTimeChangedEvent(nodeDB, sName, nCompleted, nVisibleAll, nEventMinute, nEventHour, nEventDay, nEventMonth, nEventYear) == 1 then
+					completed.setValue(1);
 				end
 			end
 		</script>
@@ -955,14 +885,14 @@
 				<class>timedevent</class>
 				<readonly />
 			</linkcontrol_id>
-			<buttonfield name="isgmonly">
+			<buttonfield name="visibleall">
 				<anchored width="20" height="20">
 					<top offset="3" />
 					<right parent="rightanchor" anchor="left" relation="relative" offset="-5" />
 				</anchored>
 				<gmvisibleonly />
-				<state icon="visibilityon" tooltipres="visibilityon" />
 				<state icon="visibilityoff" tooltipres="visibilityoff" />
+				<state icon="visibilityon" tooltipres="visibilityon" />
 			</buttonfield>
 			<buttongroup_counter name="completedbutton">
 				<anchored width="20" height="20">
@@ -1040,7 +970,6 @@
 		</sheetdata>
 	</windowclass>
 	
-	
 	<windowclass name="timedevent">
 		<frame>referencepage</frame>
 		<placement>
@@ -1053,31 +982,6 @@
 		<tooltip field="value" />
 		<softclose />
 		<sharable />
-		<script>
-			function onLockChanged()
-				
-				local bReadOnly = WindowManager.getReadOnlyState(getDatabaseNode());
-				text.setReadOnly(bReadOnly);
-				hour.setReadOnly(bReadOnly);
-				minute.setReadOnly(bReadOnly);
-				day.setReadOnly(bReadOnly);
-				month.setReadOnly(bReadOnly);
-				year.setReadOnly(bReadOnly);
-				nMonth = month.getValue() or 0;
-				nDay = day.getValue() or 0;
-				nYear = year.getValue() or 0;
-				if bDone == nil then 
-					bDone = false; 
-				end
-
-				if bDone == false and bReadOnly == true then
-					local sText = text.getValue() or "";
-					bGMVisible = isgmonly.getValue() == 1;
-					TimeManager.addLogEntry(nMonth, nDay, nYear, bGMVisible, getDatabaseNode());
-					bDone = true;
-				end
-			end
-		</script>
 		<sheetdata>
 			<sub_record_header name="header">
 				<class>timedevents_header</class>
@@ -1130,28 +1034,28 @@
 				<tabtarget prev="location" />
 				<tooltip textres="year_tooltip" />
 			</basicnumber>
-			<buttonfield name="isgmonly">
+			<buttonfield name="visibleall">
 				<anchored to="year" width="40" height="20">
 					<top />
 					<left parent="year" anchor="right" offset="10" />
 				</anchored>
 				<gmvisibleonly />
-				<state icon="visibilityon" tooltipres="visibilityon" />
 				<state icon="visibilityoff" tooltipres="visibilityoff" />
+				<state icon="visibilityon" tooltipres="visibilityon" />
 			</buttonfield>
 			<buttoncontrol name="openlogentry">
-				<anchored to="isgmonly" position="right" offset="3,0" width="20" height="20" />
+				<anchored to="visibleall" position="right" offset="3,0" width="20" height="20" />
 				<icon normal="add_logentry" pressed="add_logentry_down" />
 				<tooltip textres="desktop_openlog_tooltip" />
 				<script>
 					function onButtonPress()
-						nMonth = (window.month.getValue() or 0);
-						nDay = (window.day.getValue() or 0);
-						nYear = (window.year.getValue() or 0);
-						bGMVisible = window.isgmonly.getValue() == 1;
-						local sName = DB.getValue(window.getDatabaseNode(), "name", "");
-						local nodeOld = TimeManager.addLogEntry(nMonth, nDay, nYear, bGMVisible, window.getDatabaseNode());
-
+						local nMonth = window.month.getValue() or 0;
+						local nDay = window.day.getValue() or 0;
+						local nYear = window.year.getValue() or 0;
+						local bGMVisible = window.visibleall.getValue() == 0;
+						local nodeDB = window.getDatabaseNode();
+						local sName = DB.getValue(nodeDB, "name", "");
+						TimeManager.addLogEntry(nMonth, nDay, nYear, bGMVisible, nodeDB);
 					end
 				</script>
 			</buttoncontrol>
@@ -1242,19 +1146,22 @@
 						DB.addHandler("distance.traveled", "onUpdate", calculateDistanceRemaining);
 						DB.addHandler("distance.destination", "onUpdate", calculateDistanceRemaining);
 					end
+
 					function onClose()
 						DB.removeHandler("distance.traveled", "onUpdate", calculateDistanceRemaining);
 						DB.removeHandler("distance.destination", "onUpdate", calculateDistanceRemaining);
 					end
+
 					function calculateDistanceRemaining()
-						local nDistance = (window.destination.getValue() or 0);
-						local nDistanceTraveled = (window.distancetraveled.getValue() or 0);
+						local nDistance = window.destination.getValue() or 0;
+						local nDistanceTraveled = window.distancetraveled.getValue() or 0;
 						local nDistanceRemaining = nDistance - nDistanceTraveled;
 						setValue(nDistanceRemaining);
 					end
+
 					function onValueChanged()
-						local nDistance = (window.destination.getValue() or 0);
-						local nDistanceTraveled = (window.distancetraveled.getValue() or 0);
+						local nDistance = window.destination.getValue() or 0;
+						local nDistanceTraveled = window.distancetraveled.getValue() or 0;
 						nDistanceRemaining = nDistance - nDistanceTraveled;
 						DB.setValue("distance.remaining", "number", nDistanceRemaining);
 					end
@@ -1268,7 +1175,7 @@
 				<tooltip text="Distance Traveled" />
 				<script>
 					function onValueChanged()
-						DB.setValue("distance.traveled", "number", (getValue() or 0));
+						DB.setValue("distance.traveled", "number", getValue() or 0);
 					end
 				</script>
 			</basicnumber>
@@ -1278,7 +1185,7 @@
 				<tooltip text="Total Travel Distance" />
 				<script>
 					function onValueChanged()
-						DB.setValue("distance.destination", "number", (getValue() or 0));
+						DB.setValue("distance.destination", "number", getValue() or 0);
 					end
 				</script>
 			</basicnumber>
@@ -1297,7 +1204,7 @@
 				<frame name="fielddark" offset="0,0,0,0" />
 				<script>
 					function onValueChanged()
-						DB.setValue("distance.speedunit", "number", (getValue() or 0));
+						DB.setValue("distance.speedunit", "number", getValue() or 0);
 						window.unitofmeasurement.setValue(getValue() or 0);
 					end
 				</script>
@@ -1308,11 +1215,10 @@
 				<default>6</default>
 				<script>
 					function onValueChanged()
-						DB.setValue("distance.speed", "number", (getValue() or 6));
+						DB.setValue("distance.speed", "number", getValue() or 6);
 					end
 				</script>
 			</basicnumber>
-			
 			
 			<buttoncontrol name="unitofmeasurement">
 				<anchored height="30" width="60">
@@ -1329,8 +1235,8 @@
 				<tooltip text="Length Factor of Speed" />
 				<script>
 					function onValueChanged()
-						DB.setValue("distance.speedunit", "number", (getValue() or 0));
-						window.destinationmeasurement.setValue((getValue() or 0));
+						DB.setValue("distance.speedunit", "number", getValue() or 0);
+						window.destinationmeasurement.setValue(getValue() or 0);
 					end
 				</script>
 			</buttoncontrol>
@@ -1349,8 +1255,8 @@
 				<frame name="fielddark" offset="0,0,0,0" />
 				<script>
 					function onValueChanged()
-						DB.setValue("distance.perlimit", "number", (getValue() or 0));
-						window.traveltime.setValue((getValue() or 0));
+						DB.setValue("distance.perlimit", "number", getValue() or 0);
+						window.traveltime.setValue(getValue() or 0);
 					end
 				</script>
 			</buttoncontrol>
@@ -1365,17 +1271,14 @@
 						local nTimePassed = 0;
 						local nTravelCount = 0;
 						local UseSpeed = window.travelspeed.getValue()
-						if window.isgmonly.getValue() == 0 then
-							isGMonly = false;
-						elseif window.isgmonly.getValue() == 1 then
-							isGMonly = true;
-						end
+						local isGMOnly = window.visibleall.getValue() == 0;
 						if window.unitofmeasurement.getValue() == 0 then
 							MilesorKilometers = "miles";
 						elseif window.unitofmeasurement.getValue() == 1 then
 							MilesorKilometers = "kilometers";
 						end
-						for i=1,nValue do
+
+						for i=1, nValue do
 							local nDistance = window.destination.getValue();
 							local nDistanceTraveled = window.distancetraveled.getValue() + window.travelspeed.getValue();
 							local nTraveledBefore = window.distancetraveled.getValue();
@@ -1387,33 +1290,36 @@
 									DaysorHours = "days";
 									CalendarManager.adjustDays(1);
 								end
+
 								nTimePassed = nTimePassed + 1;
 								if NewHourSpeed ~= nil then
 									UseSpeed = NewHourSpeed;
 									MilesorKilometers = "miles";
 								end
+
 								if NewDaySpeed ~= nil then
 									UseSpeed = NewDaySpeed;
 									MilesorKilometers = "miles";
 									window.unitofmeasurement.setValue(0);
 									window.traveltime.setValue(0);
 								end
-								for i=1,UseSpeed do
+
+								for j=1,UseSpeed do
 									if nDistance &gt; window.distancetraveled.getValue() then
 										nTravelCount = nTravelCount + 1;
 										nDistanceTotaled = window.distancetraveled.getValue() + 1;
 										window.distancetraveled.setValue(nDistanceTotaled);
-										
 									end
 								end
-								
 							end
 						end
+
 						if DB.getValue("checkweather", 0) == 1 then
 							local WeatherToday = "Weather Today";
 							
 							TableManager.processTableRoll("", WeatherToday);
 						end
+
 						if window.perlimit.getValue() == 0 then
 							DaysorHours = "hours";
 						elseif window.perlimit.getValue() == 1 then
@@ -1424,25 +1330,22 @@
 						local nDistanceTraveled = window.travelspeed.getValue() * getValue();
 						local nTraveledBefore = window.distancetraveled.getValue();
 						if nDistance &gt; nTraveledBefore then
-							local msg = {font = "reference-r", text = "The Party has traveled " .. nTravelCount .. " " .. MilesorKilometers .. " in " .. getValue() .. " " .. DaysorHours .. ". They have " .. window.distanceremaining.getValue() .. " " .. MilesorKilometers .. " left to go.", secret = isGMonly};
+							local msg = {font = "reference-r", text = "The Party has traveled " .. nTravelCount .. " " .. MilesorKilometers .. " in " .. getValue() .. " " .. DaysorHours .. ". They have " .. window.distanceremaining.getValue() .. " " .. MilesorKilometers .. " left to go.", secret = isGMOnly};
 							Comm.deliverChatMessage(msg);
 						elseif nDistance &lt;= nTraveledBefore then
-							local msg = {font = "reference-r", text = "The Party has traveled " .. nTravelCount .. " " .. MilesorKilometers .. " in " .. nTimePassed .. " " .. DaysorHours .. " and has reached their destination", secret = isGMonly};
+							local msg = {font = "reference-r", text = "The Party has traveled " .. nTravelCount .. " " .. MilesorKilometers .. " in " .. nTimePassed .. " " .. DaysorHours .. " and has reached their destination", secret = isGMOnly};
 							Comm.deliverChatMessage(msg);
 							local bAllow = false;
 						end
 					end
+
 					function onDoubleClick()
 						local bAllow = true;
 						local nValue = getValue();
 						local nDistanceTotaled = 0;
 						local nTimePassed = 0;
 						local nTravelCount = 0;
-						if window.isgmonly.getValue() == 0 then
-							isGMonly = false;
-						elseif window.isgmonly.getValue() == 1 then
-							isGMonly = true;
-						end
+						local isGMOnly = window.visibleall.getValue() == 0;
 						for i=1,nValue do
 							local nDistance = (window.destination.getValue() or 0);
 							local nDistanceTraveled = (window.distancetraveled.getValue() or 0) + (window.travelspeed.getValue() or 0);
@@ -1455,8 +1358,9 @@
 									DaysorHours = "days";
 									CalendarManager.adjustDays(1);
 								end
+
 								nTimePassed = nTimePassed + 1;
-								for i=1,(window.travelspeed.getValue() or 0) do
+								for j=1,(window.travelspeed.getValue() or 0) do
 									if nDistance &gt; (window.distancetraveled.getValue() or 0) then
 										nTravelCount = nTravelCount + 1;
 										nDistanceTotaled = (window.distancetraveled.getValue() or 0) + 1;
@@ -1465,11 +1369,13 @@
 								end
 							end
 						end
+
 						if window.perlimit.getValue() == 0 then
 							DaysorHours = "hours";
 						elseif window.perlimit.getValue() == 1 then
 							DaysorHours = "days";
 						end
+
 						if window.unitofmeasurement.getValue() == 0 then
 							MilesorKilometers = "miles";
 						elseif window.unitofmeasurement.getValue() == 1 then
@@ -1480,15 +1386,14 @@
 						local nDistanceTraveled = (window.travelspeed.getValue() or 0) * (getValue() or 0);
 						local nTraveledBefore = (window.distancetraveled.getValue() or 0);
 						if nDistance &gt; nTraveledBefore then
-							local msg = {font = "reference-r", text = "The Party has traveled " .. nTravelCount .. " " .. MilesorKilometers .. " in " .. getValue() .. " " .. DaysorHours .. ". They have " .. window.distanceremaining.getValue() .. " " .. MilesorKilometers .. " left to go.", secret = isGMonly};
+							local msg = {font = "reference-r", text = "The Party has traveled " .. nTravelCount .. " " .. MilesorKilometers .. " in " .. getValue() .. " " .. DaysorHours .. ". They have " .. window.distanceremaining.getValue() .. " " .. MilesorKilometers .. " left to go.", secret = isGMOnly};
 							Comm.deliverChatMessage(msg);
 						elseif nDistance &lt;= nTraveledBefore then
-							local msg = {font = "reference-r", text = "The Party has traveled " .. nTravelCount .. " " .. MilesorKilometers .. " in " .. nTimePassed .. " " .. DaysorHours .. " and has reached their destination", secret = isGMonly};
+							local msg = {font = "reference-r", text = "The Party has traveled " .. nTravelCount .. " " .. MilesorKilometers .. " in " .. nTimePassed .. " " .. DaysorHours .. " and has reached their destination", secret = isGMOnly};
 							Comm.deliverChatMessage(msg);
 							local bAllow = false;
 						end
 					end
-					
 				</script>
 			</basicnumber>
 			<buttoncontrol name="traveltime">
@@ -1510,14 +1415,14 @@
 					end
 				</script>
 			</buttoncontrol>
-			<buttonfield name="isgmonly">
+			<buttonfield name="visibleall">
 				<anchored height="20" width="50">
 					<left parent="traveltime" anchor="right" offset="0" />
 					<top parent="traveltime" anchor="top" />
 				</anchored>
 				<gmvisibleonly />
-				<state icon="visibilityon" tooltipres="visibilityon" />
 				<state icon="visibilityoff" tooltipres="visibilityoff" />
+				<state icon="visibilityon" tooltipres="visibilityon" />
 			</buttonfield>
 			
 			<label name="travellabel">
@@ -1566,7 +1471,6 @@
 								local BiomeTypesNode = DB.getChild("regenerator", "biometypes");
 								local sBiomeTypes = DB.getValue(BiomeTypesNode, "", "");
 								local sBiomeTypes = string.gsub(sBiomeTypes, "%W", " ");
-								Debug.console("sBiomeTypes", sBiomeTypes);
 								local nEncounterChance = window.encounterchancenum.getValue();
 								local nBattleChance = window.battlechance.getValue();
 								local sChanceExpr = sD100xrp:gsub("$PC", tostring(PartyManager.getPartyCount()));
@@ -1583,8 +1487,6 @@
 											local aBiomeClasses = LibraryData.getMappings("biome");
 											local aImageClasses = LibraryData.getMappings("image");
 											local aViableBiome = {};
-											
-											
 											for _,ClassNode in pairs(aBiomeClasses) do
 												for _,vNode in pairs(DB.getChildrenGlobal(ClassNode)) do
 													local vNodeNameNode = DB.getChild(vNode, "name");
@@ -1705,7 +1607,6 @@
 								local BiomeTypesNode = DB.getChild("regenerator", "biometypes");
 								local sBiomeTypes = DB.getValue(BiomeTypesNode, "", "");
 								local sBiomeTypes = string.gsub(sBiomeTypes, "%W", " ");
-								Debug.console("sBiomeTypes", sBiomeTypes);
 								local nEncounterChance = window.encounterchancenum.getValue();
 								local nBattleChance = window.battlechance.getValue();
 								local sChanceExpr = sD100xrp:gsub("$PC", tostring(PartyManager.getPartyCount()));
@@ -1828,6 +1729,7 @@
 							setVisible(false);
  						end
 					end
+
 					function onButtonPress()
 						local aViableMap = {};
 						local NewHourSpeed = 4;
@@ -1837,6 +1739,7 @@
 						elseif window.perlimit.getValue() == 1 then
 							window.travelbyhours.TravelByPace(NewDaySpeed);
 						end
+
 						local EncounterChance = "Encounter Chance Fast Travel Pace";
 						if window.encounterchance.getValue() == 1 then
 							if REGeneratorManager then
@@ -1844,7 +1747,6 @@
 								local BiomeTypesNode = DB.getChild("regenerator", "biometypes");
 								local sBiomeTypes = DB.getValue(BiomeTypesNode, "", "");
 								local sBiomeTypes = string.gsub(sBiomeTypes, "%W", " ");
-								Debug.console("sBiomeTypes", sBiomeTypes);
 								local nEncounterChance = window.encounterchancenum.getValue();
 								local nBattleChance = window.battlechance.getValue();
 								local sChanceExpr = sD100xrp:gsub("$PC", tostring(PartyManager.getPartyCount()));
@@ -1853,7 +1755,6 @@
 								local aTableClasses = LibraryData.getMappings("table");
 								if nEncounterChanceResult &lt; nEncounterChance then
 									if nBattleChanceResult &lt; nBattleChance then
-								
 										Interface.openWindow("new_regenerator", "regenerator");
 										local REGenWin = Interface.findWindow("new_regenerator", "regenerator");
 										local aGeneratedNPCS = REGeneratorManager.generatePreview();
@@ -1861,18 +1762,13 @@
 											local aBiomeClasses = LibraryData.getMappings("biome");
 											local aImageClasses = LibraryData.getMappings("image");
 											local aViableBiome = {};
-											
-											
 											for _,ClassNode in pairs(aBiomeClasses) do
 												for _,vNode in pairs(DB.getChildrenGlobal(ClassNode)) do
 													local vNodeNameNode = DB.getChild(vNode, "name");
 													local vName = DB.getValue(vNodeNameNode, "", "");
 													local vName = string.gsub(vName, "%W", " ");
-													
 													if string.find(sBiomeTypes, vName) then
 														local aMapListNode = DB.getChild(vNode, "maplist");
-														
-														
 														for _,vMap in pairs(DB.getChildren(aMapListNode, "")) do
 															local vMapLinkNode = DB.getChild(vMap, "link");
 															local sClass, sRecord = DB.getValue(vMapLinkNode, "");
@@ -1882,17 +1778,18 @@
 													end
 												end
 											end
+
 											nCount = 0;
 											for k,v in pairs(aViableMap) do
 												nCount = nCount + 1;
 											end
+
 											if nCount == 0 or nCount == nil then
 												nCount = 1;
 											end
+
 											local sExpr = "1d" .. nCount;
-										
 											sExpr = sExpr:gsub("$PC", tostring(PartyManager.getPartyCount()));
-											
 											nCount = StringManager.evalDiceMathExpression(sExpr);
 											for k,v in pairs(aViableMap) do
 												local sPath = DB.getPath(v);
@@ -1902,20 +1799,22 @@
 													Interface.openWindow(vClass, sPath);
 												end
 											end
+
 											REGenWin.close();
 										end
+
 										REGeneratorManager.generateFromPreview(aGeneratedNPCS);
 									else
 										if sBiomeTypes ~= "" and sBiomeTypes ~= nil then
 											local bTableRolled = false;
 											local aTableNames = {};
-											for _,TableClassNode in pairs(aTableClasses) do
-												for _,vTableNode in pairs(DB.getChildrenGlobal(TableClassNode)) do
+											for _, TableClassNode in pairs(aTableClasses) do
+												for _, vTableNode in pairs(DB.getChildrenGlobal(TableClassNode)) do
 													local vTableNameNode = DB.getChild(vTableNode, "name");
 													local sTableName = DB.getValue(vTableNameNode, "", "");
 													local sTableName2 = sTableName;
-													local sTableName = string.lower(sTableName);
-													local sTableName = string.gsub(sTableName, "%W", " ");
+													sTableName = string.lower(sTableName);
+													sTableName = string.gsub(sTableName, "%W", " ");
 													local nStarts, nEnds, sEncounterTableBiome = string.find(sTableName, "non combat ([%w+%s*]+) encounter");
 													if sEncounterTableBiome ~= nil and sEncounterTableBiome ~= "" and sBiomeTypes ~= nil and sBiomeTypes ~= "" then
 														sBiomeTypes = string.lower(sBiomeTypes);
@@ -1925,10 +1824,12 @@
 													end
 												end
 											end
+
 											local nTableNames = 0;
 											for kTableName,vTableName in pairs(aTableNames) do
 												nTableNames = nTableNames + 1;
 											end
+
 											local sTableExpr = "1d" .. nTableNames;
 											sTableExpr = sTableExpr:gsub("$PC", tostring(PartyManager.getPartyCount()));
 											nTableCount = StringManager.evalDiceMathExpression(sTableExpr);
@@ -1940,6 +1841,7 @@
 												end
 											end
 										end
+
 										if TableManager.findTable("Non Combat Encounter") and bTableRolled == false then
 											TableManager.processTableRoll("", "Non Combat Encounter");
 										end
@@ -2035,16 +1937,19 @@
 				<allowdelete />
 				<script>
 					function onInit()
-						DB.addHandler("calendar.dateinminutesstring", "onUpdate", onTimeChanged);
+						DB.addHandler("calendar.dateinminutes", "onUpdate", onTimeChanged);
 					end
+
 					function onClose()
-						DB.removeHandler("calendar.dateinminutesstring", "onUpdate", onTimeChanged);
+						DB.removeHandler("calendar.dateinminutes", "onUpdate", onTimeChanged);
 					end
+
 					function onTimeChanged()
-						for _,w in pairs(getWindows()) do
-							w.onTimeChanged()
+						for _, w in pairs(getWindows()) do
+							w.onTimeChanged();
 						end
 					end
+
 					function update()
 						onTimeChanged();
 					end
@@ -2064,48 +1969,21 @@
 		<script>
 			function update()
 				windowlist.update();
-				if isgmonly.getValue() == 1 then
-					if not Session.IsHost == true then
-						setVisible(false);
-					end
+				if not Session.IsHost then
+					setVisible(false);
 				end
+
 				completed.setValue(0);
 			end
+
 			function onTimeChanged()
-				local rActor = getDatabaseNode();
-				local nDate = CalendarManager.getCurrentDateString();
-				local nTime = CalendarManager.getCurrentTimeString();
-				local nDateAndTime = "" .. nTime .. " " .. nDate .. "";
-				local nCurrentDateinMinutes = TimeManager.getCurrentDateinMinutes();
-				local ReminderCycle = remindercycle.getValue();
-				local RepeatTime = repeattime.getValue();
-				local Visible = isgmonly.getValue();
-				local sName = name.getValue();
+				local nodeTimedReminder = getDatabaseNode();
+				local sName = name.getValue() or "";
+				local nRepeatTime = repeattime.getValue();
+				local nReminderCycle = remindercycle.getValue() or 0;
+				local nVisible = visibleall.getValue();
 				local nActive = active.getValue();
-				if RepeatTime == 0 then
-					Time = ReminderCycle;
-				elseif RepeatTime == 1 then
-					Time = (ReminderCycle * 60);
-				elseif RepeatTime == 2 then
-					Time = ((ReminderCycle * 60) * 24);
-				end
-				
-				if Visible == 1 then
-					bBoolean = true;
-				elseif Visible == 0 then
-					bBoolean = false;
-				end
-				Debug.console("" .. TimeManager.getTimeDifference(rActor, sName) .. "");
-				if TimeManager.isTimeGreaterThan(rActor, sName, Time) then
-					if nActive == 1 then
-						local msg = {font = "reference-r", text = "[" .. nDateAndTime .. "] " .. sName .. "", secret = bBoolean};
-						Comm.deliverChatMessage(msg);
-						if TableManager.findTable(sName) then
-							TableManager.processTableRoll("", sName);
-						end
-						TimeManager.setStartTime(rActor, sName);
-					end
-				end	
+				TimeManager.onTimeChangedReminder(nodeTimedReminder, sName, nRepeatTime, nReminderCycle, nVisible, nActive);
 			end
 		</script>
 		<sheetdata>
@@ -2150,21 +2028,23 @@
 				</anchored>
 				<script>
 					function onValueChanged()
-						local rActor = window.getDatabaseNode();
-						local sName = window.name.getValue();
-						TimeManager.setStartTime(rActor, sName);
+						if window.active.getValue() == 1 then
+							local nodeTimedReminder = window.getDatabaseNode();
+							local sName = window.name.getValue();
+							TimeManager.setStartTime(nodeTimedReminder, sName);
+						end
 					end
 				</script>
 				<invisible />
 			</basicnumber>
-			<buttonfield name="isgmonly">
+			<buttonfield name="visibleall">
 				<anchored width="20" height="20">
 					<top offset="3" />
 					<right parent="rightanchor" anchor="left" relation="relative" offset="-5" />
 				</anchored>
 				<gmvisibleonly />
-				<state icon="visibilityon" tooltipres="visibilityon" />
 				<state icon="visibilityoff" tooltipres="visibilityoff" />
+				<state icon="visibilityon" tooltipres="visibilityon" />
 			</buttonfield>
 			<basicnumber name="remindercycle" source=".remindercycle">
 				<anchored width="40" height="20">
@@ -2194,6 +2074,7 @@
 						local nodeActor = rActor;
 						setValue(DB.getValue(nodeActor, "repeattime", 0));
 					end
+
 					function onButtonPress()
 						local rActor = window.getDatabaseNode();
 						local nodeActor = rActor;
@@ -2213,6 +2094,7 @@
 						local nodeActor = rActor;
 						setValue(DB.getValue(nodeActor, "repeattime", 0));
 					end
+
 					function onValueChanged()
 						local rActor = window.getDatabaseNode();
 						local nodeActor = rActor;
@@ -2245,16 +2127,6 @@
 		<tooltip field="value" />
 		<softclose />
 		<sharable />
-		<script>
-			nString = "";
-			function onLockChanged()
-				local bReadOnly = WindowManager.getReadOnlyState(getDatabaseNode());
-				text.setReadOnly(bReadOnly);
-				remindercycle.setReadOnly(bReadOnly);
-				repeattime.setReadOnly(bReadOnly);
-				isgmonly.setReadOnly(bReadOnly);
-			end
-		</script>
 		<sheetdata>
 			<sub_record_header name="header">
 				<class>timedreminders_header</class>
@@ -2288,6 +2160,7 @@
 						local nodeActor = rActor;
 						setValue(DB.getValue(nodeActor, "reminder.repeattime", 0));
 					end
+
 					function onValueChanged()
 						local rActor = window.getDatabaseNode();
 						local nodeActor = rActor;
@@ -2316,6 +2189,7 @@
 						local nodeActor = rActor;
 						setValue(DB.getValue(nodeActor, "reminder.repeattime", 0));
 					end
+
 					function onButtonPress()
 						local rActor = window.getDatabaseNode();
 						local nodeActor = rActor;
@@ -2324,14 +2198,14 @@
 					end
 				</script>
 			</buttoncontrol>
-			<buttonfield name="isgmonly">
+			<buttonfield name="visibleall">
 				<anchored to="repeattimebutton" width="40" height="20">
 					<top />
 					<left parent="repeattimebutton" anchor="right" offset="10" />
 				</anchored>
 				<gmvisibleonly />
-				<state icon="visibilityon" tooltipres="visibilityon" />
 				<state icon="visibilityoff" tooltipres="visibilityoff" />
+				<state icon="visibilityon" tooltipres="visibilityon" />
 			</buttonfield>
 			<ft_record name="text">
 				<anchored>

@@ -37,18 +37,9 @@ function onEffectAddStart_new(rEffect)
 	rEffect.sUnits = "";
 end
 
-function resetInit_new()
-	-- De-activate all entries
-	for _,v in pairs(CombatManager.getCombatantNodes()) do
-		DB.setValue(v, "active", "number", 0);
-	end
-
-	-- Clear GM identity additions (based on option)
-	CombatManager.clearGMIdentity();
-
+function onCustomCombatReset()
 	-- Reset the round counter (bmos changed this to 0 instead of 1)
-	DB.setValue("combattracker.round", "number", 0);
-	CombatManager.onCombatResetEvent();
+	DB.setValue(CombatManager.CT_ROUND, "number", 0);
 end
 
 function filterTable(tTable, filterFunction)
@@ -152,7 +143,7 @@ function nextRound_new(nRounds, bTimeChanged)
 	end
 
 	local nodeActive = CombatManager.getActiveCT();
-	local nCurrent = DB.getValue("combattracker.round", 0);
+	local nCurrent = DB.getValue(CombatManager.CT_ROUND, 0);
 
 	-- If current actor, then advance based on that
 	local nStartCounter = 1;
@@ -183,9 +174,7 @@ function nextRound_new(nRounds, bTimeChanged)
 		if nCurrent ~= 0 and (nCurrent % 10) == 0 and not bTimeChanged then
 			CalendarManager.adjustMinutes(1);
 			CalendarManager.outputTime();
-
-			local nDateinMinutes = TimeManager.getCurrentDateinMinutes();
-			DB.setValue("calendar.dateinminutes", "number", nDateinMinutes); DB.setValue("calendar.dateinminutesstring", "string", tostring(nDateinMinutes));
+			DB.setValue("calendar.dateinminutes", "number", DB.getValue("calendar.dateinminutes", 0) + 1);
 		end
 		-- end bmos resetting rounds and advancing time
 
@@ -198,7 +187,7 @@ function nextRound_new(nRounds, bTimeChanged)
 		-- check if full processing of rounds is unecessary
 		if shouldSwitchToQuickSimulation() then
 			advanceRoundsOnTimeChanged(nRounds + 1 - i);
-			DB.setValue("combattracker.round", 'number', nRounds - 1);
+			DB.setValue(CombatManager.CT_ROUND, "number", nRounds - 1);
 			break;
 		end
 		-- end checking for necessity of full processing of rounds
@@ -217,9 +206,7 @@ function nextRound_new(nRounds, bTimeChanged)
 		if nCurrent ~= 0 and (nCurrent % 10) == 0 and not bTimeChanged then
 			CalendarManager.adjustMinutes(1);
 			CalendarManager.outputTime();
-
-			local nDateinMinutes = TimeManager.getCurrentDateinMinutes();
-			DB.setValue("calendar.dateinminutes", "number", nDateinMinutes); DB.setValue("calendar.dateinminutesstring", "string", tostring(nDateinMinutes));
+			DB.setValue("calendar.dateinminutes", "number", DB.getValue("calendar.dateinminutes", 0) + 1);
 		end
 		-- end bmos resetting rounds and advancing time
 
@@ -229,7 +216,7 @@ function nextRound_new(nRounds, bTimeChanged)
 	end
 
 	-- Update round counter
-	DB.setValue("combattracker.round", "number", nCurrent);
+	DB.setValue(CombatManager.CT_ROUND, "number", nCurrent);
 
 	-- Custom round start callback (such as per round initiative rolling)
 	CombatManager.onRoundStartEvent(nCurrent);
@@ -251,7 +238,7 @@ function onInit()
 	local sRuleset = User.getRulesetName()
 	if sRuleset == '3.5E' or sRuleset == 'PFRPG' or sRuleset == 'PFRPG2' or sRuleset == '5E' then
 		CombatManager.nextRound = nextRound_new;
-		CombatManager.resetInit = resetInit_new;
+		CombatManager.setCustomCombatReset(onCustomCombatReset);
 		CombatManager2.clearExpiringEffects = clearExpiringEffects_new;
 		EffectManager.setCustomOnEffectAddStart(onEffectAddStart_new);
 		if sRuleset == '3.5E' or sRuleset == 'PFRPG' then

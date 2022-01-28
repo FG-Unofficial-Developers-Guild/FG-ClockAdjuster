@@ -40,41 +40,33 @@ function onInit()
 end
 
 --- Timer Functions
-function setStartTime(nodeActor)
-	local nStartTime = getCurrentDateinMinutes();
+function setStartTime(nodeActor, nStartTimeOverride, nStartTimeYearOverride)
+	local nStartTime = nStartTimeOverride;
+	local nStartTimeYear = nStartTimeYearOverride;
+	if not nStartTimeOverride or not nStartTimeYearOverride then
+		nStartTime = getCurrentDateWithoutYearsInMinutes();
+		nStartTimeYear = getCurrentYear();
+	end
+
 	DB.setValue(nodeActor, "starttime", "number", nStartTime);
+	DB.setValue(nodeActor, "starttimeyear", "number", nStartTimeYear);
+end
+
+function getCurrentYear()
+	return DB.getValue("calendar.current.year", 0);
 end
 
 function getStartTime(nodeActor)
 	local nStartTime = DB.getValue(nodeActor, "starttime", 0);
-	return nStartTime;
-end
-
-function setTimerStart(rActor, sFirst)
-	local nodeActor = rActor;
-	local nStartMinute, nStartHour, nStartDay, nStartMonth, nStartYear = getCurrentDate();
-	DB.setValue(nodeActor, "" .. sFirst .. ".startminute", "number", nStartMinute);
-	DB.setValue(nodeActor, "" .. sFirst .. ".starthour", "number", nStartHour);
-	DB.setValue(nodeActor, "" .. sFirst .. ".startday", "number", nStartDay);
-	DB.setValue(nodeActor, "" .. sFirst .. ".startmonth", "number", nStartMonth);
-	DB.setValue(nodeActor, "" .. sFirst .. ".startyear", "number", nStartYear);
-end
-
-function getTimerStart(rActor, sFirst)
-	local nodeActor = rActor;
-	local nStartMinute = DB.getValue(nodeActor, "" .. sFirst .. ".startminute", 0);
-	local nStartHour = DB.getValue(nodeActor, "" .. sFirst .. ".starthour", 0);
-	local nStartDay = DB.getValue(nodeActor, "" .. sFirst .. ".startday", 0);
-	local nStartMonth = DB.getValue(nodeActor, "" .. sFirst .. ".startmonth", 0);
-	local nStartYear = DB.getValue(nodeActor, "" .. sFirst .. ".startyear", 0);
-	return nStartMinute, nStartHour, nStartDay, nStartMonth, nStartYear;
+	local nStartTimeYear = DB.getValue(nodeActor, "starttimeyear", 1);
+	return nStartTime, nStartTimeYear;
 end
 
 -- prints a big error message in the Chatwindow
-local function bigMessage(msgtxt, broadcast, rActor)
+function bigMessage(msgtxt, broadcast, rActor)
 	local msg = ChatManager.createBaseMessage(rActor);
 	msg.text = msg.text .. msgtxt;
-	msg.font = 'reference-header';
+	msg.font = "reference-header";
 
 	if broadcast then
 		Comm.deliverChatMessage(msg);
@@ -92,65 +84,82 @@ function getCurrentDate()
 	local nYears = DB.getValue("calendar.current.year", 0);
 
 	if bNoticePosted == false and
-	   (not DB.getValue("calendar.data.complete") or (not nMinutes or not nHours or not nDays or not nMonths or not nYears)) then
-		bigMessage(Interface.getString('error_calendar_not_configured'));
+	   (not DB.getValue("calendar.data.complete") or
+	   (not nMinutes or not nHours or not nDays or not nMonths or not nYears)) then
+		bigMessage(Interface.getString("error_calendar_not_configured"));
 		bNoticePosted = true;
 	end
 
 	return nMinutes, nHours, nDays, nMonths, nYears;
 end
 
-function compareDates(rActor, sFirst)
+function getCurrentDateWithoutYearsInMinutes()
 	local nMinutes, nHours, nDays, nMonths, nYears = getCurrentDate();
-	local nStartMinute, nStartHour, nStartDay, nStartMonth, nStartYear = getTimerStart(rActor, sFirst);
-	local nMinuteDifference = nMinutes - nStartMinute;
-	local nHourDifference = nHours - nStartHour;
-	local nDayDifference = nDays - nStartDay;
-	local nMonthDifference = nMonths - nStartMonth;
-	local nYearDifference = nYears - nStartYear;
-	return nMinuteDifference, nHourDifference, nDayDifference, nMonthDifference, nYearDifference;
-end
-
-function hasTimePassed(rActor, sFirst, sTime)
-	local nMinutes, nHours, nMonths, nYears = getCurrentDate();
-	local nStartMinute, nStartHour, nStartMonth, nStartYear = getTimerStart(rActor, sFirst);
-	return sTime == "Day" and
-		   nHours >= nStartHour and
-		   nMinutes >= nStartMinute and
-		   nMonths >= nStartMonth and
-		   nYears >= nStartYear;
-end
-
-function getCurrentDateinMinutes()
-	local nMinutes, nHours, nDays, nMonths, nYears = getCurrentDate()
-	local nRounds = (DB.getValue("combattracker.round", 0) % 10);
+	local nRounds = math.max(DB.getValue(CombatManager.CT_ROUND, 0), 0) % 10;  -- Prevent negative
 	local nRoundsinMinutes = 0.1 * nRounds;
 	local nHoursinMinutes = convertHourstoMinutes(nHours);
 	local nDaysinMinutes = convertDaystoMinutes(nDays);
 	local nMonthsinMinutes = convertMonthssnowtoMinutes(nMonths, nYears);
-	local nYearsinMinutes = convertYearsnowtoMinutes(nYears);
-	local nDateinMinutes = nRoundsinMinutes + nHoursinMinutes + nDaysinMinutes + nMonthsinMinutes + nYearsinMinutes + nMinutes;
+	local nDateinMinutes = nRoundsinMinutes + nHoursinMinutes + nDaysinMinutes + nMonthsinMinutes + nMinutes;
 	return nDateinMinutes;
 end
 
---- Compare times
-function isTimeGreaterThan(rActor, sFirst, nCompareBy)
-	local nStartTime = getStartTime(rActor);
-	local nCurrentTime = getCurrentDateinMinutes();
-	local nDifference = nCurrentTime - nStartTime;
-	return nDifference >= nCompareBy;
+--- Compare times, only called from list_timedreminder.onTimeChanged() in desktop_panels.xml.
+function isTimeGreaterThan(nodeTimedReminder, nRepeatTime, nReminderCycle)
+	-- For reminder cycle, 0 is minute, 1 is hour, 2 is day.
+	local nCompareBy = nReminderCycle;
+	if nRepeatTime == 1 then
+		nCompareBy = nReminderCycle * 60;
+	elseif nReminderCycle == 2 then
+		nCompareBy = nReminderCycle * 60 * 24;
+	end
+
+	local nStartTime, nStartTimeYear = getStartTime(nodeTimedReminder);
+	local nCurrentTime = getCurrentDateWithoutYearsInMinutes();
+	local nCurrentYear = getCurrentYear();
+	local nDifferenceYear = nCurrentYear - nStartTimeYear;
+	local nDifferenceYearInMinutes = nDifferenceYear * 365 * 24 * 60;
+	local nDifference = math.abs(nCurrentTime - nStartTime); -- Fix for current/saved getting swapped.
+	if nDifference + nDifferenceYearInMinutes >= nCompareBy then
+		setStartTime(nodeTimedReminder, math.max(nCurrentTime, nStartTime), math.max(nCurrentYear, nStartTimeYear));
+		return true;
+	end
+
+	return false;
 end
 
-function getTimeDifference(rActor)
-	local nodeActor = rActor;
-	local nStartTime = DB.getValue(nodeActor, "starttime", 0);
-	local nCurrentTime = getCurrentDateinMinutes();
-	local nDifference = nCurrentTime - nStartTime;
-	return nDifference;
+function onTimeChangedEvent(nodeEvent, sName, nCompleted, nVisibleAll, nEventMinute, nEventHour, nEventDay, nEventMonth, nEventYear)
+	local nCurrentDateinMinutes = TimeManager.getCurrentDateWithoutYearsInMinutes();
+	local nCurrentYear = TimeManager.getCurrentYear();
+	local nHoursinMinutes = TimeManager.convertHourstoMinutes(nEventHour);
+	local nDaysinMinutes = TimeManager.convertDaystoMinutes(nEventDay);
+	local nMonthsinMinutes = TimeManager.convertMonthssnowtoMinutes(nEventMonth, nEventYear);
+	local nDateinMinutes = nHoursinMinutes + nDaysinMinutes + nMonthsinMinutes + nEventMinute;
+	if nCompleted == 0 and (nCurrentYear > nEventYear or nCurrentDateinMinutes >= nDateinMinutes) then
+		local msg = {font = "reference-r", text = "[" .. nEventHour .. ":" .. nEventMinute .. "/" .. nEventDay .. "/" .. nEventMonth .. "/" .. nEventYear .. "] " .. sName .. "", secret = nVisibleAll == 0};
+		Comm.deliverChatMessage(msg);
+		if TableManager.findTable(sName) then
+			TableManager.processTableRoll("", sName);
+		end
+
+		addLogEntry(nEventMonth, nEventDay, nEventYear, nVisibleAll == 0, nodeEvent);
+		return 1;
+	end
+
+	return 0;
 end
 
-function isXbiggerThanY(x, y)
-	return x - y > 0;
+function onTimeChangedReminder(nodeTimedReminder, sName, nRepeatTime, nReminderCycle, nVisibleAll, nActive)
+	local nDate = CalendarManager.getCurrentDateString();
+	local nTime = CalendarManager.getCurrentTimeString();
+	local nDateAndTime = "" .. nTime .. " " .. nDate .. "";
+	if nActive == 1 and TimeManager.isTimeGreaterThan(nodeTimedReminder, nRepeatTime, nReminderCycle) then
+		local msg = {font = "reference-r", text = "[" .. nDateAndTime .. "] " .. sName .. "", secret = nVisibleAll == 0};
+		Comm.deliverChatMessage(msg);
+		if TableManager.findTable(sName) then
+			TableManager.processTableRoll("", sName);
+		end
+	end
 end
 
 --- Time conversion functions
@@ -199,16 +208,12 @@ function convertMonthtoMinutes(nMonth, nYear)
 end
 
 function convertYeartoHours(nNumber)
-	local nYearinDays = 365;
+	local nYearInDays = 365;
 	if isLeapYear(nNumber) then
-		nYearinDays = nYearinDays + 1;
+		nYearInDays = nYearInDays + 1;
 	end
 
-	return nYearinDays * 24;
-end
-
-function convertYeartoMinutes(nNumber)
-	return convertYeartoHours(nNumber) * 60;
+	return nYearInDays * 24;
 end
 
 function convertYearsnowtoMinutes(nYear)
@@ -246,36 +251,34 @@ function isLeapYear(nYear)
 		   (nYear % 100 ~= 0 or nYear % 400 == 0);
 end
 
--- TODO: Can this storage of state be eliminated?
 local aEvents = {};
-local nSelMonth = 0;
-local nSelDay = 0;
-local bEnableBuild = true;
+
+function buildEvent(nodeLogEntry)
+	if not nodeLogEntry then return end;
+
+	local nYear = DB.getValue(nodeLogEntry, "year", 0);
+	local nMonth = DB.getValue(nodeLogEntry, "month", 0);
+	local nDay = DB.getValue(nodeLogEntry, "day", 0);
+	if not aEvents[nYear] then
+		aEvents[nYear] = {};
+	end
+
+	if not aEvents[nYear][nMonth] then
+		aEvents[nYear][nMonth] = {};
+	end
+
+	aEvents[nYear][nMonth][nDay] = nodeLogEntry;
+end
 
 function buildEvents()
 	aEvents = {};
-	for _, v in pairs(DB.getChildren("calendar.log")) do
-		local nYear = DB.getValue(v, "year", 0);
-		local nMonth = DB.getValue(v, "month", 0);
-		local nDay = DB.getValue(v, "day", 0);
-		if not aEvents[nYear] then
-			aEvents[nYear] = {};
-		end
-
-		if not aEvents[nYear][nMonth] then
-			aEvents[nYear][nMonth] = {};
-		end
-
-		aEvents[nYear][nMonth][nDay] = v;
+	for _, nodeLogEntry in pairs(DB.getChildren("calendar.log")) do
+		buildEvent(nodeLogEntry);
 	end
-
-	bEnableBuild = false;
 end
 
-function onEventsChanged(bListChanged)
-	if bListChanged and bEnableBuild then
-		buildEvents();
-	end
+function onEventsChanged(_, nodeChildUpdated)
+	buildEvents();
 end
 
 function addLogEntry(nMonth, nDay, nYear, bGMVisible, node)
@@ -326,9 +329,6 @@ function addLogEntry(nMonth, nDay, nYear, bGMVisible, node)
 		else
 			DB.setValue(nodeEvent, "logentry", "formattedtext", sString);
 		end
-
-		bEnableBuild = true;
-		onEventsChanged();
 	end
 
 	if nodeEvent then
@@ -336,21 +336,4 @@ function addLogEntry(nMonth, nDay, nYear, bGMVisible, node)
 	end
 
 	return nodeEvent;
-end
-
-function removeLogEntry(nMonth, nDay)
-	local nYear = CalendarManager.getCurrentYear();
-	if aEvents[nYear] and aEvents[nYear][nMonth] and aEvents[nYear][nMonth][nDay] then
-		local nodeEvent = aEvents[nYear][nMonth][nDay];
-		if Session.IsHost then
-			nodeEvent.delete();
-		end
-	end
-end
-
-function onSetButtonPressed()
-	if Session.IsHost then
-		CalendarManager.setCurrentDay(nSelDay);
-		CalendarManager.setCurrentMonth(nSelMonth);
-	end
 end
