@@ -7,15 +7,15 @@ function advanceRoundsOnTimeChanged(nRounds)
 	if nRounds <= 0 then return end
 
 	for _, nodeCT in pairs(DB.getChildren(CombatManager.CT_LIST)) do
-		for _, nodeEffect in pairs(DB.getChildren(nodeCT, 'effects')) do
+		for _, nodeEffect in pairs(DB.getChildren(nodeCT, "effects")) do
 			local nActive = DB.getValue(nodeEffect, "isactive", 0);
 			if nActive ~= 0 then
-				local nDuration = DB.getValue(nodeEffect, 'duration', 0);
+				local nDuration = DB.getValue(nodeEffect, "duration", 0);
 				local bHasDuration = nDuration ~= 0;
 				if bHasDuration and nDuration <= nRounds then
 					EffectManager.expireEffect(nodeCT, nodeEffect);
 				elseif bHasDuration then
-					DB.setValue(nodeEffect, 'duration', 'number', nDuration - nRounds);
+					DB.setValue(nodeEffect, "duration", "number", nDuration - nRounds);
 				end
 			end
 		end
@@ -63,7 +63,7 @@ function splitEffectIntoComponentsTypes(sEffect)
 end
 
 function effectTypeShouldBeChecked(sEffectComponentType)
-	local arrsComponentsToInclude = { 'FHEAL', 'REGEN', 'DMGO' };
+	local arrsComponentsToInclude = { "FHEAL", "REGEN", "DMGO" };
 	return StringManager.contains(arrsComponentsToInclude, sEffectComponentType);
 end
 
@@ -72,19 +72,19 @@ function actorRequiresSlowMode(rActor, arrSEffects)
 	local sActorHealth = ActorHealthManager.getHealthStatus(rActor);
 
 	-- Has ongoing damage, and still lives.
-	if StringManager.contains(arrSEffects, 'DMGO') and
+	if StringManager.contains(arrSEffects, "DMGO") and
 	   sActorHealth ~= ActorHealthManager.STATUS_DEAD then
 		return true;
 	end
 
 	-- Healing through Regeneration
-	if StringManager.contains(arrSEffects, 'REGEN') and
+	if StringManager.contains(arrSEffects, "REGEN") and
 	   sActorHealth ~= ActorHealthManager.STATUS_HEALTHY then
 		return true;
 	end
 
 	-- Healing through Fast Healing
-	if StringManager.contains(arrSEffects, 'FHEAL') and
+	if StringManager.contains(arrSEffects, "FHEAL") and
 	   sActorHealth ~= ActorHealthManager.STATUS_HEALTHY
 	   and sActorHealth ~= ActorHealthManager.STATUS_DEAD then
 		return true;
@@ -103,9 +103,9 @@ function getIsStableAndEffectsToCheck(nodeCT)
 	-- Does two thing at once. as I dont want to iterate twice over all effects
 	local bIsCTStable = false;
 	local aEffectsRequiringSlowMode = {};
-	for _, nEffect in pairs(DB.getChildren(nodeCT, 'effects')) do
+	for _, nEffect in pairs(DB.getChildren(nodeCT, "effects")) do
 		local sEffect = EffectManager.getEffectString(nEffect, false);
-		if string.lower(sEffect) == 'stable' then
+		if string.lower(sEffect) == "stable" then
 			bIsCTStable = true;
 		else
 			local splitEffectComps = splitEffectIntoComponentsTypes(sEffect);
@@ -231,17 +231,17 @@ end
 -- Function Overrides
 function onInit()
 	local sRuleset = User.getRulesetName()
-	if sRuleset == '3.5E' or sRuleset == 'PFRPG' or sRuleset == 'PFRPG2' or sRuleset == '5E' then
+	if sRuleset == "3.5E" or sRuleset == "PFRPG" or sRuleset == "PFRPG2" or sRuleset == "5E" then
 		CombatManager.nextRound = nextRound_new;
 		CombatManager.setCustomCombatReset(onCustomCombatReset);
 		EffectManager.setCustomOnEffectAddStart(onEffectAddStart_new);
-		if sRuleset == '3.5E' or sRuleset == 'PFRPG' then
+		if sRuleset == "3.5E" or sRuleset == "PFRPG" then
 			EffectManager35E.onEffectAddStart = onEffectAddStart_new;
-		elseif sRuleset == '5E' then
+		elseif sRuleset == "5E" then
 			EffectManager5E.onEffectAddStart = onEffectAddStart_new;
 		end
 	end
 
-	OptionsManager.registerOption2('TIMEROUNDS', false, 'option_header_game', 'opt_lab_time_rounds', 'option_entry_cycler',
-		{ labels = 'enc_opt_time_rounds_slow', values = 'slow', baselabel = 'enc_opt_time_rounds_fast', baseval = 'fast', default = 'fast' });
+	OptionsManager.registerOption2("TIMEROUNDS", false, "option_header_CLOCKADJUSTER", "opt_lab_time_rounds", "option_entry_cycler",
+		{ labels = "enc_opt_time_rounds_slow", values = "slow", baselabel = "enc_opt_time_rounds_fast", baseval = "fast", default = "fast" });
 end
