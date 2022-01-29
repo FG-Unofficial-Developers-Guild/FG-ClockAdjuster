@@ -30,29 +30,24 @@
 				triggers to work correctly on campaign open, otherwise they don't work until opened manually. -->
 				<script>
 					function onInit()
-						if DB.getValue(TimeManager.CAL_NEWCAMPAIGN) == nil or DB.getValue(TimeManager.CAL_NEWCAMPAIGN) == 0 then
-							local nYear = DB.getValue(TimeManager.CAL_CUR_YEAR, 0);
-							if nYear == nil or nYear == 0 then
+						if DB.getValue(TimeManager.CAL_NEWCAMPAIGN, 0) == 0 then
+							if DB.getValue(TimeManager.CAL_CUR_YEAR, 0) == 0 then
 								DB.setValue(TimeManager.CAL_CUR_YEAR, "number", 1);
 							end
 
-							local nMonth = DB.getValue(TimeManager.CAL_CUR_MONTH, 0);
-							if nMonth == nil or nMonth == 0 then
+							if DB.getValue(TimeManager.CAL_CUR_MONTH, 0) == 0 then
 								DB.setValue(TimeManager.CAL_CUR_MONTH, "number", 1);
 							end
 
-							local nDay = DB.getValue(TimeManager.CAL_CUR_DAY, 0);
-							if nDay == nil or nDay == 0 then
+							if DB.getValue(TimeManager.CAL_CUR_DAY, 0) == 0 then
 								DB.setValue(TimeManager.CAL_CUR_DAY, "number", 1);
 							end
 
-							local nMinute = DB.getValue(TimeManager.CAL_CUR_MIN, 0);
-							if nMinute == nil then
+							if DB.getValue(TimeManager.CAL_CUR_MIN) == nil then
 								DB.setValue(TimeManager.CAL_CUR_MIN, "number", 0);
 							end
 
-							local nHour = DB.getValue(TimeManager.CAL_CUR_HOUR, 0);
-							if nHour == nil then
+							if DB.getValue(TimeManager.CAL_CUR_HOUR) == nil then
 								DB.setValue(TimeManager.CAL_CUR_HOUR, "number", 0);
 							end
 
