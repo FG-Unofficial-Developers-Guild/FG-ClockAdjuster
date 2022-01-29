@@ -129,11 +129,11 @@ function isTimeGreaterThan(nodeTimedReminder, nRepeatTime, nReminderCycle)
 end
 
 function onTimeChangedEvent(nodeEvent, sName, nCompleted, nVisibleAll, nEventMinute, nEventHour, nEventDay, nEventMonth, nEventYear)
-	local nCurrentDateinMinutes = TimeManager.getCurrentDateWithoutYearsInMinutes();
-	local nCurrentYear = TimeManager.getCurrentYear();
-	local nHoursinMinutes = TimeManager.convertHourstoMinutes(nEventHour);
-	local nDaysinMinutes = TimeManager.convertDaystoMinutes(nEventDay);
-	local nMonthsinMinutes = TimeManager.convertMonthssnowtoMinutes(nEventMonth, nEventYear);
+	local nCurrentDateinMinutes = getCurrentDateWithoutYearsInMinutes();
+	local nCurrentYear = getCurrentYear();
+	local nHoursinMinutes = convertHourstoMinutes(nEventHour);
+	local nDaysinMinutes = convertDaystoMinutes(nEventDay);
+	local nMonthsinMinutes = convertMonthssnowtoMinutes(nEventMonth, nEventYear);
 	local nDateinMinutes = nHoursinMinutes + nDaysinMinutes + nMonthsinMinutes + nEventMinute;
 	if nCompleted == 0 and (nCurrentYear > nEventYear or nCurrentDateinMinutes >= nDateinMinutes) then
 		local msg = {font = "reference-r", text = "[" .. nEventHour .. ":" .. nEventMinute .. "/" .. nEventDay .. "/" .. nEventMonth .. "/" .. nEventYear .. "] " .. sName .. "", secret = nVisibleAll == 0};
@@ -153,7 +153,7 @@ function onTimeChangedReminder(nodeTimedReminder, sName, nRepeatTime, nReminderC
 	local nDate = CalendarManager.getCurrentDateString();
 	local nTime = CalendarManager.getCurrentTimeString();
 	local nDateAndTime = "" .. nTime .. " " .. nDate .. "";
-	if nActive == 1 and TimeManager.isTimeGreaterThan(nodeTimedReminder, nRepeatTime, nReminderCycle) then
+	if nActive == 1 and isTimeGreaterThan(nodeTimedReminder, nRepeatTime, nReminderCycle) then
 		local msg = {font = "reference-r", text = "[" .. nDateAndTime .. "] " .. sName .. "", secret = nVisibleAll == 0};
 		Comm.deliverChatMessage(msg);
 		if TableManager.findTable(sName) then
@@ -163,42 +163,18 @@ function onTimeChangedReminder(nodeTimedReminder, sName, nRepeatTime, nReminderC
 end
 
 --- Time conversion functions
-function convertSecondstoMinutes(nNumber)
-	return nNumber / 60;
-end
-
 function convertHourstoMinutes(nNumber)
 	return nNumber * 60;
-end
-
-function convertMinutestoHours(nNumber)
-	return nNumber / 60;
-end
-
-function convertHourstoDays(nNumber)
-	return nNumber / 24;
 end
 
 function convertDaystoHours(nNumber)
 	return nNumber * 24;
 end
 
-function convertMinutestoDays(nNumber)
-	local nHoursTotaled = convertMinutestoHours(nNumber);
-	local nDaysTotaled = convertHourstoDays(nHoursTotaled);
-	return nDaysTotaled;
-end
-
 function convertDaystoMinutes(nNumber)
 	local nDaysinHours = convertDaystoHours(nNumber);
 	local nMinutesTotaled = convertHourstoMinutes(nDaysinHours);
 	return nMinutesTotaled;
-end
-
-function convertMonthtoHours(nMonth, nYear)
-	local nDays = getDaysInMonth(nMonth, nYear);
-	local nHoursTotaled = convertDaystoHours(nDays);
-	return nHoursTotaled;
 end
 
 function convertMonthtoMinutes(nMonth, nYear)
@@ -277,12 +253,12 @@ function buildEvents()
 	end
 end
 
-function onEventsChanged(_, nodeChildUpdated)
+function onEventsChanged(_, _)
 	buildEvents();
 end
 
 function notifyControlsOfUpdate()
-	DB.setValue(TimeManager.CAL_DATEINMIN, "number", DB.getValue(TimeManager.CAL_DATEINMIN, 0) + 1);
+	DB.setValue(CAL_DATEINMIN, "number", DB.getValue(CAL_DATEINMIN, 0) + 1);
 end
 
 function onUpdateAddControl()
