@@ -271,7 +271,7 @@ function buildEvents()
 	end
 end
 
-function onEventsChanged(_, _)
+function onEventsChanged() -- addHandler() onChildUpdate(nodeParent, nodeChildUpdated)
 	buildEvents();
 end
 
@@ -286,13 +286,13 @@ function onUpdateAddControl()
 	DB.setValue(CombatManager.CT_ROUND, 'number', nCurrentRound);
 end
 
-function addLogEntry(nMonth, nDay, nYear, bGMVisible, node)
-	local nodeEvent;
-	local sName = DB.getValue(node, "name", "");
-	local sString = DB.getValue(node, "text", "");
-	local nMinute = DB.getValue(node, "minute", 0);
+function addLogEntry(nMonth, nDay, nYear, bGMVisible, nodeEvent)
+	local nodeLogEntry;
+	local sName = DB.getValue(nodeEvent, "name", "");
+	local sString = DB.getValue(nodeEvent, "text", "");
+	local nMinute = DB.getValue(nodeEvent, "minute", 0);
 	local sMinute = tostring(nMinute);
-	local nHour = DB.getValue(node, "hour", 0);
+	local nHour = DB.getValue(nodeEvent, "hour", 0);
 	local sHour = tostring(nHour);
 
 	if nHour < 10 then
@@ -304,41 +304,41 @@ function addLogEntry(nMonth, nDay, nYear, bGMVisible, node)
 	end
 
 	if aEvents[nYear] and aEvents[nYear][nMonth] and aEvents[nYear][nMonth][nDay] then
-		nodeEvent = aEvents[nYear][nMonth][nDay];
-		local EventGMLog = DB.getValue(nodeEvent, "gmlogentry", "");
+		nodeLogEntry = aEvents[nYear][nMonth][nDay];
+		local EventGMLog = DB.getValue(nodeLogEntry, "gmlogentry", "");
 		local EventGMLogNew = string.gsub(EventGMLog, "%W", "");
-		local EventLog = DB.getValue(nodeEvent, "logentry", "");
+		local EventLog = DB.getValue(nodeLogEntry, "logentry", "");
 		local EventLogNew = string.gsub(EventLog, "%W", "");
 		if bGMVisible then
 			if not string.find(EventGMLogNew, sHour .. "" .. sMinute) then
 				sString = EventGMLog .. "<h>" .. sName .. " [" .. sHour .. " hr : " .. sMinute .. " min]" .. "</h>" .. sString;
-				DB.setValue(nodeEvent, "gmlogentry", "formattedtext", sString);
+				DB.setValue(nodeLogEntry, "gmlogentry", "formattedtext", sString);
 			end
 		else
 			if not string.find(EventLogNew, sHour .. "" .. sMinute) then
 				sString = EventLog .. "<h>" .. sName .. " [" .. sHour .. " hr : " .. sMinute .. " min]" .. "</h>" .. sString;
-				DB.setValue(nodeEvent, "logentry", "formattedtext", sString);
+				DB.setValue(nodeLogEntry, "logentry", "formattedtext", sString);
 			end
 		end
 	elseif Session.IsHost then
 		local nodeLog = DB.createNode("calendar.log");
-		nodeEvent = nodeLog.createChild();
+		nodeLogEntry = nodeLog.createChild();
 		sString = "<h>" .. sName .. " [" .. sHour .. " hr : " .. sMinute .. " min]" .. "</h>" .. sString;
 
-		DB.setValue(nodeEvent, "epoch", "string", DB.getValue("calendar.current.epoch", ""));
-		DB.setValue(nodeEvent, "year", "number", nYear);
-		DB.setValue(nodeEvent, "month", "number", nMonth);
-		DB.setValue(nodeEvent, "day", "number", nDay);
+		DB.setValue(nodeLogEntry, "epoch", "string", DB.getValue("calendar.current.epoch", ""));
+		DB.setValue(nodeLogEntry, "year", "number", nYear);
+		DB.setValue(nodeLogEntry, "month", "number", nMonth);
+		DB.setValue(nodeLogEntry, "day", "number", nDay);
 		if bGMVisible then
-			DB.setValue(nodeEvent, "gmlogentry", "formattedtext", sString);
+			DB.setValue(nodeLogEntry, "gmlogentry", "formattedtext", sString);
 		else
-			DB.setValue(nodeEvent, "logentry", "formattedtext", sString);
+			DB.setValue(nodeLogEntry, "logentry", "formattedtext", sString);
 		end
 	end
 
-	if nodeEvent then
-		Interface.openWindow("advlogentry", nodeEvent);
+	if nodeLogEntry then
+		Interface.openWindow("advlogentry", nodeLogEntry);
 	end
 
-	return nodeEvent;
+	return nodeLogEntry;
 end
