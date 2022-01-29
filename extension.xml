@@ -13,22 +13,13 @@
 	<announcement text="https://www.fantasygrounds.com/forums/showthread.php?57561-Utility-Clock-Adjuster\rClock Adjuster v2.5:\rEvents, reminders, travel, and time.\rBy PR6I6E6ST, bmos, and MeAndUnique." font="emotefont" />
 	
 	<base>
-		<script name="TimeManager" file="scripts/manager_time.lua" />
-		<script name="LongTermEffects" file="scripts/longtermeffects.lua" />
-		<includefile source="desktop/desktop_panels.xml" />
 		<includefile source="graphics/graphics_frames.xml" />
 		<includefile source="graphics/graphics_icons.xml" />
 		<includefile source="strings/strings_clock.xml" />
 		<includefile source="strings/strings_options.xml" />
 		<includefile source="strings/strings_timedevents.xml" />
-		<string name="option_header_CLOCKADJUSTER">Clock Adjuster (GM)</string>
-		<string name="option_label_CLOCKADJUSTER_DEFAULT_HOURS">Default Hours</string>
-		<string name="option_label_CLOCKADJUSTER_DEFAULT_MINUTES">Default Minutes</string>
-		<string name="option_label_CLOCKADJUSTER_DEFAULT_DAYS">Default Days</string>
-		<string name="option_label_CLOCKADJUSTER_DEFAULT_MONTHS">Default Months</string>
-		<string name="option_label_CLOCKADJUSTER_DEFAULT_YEARS">Default Years</string>
-		<string name="option_label_CLOCKADJUSTER_DEFAULT_LONG">Default Long Rest (hours)</string>
-		<string name="option_label_CLOCKADJUSTER_DEFAULT_SHORT">Default Short Rest (minutes)</string>
-		<string name="option_CLOCKADJUSTER_ZERO">0</string>
+		<script name="TimeManager" file="scripts/manager_time.lua" />
+		<script name="LongTermEffects" file="scripts/longtermeffects.lua" />
+		<includefile source="desktop/desktop_panels.xml" />
 	</base>
 </root>
