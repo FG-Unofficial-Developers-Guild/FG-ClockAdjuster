@@ -2,6 +2,13 @@
 -- Please see the LICENSE.md file included with this distribution for attribution and copyright information.
 --
 
+CAL_CHK_DAY = "calendar.check.day";
+CAL_CUR_DAY = "calendar.current.day";
+CAL_CUR_HOUR = "calendar.current.hour";
+CAL_CUR_MIN = "calendar.current.minute";
+CAL_CUR_MONTH = "calendar.current.month";
+CAL_CUR_YEAR = "calendar.current.year";
+CAL_NEWCAMPAIGN = "calendar.newcampaign";
 CAL_DATEINMIN = "calendar.dateinminutes";
 CLOCKADJUSTER_DEFAULT_HOURS = "CLOCKADJUSTER_DEFAULT_HOURS";
 CLOCKADJUSTER_DEFAULT_MINUTES = "CLOCKADJUSTER_DEFAULT_MINUTES";
@@ -54,7 +61,7 @@ function setStartTime(nodeActor, nStartTimeOverride, nStartTimeYearOverride)
 end
 
 function getCurrentYear()
-	return DB.getValue("calendar.current.year", 0);
+	return DB.getValue(CAL_CUR_YEAR, 0);
 end
 
 function getStartTime(nodeActor)
@@ -78,11 +85,11 @@ function bigMessage(msgtxt, broadcast, rActor)
 end
 
 function getCurrentDate()
-	local nMinutes = DB.getValue("calendar.current.minute", 0);
-	local nHours = DB.getValue("calendar.current.hour", 0);
-	local nDays = DB.getValue("calendar.current.day", 0);
-	local nMonths = DB.getValue("calendar.current.month", 0);
-	local nYears = DB.getValue("calendar.current.year", 0);
+	local nMinutes = DB.getValue(CAL_CUR_MIN, 0);
+	local nHours = DB.getValue(CAL_CUR_HOUR, 0);
+	local nDays = DB.getValue(CAL_CUR_DAY, 0);
+	local nMonths = DB.getValue(CAL_CUR_MONTH, 0);
+	local nYears = DB.getValue(CAL_CUR_YEAR, 0);
 
 	if bNoticePosted == false and
 	   (not DB.getValue("calendar.data.complete") or
