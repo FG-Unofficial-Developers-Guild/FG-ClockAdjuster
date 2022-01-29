@@ -777,11 +777,11 @@
 				<allowdelete />
 				<script>
 					function onInit()
-						DB.addHandler(TimeManager.CAL_DATEINMIN, "onUpdate", onTimeChanged);
+						DB.addHandler(TimeManager.CAL_CLOCKADJUSTERNOTIFY, "onUpdate", onTimeChanged);
 					end
 
 					function onClose()
-						DB.removeHandler(TimeManager.CAL_DATEINMIN, "onUpdate", onTimeChanged);
+						DB.removeHandler(TimeManager.CAL_CLOCKADJUSTERNOTIFY, "onUpdate", onTimeChanged);
 					end
 
 					function onTimeChanged()
@@ -1917,11 +1917,11 @@
 				<allowdelete />
 				<script>
 					function onInit()
-						DB.addHandler(TimeManager.CAL_DATEINMIN, "onUpdate", onTimeChanged);
+						DB.addHandler(TimeManager.CAL_CLOCKADJUSTERNOTIFY, "onUpdate", onTimeChanged);
 					end
 
 					function onClose()
-						DB.removeHandler(TimeManager.CAL_DATEINMIN, "onUpdate", onTimeChanged);
+						DB.removeHandler(TimeManager.CAL_CLOCKADJUSTERNOTIFY, "onUpdate", onTimeChanged);
 					end
 
 					function onTimeChanged()

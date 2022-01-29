@@ -2,6 +2,7 @@
 -- Please see the LICENSE.md file included with this distribution for attribution and copyright information.
 --
 
+CAL_CLOCKADJUSTERNOTIFY = "calendar.clockadjusternotify";
 CAL_CHK_DAY = "calendar.check.day";
 CAL_CUR_DAY = "calendar.current.day";
 CAL_CUR_HOUR = "calendar.current.hour";
@@ -9,7 +10,6 @@ CAL_CUR_MIN = "calendar.current.minute";
 CAL_CUR_MONTH = "calendar.current.month";
 CAL_CUR_YEAR = "calendar.current.year";
 CAL_NEWCAMPAIGN = "calendar.newcampaign";
-CAL_DATEINMIN = "calendar.dateinminutes";
 CLOCKADJUSTER_DEFAULT_HOURS = "CLOCKADJUSTER_DEFAULT_HOURS";
 CLOCKADJUSTER_DEFAULT_MINUTES = "CLOCKADJUSTER_DEFAULT_MINUTES";
 CLOCKADJUSTER_DEFAULT_DAYS = "CLOCKADJUSTER_DEFAULT_DAYS";
@@ -29,7 +29,7 @@ REMINDER_REPEATTIME = "reminder.repeattime";
 local bNoticePosted = false;
 
 function onInit()
-	DB.addHandler("calendar.log", "onChildUpdate", onEventsChanged);
+	initializeNotificationMechanism();
 
 	-- Options for the Clock Manager add defaults
 	OptionsManager.registerOption2(CLOCKADJUSTER_DEFAULT_HOURS, false, "option_header_CLOCKADJUSTER", "option_label_CLOCKADJUSTER_DEFAULT_HOURS", "option_entry_cycler",
@@ -46,6 +46,16 @@ function onInit()
 	{ baselabel = "option_CLOCKADJUSTER_ZERO", baseval = "option_CLOCKADJUSTER_ZERO", labels = CLOCKADJUSTER_LONG_OPTIONS, values = CLOCKADJUSTER_LONG_OPTIONS, default = "option_CLOCKADJUSTER_ZERO" });
 	OptionsManager.registerOption2(CLOCKADJUSTER_DEFAULT_SHORT, false, "option_header_CLOCKADJUSTER", "option_label_CLOCKADJUSTER_DEFAULT_SHORT", "option_entry_cycler",
 	{ baselabel = "option_CLOCKADJUSTER_ZERO", baseval = "option_CLOCKADJUSTER_ZERO", labels = CLOCKADJUSTER_SHORT_OPTIONS, values = CLOCKADJUSTER_SHORT_OPTIONS, default = "option_CLOCKADJUSTER_ZERO" });
+
+	OptionsManager.registerOption2("TIMEROUNDS", false, "option_header_CLOCKADJUSTER", "opt_lab_time_rounds", "option_entry_cycler",
+		{ labels = "enc_opt_time_rounds_slow", values = "slow", baselabel = "enc_opt_time_rounds_fast", baseval = "fast", default = "fast" });
+end
+
+function initializeNotificationMechanism()
+	DB.addHandler("calendar.log", "onChildUpdate", onEventsChanged);
+	DB.deleteNode("calendar.dateinminutes"); -- clean up after old mechanism, no longer needed.
+	DB.deleteNode("calendar.dateinminutesstring"); -- clean up after old mechanism, no longer needed.
+	DB.setValue(CAL_CLOCKADJUSTERNOTIFY, "number", 0); -- initialize the new notification mechanism
 end
 
 --- Timer Functions
@@ -266,7 +276,7 @@ function onEventsChanged(_, _)
 end
 
 function notifyControlsOfUpdate()
-	DB.setValue(CAL_DATEINMIN, "number", DB.getValue(CAL_DATEINMIN, 0) + 1);
+	DB.setValue(CAL_CLOCKADJUSTERNOTIFY, "number", DB.getValue(CAL_CLOCKADJUSTERNOTIFY, 0) + 1);
 end
 
 function onUpdateAddControl()

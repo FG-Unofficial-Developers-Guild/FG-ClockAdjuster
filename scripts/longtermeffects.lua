@@ -232,7 +232,7 @@ end
 function onInit()
 	local sRuleset = User.getRulesetName()
 	if sRuleset == "3.5E" or sRuleset == "PFRPG" or sRuleset == "PFRPG2" or sRuleset == "5E" then
-		CombatManager.nextRound = nextRound_new;
+		CombatManager.nextRound = nextRound_new; -- No need to store old since this is copy/paste override, not referenced override.
 		CombatManager.setCustomCombatReset(onCustomCombatReset);
 		EffectManager.setCustomOnEffectAddStart(onEffectAddStart_new);
 		if sRuleset == "3.5E" or sRuleset == "PFRPG" then
@@ -241,7 +241,4 @@ function onInit()
 			EffectManager5E.onEffectAddStart = onEffectAddStart_new;
 		end
 	end
-
-	OptionsManager.registerOption2("TIMEROUNDS", false, "option_header_CLOCKADJUSTER", "opt_lab_time_rounds", "option_entry_cycler",
-		{ labels = "enc_opt_time_rounds_slow", values = "slow", baselabel = "enc_opt_time_rounds_fast", baseval = "fast", default = "fast" });
 end
