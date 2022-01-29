@@ -2143,12 +2143,12 @@
 				<script>
 					function onInit()
 						local nodeReminder = window.getDatabaseNode();
-						setValue(DB.getValue(nodeReminder, "reminder.repeattime", 0));
+						setValue(DB.getValue(nodeReminder, TimeManager.REMINDER_REPEATTIME, 0));
 					end
 
 					function onValueChanged()
 						local nodeReminder = window.getDatabaseNode();
-						DB.setValue(nodeReminder, "reminder.repeattime", "number", getValue());
+						DB.setValue(nodeReminder, TimeManager.REMINDER_REPEATTIME, "number", getValue());
 						window.repeattimebutton.setValue(getValue());
 					end
 				</script>
@@ -2170,12 +2170,12 @@
 				<script>
 					function onInit()
 						local nodeReminder = window.getDatabaseNode();
-						setValue(DB.getValue(nodeReminder, "reminder.repeattime", 0));
+						setValue(DB.getValue(nodeReminder, TimeManager.REMINDER_REPEATTIME, 0));
 					end
 
 					function onButtonPress()
 						local nodeReminder = window.getDatabaseNode();
-						DB.setValue(nodeReminder, "reminder.repeattime", "number", getValue());
+						DB.setValue(nodeReminder, TimeManager.REMINDER_REPEATTIME, "number", getValue());
 						window.repeattime.setValue(getValue());
 					end
 				</script>
