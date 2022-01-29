@@ -824,7 +824,7 @@
 			function onTimeChanged()
 				local sName = name.getValue() or "";
 				local nCompleted = completed.getValue();
-				local nVisibleAll = visibleall.getValue();
+				local nVisibleAll = isgmonly.getValue();
 				local nEventMinute = minute.getValue() or 0;
 				local nEventHour = hour.getValue() or 0;
 				local nEventDay = day.getValue() or 0;
@@ -858,7 +858,7 @@
 				<class>timedevent</class>
 				<readonly />
 			</linkcontrol_id>
-			<buttonfield name="visibleall">
+			<buttonfield name="isgmonly">
 				<anchored width="20" height="20">
 					<top offset="3" />
 					<right parent="rightanchor" anchor="left" relation="relative" offset="-5" />
@@ -1007,7 +1007,7 @@
 				<tabtarget prev="location" />
 				<tooltip textres="year_tooltip" />
 			</basicnumber>
-			<buttonfield name="visibleall">
+			<buttonfield name="isgmonly">
 				<anchored to="year" width="40" height="20">
 					<top />
 					<left parent="year" anchor="right" offset="10" />
@@ -1017,7 +1017,7 @@
 				<state icon="visibilityon" tooltipres="visibilityon" />
 			</buttonfield>
 			<buttoncontrol name="openlogentry">
-				<anchored to="visibleall" position="right" offset="3,0" width="20" height="20" />
+				<anchored to="isgmonly" position="right" offset="3,0" width="20" height="20" />
 				<icon normal="add_logentry" pressed="add_logentry_down" />
 				<tooltip textres="desktop_openlog_tooltip" />
 				<script>
@@ -1025,7 +1025,7 @@
 						local nMonth = window.month.getValue() or 0;
 						local nDay = window.day.getValue() or 0;
 						local nYear = window.year.getValue() or 0;
-						local bGMVisible = window.visibleall.getValue() == 0;
+						local bGMVisible = window.isgmonly.getValue() == 0;
 						local nodeDB = window.getDatabaseNode();
 						local sName = DB.getValue(nodeDB, "name", "");
 						TimeManager.addLogEntry(nMonth, nDay, nYear, bGMVisible, nodeDB);
@@ -1244,7 +1244,7 @@
 						local nTimePassed = 0;
 						local nTravelCount = 0;
 						local UseSpeed = window.travelspeed.getValue()
-						local isGMOnly = window.visibleall.getValue() == 0;
+						local isGMOnly = window.isgmonly.getValue() == 0;
 						if window.unitofmeasurement.getValue() == 0 then
 							MilesorKilometers = "miles";
 						elseif window.unitofmeasurement.getValue() == 1 then
@@ -1318,7 +1318,7 @@
 						local nDistanceTotaled = 0;
 						local nTimePassed = 0;
 						local nTravelCount = 0;
-						local isGMOnly = window.visibleall.getValue() == 0;
+						local isGMOnly = window.isgmonly.getValue() == 0;
 						for i=1,nValue do
 							local nDistance = (window.destination.getValue() or 0);
 							local nDistanceTraveled = (window.distancetraveled.getValue() or 0) + (window.travelspeed.getValue() or 0);
@@ -1388,7 +1388,7 @@
 					end
 				</script>
 			</buttoncontrol>
-			<buttonfield name="visibleall">
+			<buttonfield name="isgmonly">
 				<anchored height="20" width="50">
 					<left parent="traveltime" anchor="right" offset="0" />
 					<top parent="traveltime" anchor="top" />
@@ -1954,7 +1954,7 @@
 				local sName = name.getValue() or "";
 				local nRepeatTime = repeattime.getValue();
 				local nReminderCycle = remindercycle.getValue() or 0;
-				local nVisible = visibleall.getValue();
+				local nVisible = isgmonly.getValue();
 				local nActive = active.getValue();
 				TimeManager.onTimeChangedReminder(nodeTimedReminder, sName, nRepeatTime, nReminderCycle, nVisible, nActive);
 			end
@@ -2010,7 +2010,7 @@
 				</script>
 				<invisible />
 			</basicnumber>
-			<buttonfield name="visibleall">
+			<buttonfield name="isgmonly">
 				<anchored width="20" height="20">
 					<top offset="3" />
 					<right parent="rightanchor" anchor="left" relation="relative" offset="-5" />
@@ -2171,7 +2171,7 @@
 					end
 				</script>
 			</buttoncontrol>
-			<buttonfield name="visibleall">
+			<buttonfield name="isgmonly">
 				<anchored to="repeattimebutton" width="40" height="20">
 					<top />
 					<left parent="repeattimebutton" anchor="right" offset="10" />
