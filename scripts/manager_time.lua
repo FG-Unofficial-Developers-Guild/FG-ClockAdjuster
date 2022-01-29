@@ -111,7 +111,7 @@ function isTimeGreaterThan(nodeTimedReminder, nRepeatTime, nReminderCycle)
 	local nCompareBy = nReminderCycle;
 	if nRepeatTime == 1 then
 		nCompareBy = nReminderCycle * 60;
-	elseif nReminderCycle == 2 then
+	elseif nRepeatTime == 2 then
 		nCompareBy = nReminderCycle * 60 * 24;
 	end
 
