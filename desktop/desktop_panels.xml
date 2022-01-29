@@ -955,6 +955,18 @@
 		<tooltip field="value" />
 		<softclose />
 		<sharable />
+		<script>
+			function onLockChanged()
+				local bReadOnly = WindowManager.getReadOnlyState(getDatabaseNode());
+				text.setReadOnly(bReadOnly);
+				hour.setReadOnly(bReadOnly);
+				minute.setReadOnly(bReadOnly);
+				day.setReadOnly(bReadOnly);
+				month.setReadOnly(bReadOnly);
+				year.setReadOnly(bReadOnly);
+				isgmonly.setReadOnly(bReadOnly);
+			end
+		</script>
 		<sheetdata>
 			<sub_record_header name="header">
 				<class>timedevents_header</class>
@@ -2043,15 +2055,13 @@
 				</sourcefields>
 				<script>
 					function onInit()
-						local rActor = window.getDatabaseNode();
-						local nodeActor = rActor;
-						setValue(DB.getValue(nodeActor, "repeattime", 0));
+						local nodeReminder = window.getDatabaseNode();
+						setValue(DB.getValue(nodeReminder, "repeattime", 0));
 					end
 
 					function onButtonPress()
-						local rActor = window.getDatabaseNode();
-						local nodeActor = rActor;
-						DB.setValue(nodeActor, "repeattime", "number", getValue());
+						local nodeReminder = window.getDatabaseNode();
+						DB.setValue(nodeReminder, "repeattime", "number", getValue());
 						window.repeattime.setValue(getValue());
 					end
 				</script>
@@ -2063,15 +2073,13 @@
 				</anchored>
 				<script>
 					function onInit()
-						local rActor = window.getDatabaseNode();
-						local nodeActor = rActor;
-						setValue(DB.getValue(nodeActor, "repeattime", 0));
+						local nodeReminder = window.getDatabaseNode();
+						setValue(DB.getValue(nodeReminder, "repeattime", 0));
 					end
 
 					function onValueChanged()
-						local rActor = window.getDatabaseNode();
-						local nodeActor = rActor;
-						DB.setValue(nodeActor, "repeattime", "number", getValue());
+						local nodeReminder = window.getDatabaseNode();
+						DB.setValue(nodeReminder, "repeattime", "number", getValue());
 						window.repeattimebutton.setValue(getValue());
 					end
 				</script>
@@ -2100,6 +2108,16 @@
 		<tooltip field="value" />
 		<softclose />
 		<sharable />
+		<script>
+			function onLockChanged()
+				local bReadOnly = WindowManager.getReadOnlyState(getDatabaseNode());
+				remindercycle.setReadOnly(bReadOnly);
+				repeattime.setReadOnly(bReadOnly);
+				repeattimebutton.setReadOnly(bReadOnly);
+				text.setReadOnly(bReadOnly);
+				isgmonly.setReadOnly(bReadOnly);
+			end
+		</script>
 		<sheetdata>
 			<sub_record_header name="header">
 				<class>timedreminders_header</class>
@@ -2129,15 +2147,13 @@
 				</anchored>
 				<script>
 					function onInit()
-						local rActor = window.getDatabaseNode();
-						local nodeActor = rActor;
-						setValue(DB.getValue(nodeActor, "reminder.repeattime", 0));
+						local nodeReminder = window.getDatabaseNode();
+						setValue(DB.getValue(nodeReminder, "reminder.repeattime", 0));
 					end
 
 					function onValueChanged()
-						local rActor = window.getDatabaseNode();
-						local nodeActor = rActor;
-						DB.setValue(nodeActor, "reminder.repeattime", "number", getValue());
+						local nodeReminder = window.getDatabaseNode();
+						DB.setValue(nodeReminder, "reminder.repeattime", "number", getValue());
 						window.repeattimebutton.setValue(getValue());
 					end
 				</script>
@@ -2158,15 +2174,13 @@
 				</sourcefields>
 				<script>
 					function onInit()
-						local rActor = window.getDatabaseNode();
-						local nodeActor = rActor;
-						setValue(DB.getValue(nodeActor, "reminder.repeattime", 0));
+						local nodeReminder = window.getDatabaseNode();
+						setValue(DB.getValue(nodeReminder, "reminder.repeattime", 0));
 					end
 
 					function onButtonPress()
-						local rActor = window.getDatabaseNode();
-						local nodeActor = rActor;
-						DB.setValue(nodeActor, "reminder.repeattime", "number", getValue());
+						local nodeReminder = window.getDatabaseNode();
+						DB.setValue(nodeReminder, "reminder.repeattime", "number", getValue());
 						window.repeattime.setValue(getValue());
 					end
 				</script>
