@@ -52,10 +52,12 @@ function onInit()
 end
 
 function initializeNotificationMechanism()
-	DB.addHandler("calendar.log", "onChildUpdate", onEventsChanged);
-	DB.deleteNode("calendar.dateinminutes"); -- clean up after old mechanism, no longer needed.
-	DB.deleteNode("calendar.dateinminutesstring"); -- clean up after old mechanism, no longer needed.
-	DB.setValue(CAL_CLOCKADJUSTERNOTIFY, "number", 0); -- initialize the new notification mechanism
+	if Session.IsHost then
+		DB.addHandler("calendar.log", "onChildUpdate", onEventsChanged);
+		DB.deleteNode("calendar.dateinminutes"); -- clean up after old mechanism, no longer needed.
+		DB.deleteNode("calendar.dateinminutesstring"); -- clean up after old mechanism, no longer needed.
+		DB.setValue(CAL_CLOCKADJUSTERNOTIFY, "number", 0); -- initialize the new notification mechanism
+	end
 end
 
 --- Timer Functions
