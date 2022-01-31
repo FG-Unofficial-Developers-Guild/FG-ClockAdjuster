@@ -309,6 +309,14 @@ function checkAndOutputDate()
 	end
 end
 
+function processTimeRoundsOption(nRounds)
+	if OptionsManager.isOption('TIMEROUNDS', 'slow') and nRounds < 4801 then
+		CombatManager.nextRound(nRounds, true);
+	else
+		LongTermEffects.advanceRoundsOnTimeChanged(nRounds);
+	end
+end
+
 function addLogEntry(nMonth, nDay, nYear, bGMVisible, nodeEvent)
 	local nodeLogEntry;
 	local sName = DB.getValue(nodeEvent, "name", "");

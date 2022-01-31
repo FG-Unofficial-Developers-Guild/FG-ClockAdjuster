@@ -173,12 +173,7 @@
 					function onDoubleClick()
 						local nHour = getValue() or 0;
 						local nRounds = nHour * 600;
-						if OptionsManager.isOption('TIMEROUNDS', 'slow') and nRounds &lt; 4801 then
-							CombatManager.nextRound(nRounds, true);
-						else
-							LongTermEffects.advanceRoundsOnTimeChanged(nRounds);
-						end
-
+						TimeManager.processTimeRoundsOption(nRounds);
 						CalendarManager.adjustHours(nHour);
 						TimeManager.checkAndProcessWeather(window.checkweather.getValue());
 						TimeManager.checkAndOutputDate();
@@ -206,12 +201,7 @@
 					function onDoubleClick()
 						local nMinute = getValue() or 0;
 						local nRounds = nMinute * 10;
-						if OptionsManager.isOption('TIMEROUNDS', 'slow') and nRounds &lt; 4801 then
-							CombatManager.nextRound(nRounds, true);
-						else
-							LongTermEffects.advanceRoundsOnTimeChanged(nRounds);
-						end
-
+						TimeManager.processTimeRoundsOption(nRounds);
 						CalendarManager.adjustMinutes(nMinute);
 						TimeManager.checkAndOutputDate();
 						if nMinute &gt; 0 then 
@@ -238,12 +228,7 @@
 					function onDoubleClick()
 						local nDay = getValue() or 0;
 						local nRounds = nDay * 14400;
-						if OptionsManager.isOption('TIMEROUNDS', 'slow') and nRounds &lt; 4801 then
-							CombatManager.nextRound(nRounds, true);
-						else
-							LongTermEffects.advanceRoundsOnTimeChanged(nRounds);
-						end
-
+						TimeManager.processTimeRoundsOption(nRounds);
 						CalendarManager.adjustDays(nDay);
 						TimeManager.checkAndProcessWeather(window.checkweather.getValue());
 						if nDay &gt; 0 then 
@@ -266,12 +251,7 @@
 					function onDoubleClick()
 						local nMonth = getValue() or 0;
 						local nRounds = nMonth * 432000;
-						if OptionsManager.isOption('TIMEROUNDS', 'slow') and nRounds &lt; 4801 then
-							CombatManager.nextRound(nRounds, true);
-						else
-							LongTermEffects.advanceRoundsOnTimeChanged(nRounds);
-						end
-						
+						TimeManager.processTimeRoundsOption(nRounds);
 						CalendarManager.adjustMonths(nMonth);
 						TimeManager.checkAndProcessWeather(window.checkweather.getValue());
 						if nMonth &gt; 0 then 
@@ -316,12 +296,7 @@
 						local nMonth = window.addmonth.getValue() or 0;
 						local nYear = window.addyear.getValue() or 0;
 						local nRounds = (nHour * 600) + (nMinute * 10) + (nDay * 14400) + (nDay * 403200);
-						if OptionsManager.isOption('TIMEROUNDS', 'slow') and nRounds &lt; 4801 then
-							CombatManager.nextRound(nRounds, true);
-						else
-							LongTermEffects.advanceRoundsOnTimeChanged(nRounds);
-						end
-
+						TimeManager.processTimeRoundsOption(nRounds);
 						TimeManager.checkAndProcessWeather(window.checkweather.getValue());
 						CalendarManager.adjustMinutes(nMinute);
 						CalendarManager.adjustHours(nHour);
@@ -359,13 +334,7 @@
 					function onDoubleClick()
 						local nHours = getValue() or 0;
 						local nRounds = nHours * 600;
-						
-						if OptionsManager.isOption('TIMEROUNDS', 'slow') and nRounds &lt; 4801 then
-							CombatManager.nextRound(nRounds, true);
-						else
-							LongTermEffects.advanceRoundsOnTimeChanged(nRounds);
-						end
-						
+						TimeManager.processTimeRoundsOption(nRounds);
 						CalendarManager.adjustHours(getValue() or 0);
 						TimeManager.checkAndOutputDate();
 						TimeManager.checkAndProcessWeather(window.checkweather.getValue());
@@ -404,12 +373,7 @@
 					function onDoubleClick()
 						local nMinutes = getValue() or 0;
 						local nRounds = nMinutes * 10;
-						if OptionsManager.isOption('TIMEROUNDS', 'slow') and nRounds &lt; 4801 then
-							CombatManager.nextRound(nRounds, true);
-						else
-							LongTermEffects.advanceRoundsOnTimeChanged(nRounds);
-						end
-						
+						TimeManager.processTimeRoundsOption(nRounds);
 						CalendarManager.adjustMinutes(getValue() or 0);
 						TimeManager.checkAndOutputDate();
 						DB.setValue("calendar.lastshortrest", "number", nMinutes);
