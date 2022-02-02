@@ -295,7 +295,7 @@
 						local nDay = window.addday.getValue() or 0;
 						local nMonth = window.addmonth.getValue() or 0;
 						local nYear = window.addyear.getValue() or 0;
-						local nRounds = (nHour * 600) + (nMinute * 10) + (nDay * 14400) + (nDay * 403200);
+						local nRounds = (nHour * 600) + (nMinute * 10) + (nDay * 14400) + (nMonth * 403200);
 						TimeManager.processTimeRoundsOption(nRounds);
 						TimeManager.checkAndProcessWeather(window.checkweather.getValue());
 						CalendarManager.adjustMinutes(nMinute);
@@ -325,7 +325,7 @@
 						local sRuleset = User.getRulesetName();
 						bIsbLong = sRuleset == "4E" or sRuleset == "5E" or sRuleset == "PFRPG" or sRuleset == "PFRPG2" or sRuleset == "3.5E"
 						if bIsbLong then
-							setValue(DB.getValue("calendar.lastlongrest", 0));
+							setValue(tonumber(OptionsManager.getOption(TimeManager.CLOCKADJUSTER_DEFAULT_LONG)) or 0);
 						else
 							setVisible(false);
  						end
@@ -338,7 +338,6 @@
 						CalendarManager.adjustHours(getValue() or 0);
 						TimeManager.checkAndOutputDate();
 						TimeManager.checkAndProcessWeather(window.checkweather.getValue());
-						DB.setValue("calendar.lastlongrest", "number", nHours);
 						CalendarManager.outputTime();
 						ChatManager.Message(Interface.getString("ct_message_restlong") or Interface.getString("ct_message_restovernight") or Interface.getString("ct_message_restextended") or "Long Rest", true);
 						if bIsbLong then
@@ -364,7 +363,7 @@
 						local sRuleset = User.getRulesetName();
 						bIsbShort = sRuleset == "4E" or sRuleset == "5E" or sRuleset == "PFRPG" or sRuleset == "PFRPG2" or sRuleset == "3.5E"
 						if bIsbShort then
-							setValue(DB.getValue("calendar.lastshortrest", 0));
+							setValue(tonumber(OptionsManager.getOption(TimeManager.CLOCKADJUSTER_DEFAULT_SHORT)) or 0);
 						else
 							setVisible(false);
  						end
@@ -376,7 +375,6 @@
 						TimeManager.processTimeRoundsOption(nRounds);
 						CalendarManager.adjustMinutes(getValue() or 0);
 						TimeManager.checkAndOutputDate();
-						DB.setValue("calendar.lastshortrest", "number", nMinutes);
 						CalendarManager.outputTime();
 						ChatManager.Message(Interface.getString("ct_message_rest") or Interface.getString("menu_restshort"), true);
 						if bIsbShort then
@@ -562,6 +560,15 @@
 					<maximum>1</maximum>
 				</values>
 				<tooltip text="Check Weather on Time Adjust; NOTE: You must have a table for each 'Weather Wind', 'Weather Temperature', and 'Weather Precipitation'" />
+				<script>
+					function onInit()
+						setValue(DB.getValue("calendar.lastcheckweather") or 0);
+					end
+
+					function onValueChanged()
+						DB.setValue("calendar.lastcheckweather", "number", getValue());
+					end
+				</script>
 			</button_checkbox>
 		</sheetdata>
 	</windowclass>
