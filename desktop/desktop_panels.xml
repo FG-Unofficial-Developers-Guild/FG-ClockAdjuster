@@ -270,7 +270,7 @@
 
 					function onDoubleClick()
 						local nMonth = getValue() or 0;
-						local nRounds = nMonth * 432000;
+						local nRounds = nMonth * 403200;
 						TimeManager.processTimeRoundsOption(nRounds);
 						CalendarManager.adjustMonths(nMonth);
 						TimeManager.checkAndProcessWeather(window.checkweather.getValue());
