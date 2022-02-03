@@ -168,6 +168,11 @@
 				<script>
 					function onInit()
 						setValue(tonumber(OptionsManager.getOption(TimeManager.CLOCKADJUSTER_DEFAULT_HOURS)) or 0);
+						OptionsManager.registerCallback(TimeManager.CLOCKADJUSTER_DEFAULT_HOURS, onOptionChanged);
+					end
+
+					function onOptionChanged()
+						setValue(tonumber(OptionsManager.getOption(TimeManager.CLOCKADJUSTER_DEFAULT_HOURS)) or 0);
 					end
 
 					function onDoubleClick()
@@ -196,6 +201,11 @@
 				<script>
 					function onInit()
 						setValue(tonumber(OptionsManager.getOption(TimeManager.CLOCKADJUSTER_DEFAULT_MINUTES)) or 0);
+						OptionsManager.registerCallback(TimeManager.CLOCKADJUSTER_DEFAULT_MINUTES, onOptionChanged);
+					end
+
+					function onOptionChanged()
+						setValue(tonumber(OptionsManager.getOption(TimeManager.CLOCKADJUSTER_DEFAULT_MINUTES)) or 0);
 					end
 
 					function onDoubleClick()
@@ -223,6 +233,11 @@
 				<script>
 					function onInit()
 						setValue(tonumber(OptionsManager.getOption(TimeManager.CLOCKADJUSTER_DEFAULT_DAYS)) or 0);
+						OptionsManager.registerCallback(TimeManager.CLOCKADJUSTER_DEFAULT_DAYS, onOptionChanged);
+					end
+
+					function onOptionChanged()
+						setValue(tonumber(OptionsManager.getOption(TimeManager.CLOCKADJUSTER_DEFAULT_DAYS)) or 0);
 					end
 
 					function onDoubleClick()
@@ -246,6 +261,11 @@
 				<script>
 					function onInit()
 						setValue(tonumber(OptionsManager.getOption(TimeManager.CLOCKADJUSTER_DEFAULT_MONTHS)) or 0);
+						OptionsManager.registerCallback(TimeManager.CLOCKADJUSTER_DEFAULT_MONTHS, onOptionChanged);
+					end
+
+					function onOptionChanged()
+						setValue(tonumber(OptionsManager.getOption(TimeManager.CLOCKADJUSTER_DEFAULT_MONTHS)) or 0);
 					end
 
 					function onDoubleClick()
@@ -268,6 +288,11 @@
 				<tooltip textres="desktop_addyears_tooltip" />
 				<script>
 					function onInit()
+						setValue(tonumber(OptionsManager.getOption(TimeManager.CLOCKADJUSTER_DEFAULT_YEARS)) or 0);
+						OptionsManager.registerCallback(TimeManager.CLOCKADJUSTER_DEFAULT_YEARS, onOptionChanged);
+					end
+
+					function onOptionChanged()
 						setValue(tonumber(OptionsManager.getOption(TimeManager.CLOCKADJUSTER_DEFAULT_YEARS)) or 0);
 					end
 
@@ -326,11 +351,16 @@
 						bIsbLong = sRuleset == "4E" or sRuleset == "5E" or sRuleset == "PFRPG" or sRuleset == "PFRPG2" or sRuleset == "3.5E"
 						if bIsbLong then
 							setValue(tonumber(OptionsManager.getOption(TimeManager.CLOCKADJUSTER_DEFAULT_LONG)) or 0);
+							OptionsManager.registerCallback(TimeManager.CLOCKADJUSTER_DEFAULT_LONG, onOptionChanged);
 						else
 							setVisible(false);
  						end
 					end
 					
+					function onOptionChanged()
+						setValue(tonumber(OptionsManager.getOption(TimeManager.CLOCKADJUSTER_DEFAULT_LONG)) or 0);
+					end
+
 					function onDoubleClick()
 						local nHours = getValue() or 0;
 						local nRounds = nHours * 600;
@@ -364,9 +394,14 @@
 						bIsbShort = sRuleset == "4E" or sRuleset == "5E" or sRuleset == "PFRPG" or sRuleset == "PFRPG2" or sRuleset == "3.5E"
 						if bIsbShort then
 							setValue(tonumber(OptionsManager.getOption(TimeManager.CLOCKADJUSTER_DEFAULT_SHORT)) or 0);
+							OptionsManager.registerCallback(TimeManager.CLOCKADJUSTER_DEFAULT_SHORT, onOptionChanged);
 						else
 							setVisible(false);
  						end
+					end
+
+					function onOptionChanged()
+						setValue(tonumber(OptionsManager.getOption(TimeManager.CLOCKADJUSTER_DEFAULT_SHORT)) or 0);
 					end
 
 					function onDoubleClick()
