@@ -145,7 +145,7 @@ function nextRound_new(nRounds, bTimeChanged)
 	if (DB.getValue(CombatManager.CT_ROUND, 0) % 10) < nRoundsRemaining then
 		nMinutes = nMinutes + 1;
 	end
-	
+
 	if nMinutes > 0 then
 		CalendarManager.adjustMinutes(nMinutes);
 		CalendarManager.outputTime();
@@ -158,7 +158,7 @@ function onInit()
 	local sRuleset = User.getRulesetName()
 	if sRuleset == "3.5E" or sRuleset == "PFRPG" or sRuleset == "PFRPG2" or sRuleset == "5E" then
 		nextRound_old = CombatManager.nextRound;
-		CombatManager.nextRound = nextRound_new; -- No need to store old since this is copy/paste override, not referenced override.
+		CombatManager.nextRound = nextRound_new;
 		CombatManager.setCustomCombatReset(onCustomCombatReset);
 		EffectManager.setCustomOnEffectAddStart(onEffectAddStart_new);
 	end
