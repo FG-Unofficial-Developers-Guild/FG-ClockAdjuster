@@ -136,95 +136,20 @@ function shouldSwitchToQuickSimulation()
 end
 
 function nextRound_new(nRounds, bTimeChanged)
-	if not Session.IsHost then
-		return;
+	nextRound_old(nRounds);
+	if bTimeChanged then return end
+
+	local nMinutes = math.floor(nRounds / 10);
+	local nRoundsRemaining = nRounds % 10;
+
+	if (DB.getValue(CombatManager.CT_ROUND, 0) % 10) < nRoundsRemaining then
+		nMinutes = nMinutes + 1;
 	end
-
-	local nodeActive = CombatManager.getActiveCT();
-	local nCurrent = DB.getValue(CombatManager.CT_ROUND, 0);
-
-	-- If current actor, then advance based on that
-	local nStartCounter = 1;
-	local aEntries = CombatManager.getSortedCombatantList();
-	if nodeActive then
-		DB.setValue(nodeActive, "active", "number", 0);
-		CombatManager.clearGMIdentity();
-
-		local bFastTurn = false;
-		for i = 1,#aEntries do
-			if aEntries[i] == nodeActive then
-				bFastTurn = true;
-				CombatManager.onTurnEndEvent(nodeActive);
-			elseif bFastTurn then
-				CombatManager.onTurnStartEvent(aEntries[i]);
-				CombatManager.onTurnEndEvent(aEntries[i]);
-			end
-		end
-
-		CombatManager.onInitChangeEvent(nodeActive);
-
-		nStartCounter = nStartCounter + 1;
-
-		-- Announce round
-		nCurrent = nCurrent + 1;
-
-		-- bmos resetting rounds and advancing time
-		if nCurrent ~= 0 and (nCurrent % 10) == 0 and not bTimeChanged then
-			CalendarManager.adjustMinutes(1);
-			CalendarManager.outputTime();
-			TimeManager.notifyControlsOfUpdate();
-		end
-		-- end bmos resetting rounds and advancing time
-
-		local msg = {font = "narratorfont", icon = "turn_flag"};
-		msg.text = "[" .. Interface.getString("combat_tag_round") .. " " .. nCurrent .. "]";
-		Comm.deliverChatMessage(msg);
-	end
-
-	for i = nStartCounter, nRounds do
-		-- check if full processing of rounds is unecessary
-		if shouldSwitchToQuickSimulation() then
-			advanceRoundsOnTimeChanged(nRounds + 1 - i);
-			DB.setValue(CombatManager.CT_ROUND, "number", nRounds - 1);
-			break;
-		end
-		-- end checking for necessity of full processing of rounds
-
-		for _, nodeCT in ipairs(aEntries) do
-			CombatManager.onTurnStartEvent(nodeCT);
-			CombatManager.onTurnEndEvent(nodeCT);
-		end
-
-		CombatManager.onInitChangeEvent();
-
-		-- Announce round
-		nCurrent = nCurrent + 1;
-
-		-- bmos resetting rounds and advancing time
-		if nCurrent ~= 0 and (nCurrent % 10) == 0 and not bTimeChanged then
-			CalendarManager.adjustMinutes(1);
-			CalendarManager.outputTime();
-			TimeManager.notifyControlsOfUpdate();
-		end
-		-- end bmos resetting rounds and advancing time
-
-		local msg = {font = "narratorfont", icon = "turn_flag"};
-		msg.text = "[" .. Interface.getString("combat_tag_round") .. " " .. nCurrent .. "]";
-		Comm.deliverChatMessage(msg);
-	end
-
-	-- Update round counter
-	DB.setValue(CombatManager.CT_ROUND, "number", nCurrent);
-
-	-- Custom round start callback (such as per round initiative rolling)
-	CombatManager.onRoundStartEvent(nCurrent);
-
-	-- Check option to see if we should advance to first actor or stop on round start
-	if OptionsManager.isOption("RNDS", "off") then
-		local bSkipBell = (nRounds > 1);
-		if #aEntries > 0 then
-			CombatManager.nextActor(bSkipBell, true);
-		end
+	
+	if nMinutes > 0 then
+		CalendarManager.adjustMinutes(nMinutes);
+		CalendarManager.outputTime();
+		TimeManager.notifyControlsOfUpdate();
 	end
 end
 
@@ -232,13 +157,9 @@ end
 function onInit()
 	local sRuleset = User.getRulesetName()
 	if sRuleset == "3.5E" or sRuleset == "PFRPG" or sRuleset == "PFRPG2" or sRuleset == "5E" then
+		nextRound_old = CombatManager.nextRound;
 		CombatManager.nextRound = nextRound_new; -- No need to store old since this is copy/paste override, not referenced override.
 		CombatManager.setCustomCombatReset(onCustomCombatReset);
 		EffectManager.setCustomOnEffectAddStart(onEffectAddStart_new);
-		if sRuleset == "3.5E" or sRuleset == "PFRPG" then
-			EffectManager35E.onEffectAddStart = onEffectAddStart_new;
-		elseif sRuleset == "5E" then
-			EffectManager5E.onEffectAddStart = onEffectAddStart_new;
-		end
 	end
 end
