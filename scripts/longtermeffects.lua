@@ -109,9 +109,9 @@ local function actorRequiresSlowMode(rActor, arrSEffects)
 end
 
 local function isActorDying(rActor, bIsStable)
-	local sActorHealth = ActorHealthManager.getHealthStatus(rActor);
-	if not bIsStable and sActorHealth == ActorHealthManager.STATUS_DYING then
-		return true;
+	local sStatus = ActorHealthManager.getHealthStatus(rActor);
+	if not bIsStable and sStatus == ActorHealthManager.STATUS_DYING then
+		return;
 	end
 	return false;
 end
