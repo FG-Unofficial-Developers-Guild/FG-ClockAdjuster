@@ -10,7 +10,7 @@
 		<description>Provides an interface for easier time management</description>
 	</properties>
 	
-	<announcement text="Clock Adjuster v2.4.1 FGC/FGU (2/9/22)\rPR6I6E6ST, bmos, MeAndUnique, Justin Freitas" font="emotefont" icon="clock_icon" />
+	<announcement text="Clock Adjuster v2.4.1 FGC/FGU, 2/9/22\rPR6I6E6ST, bmos, MeAndUnique, Justin Freitas" font="emotefont" icon="clock_icon" />
 	
 	<base>
 		<includefile source="graphics/graphics_frames.xml" />
