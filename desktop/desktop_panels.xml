@@ -1607,8 +1607,8 @@
 								local nEncounterChance = window.encounterchancenum.getValue();
 								local nBattleChance = window.battlechance.getValue();
 								local sChanceExpr = sD100xrp:gsub("$PC", tostring(PartyManager.getPartyCount()));
-								local nEncounterChanceResult = StringManager.evalDiceMathExpression(sChanceExpr);
-								local nBattleChanceResult = StringManager.evalDiceMathExpression(sChanceExpr);
+								local nEncounterChanceResult = DiceManager.evalDiceMathExpression(sChanceExpr);
+								local nBattleChanceResult = DiceManager.evalDiceMathExpression(sChanceExpr);
 								local aTableClasses = LibraryData.getMappings("table");
 								if nEncounterChanceResult &lt; nEncounterChance then
 									if nBattleChanceResult &lt; nBattleChance then
@@ -1652,7 +1652,7 @@
 										
 											sExpr = sExpr:gsub("$PC", tostring(PartyManager.getPartyCount()));
 											
-											nCount = StringManager.evalDiceMathExpression(sExpr);
+											nCount = DiceManager.evalDiceMathExpression(sExpr);
 											for k,v in pairs(aViableMap) do
 												local sPath = DB.getPath(v);
 												local vClass = LibraryData.getRecordDisplayClass("image", sPath);
@@ -1690,7 +1690,7 @@
 											end
 											local sTableExpr = "1d" .. nTableNames;
 											sTableExpr = sTableExpr:gsub("$PC", tostring(PartyManager.getPartyCount()));
-											nTableCount = StringManager.evalDiceMathExpression(sTableExpr);
+											nTableCount = DiceManager.evalDiceMathExpression(sTableExpr);
 											for kTableName,vTableName in pairs(aTableNames) do
 												if kTableName == nTableCount then
 													TableManager.processTableRoll("", vTableName);
@@ -1746,8 +1746,8 @@
 								local nEncounterChance = window.encounterchancenum.getValue();
 								local nBattleChance = window.battlechance.getValue();
 								local sChanceExpr = sD100xrp:gsub("$PC", tostring(PartyManager.getPartyCount()));
-								local nEncounterChanceResult = StringManager.evalDiceMathExpression(sChanceExpr);
-								local nBattleChanceResult = StringManager.evalDiceMathExpression(sChanceExpr);
+								local nEncounterChanceResult = DiceManager.evalDiceMathExpression(sChanceExpr);
+								local nBattleChanceResult = DiceManager.evalDiceMathExpression(sChanceExpr);
 								local aTableClasses = LibraryData.getMappings("table");
 								if nEncounterChanceResult &lt; nEncounterChance then
 									if nBattleChanceResult &lt; nBattleChance then
@@ -1791,7 +1791,7 @@
 										
 											sExpr = sExpr:gsub("$PC", tostring(PartyManager.getPartyCount()));
 											
-											nCount = StringManager.evalDiceMathExpression(sExpr);
+											nCount = DiceManager.evalDiceMathExpression(sExpr);
 											for k,v in pairs(aViableMap) do
 												local sPath = DB.getPath(v);
 												local vClass = LibraryData.getRecordDisplayClass("image", sPath);
@@ -1829,7 +1829,7 @@
 											end
 											local sTableExpr = "1d" .. nTableNames;
 											sTableExpr = sTableExpr:gsub("$PC", tostring(PartyManager.getPartyCount()));
-											nTableCount = StringManager.evalDiceMathExpression(sTableExpr);
+											nTableCount = DiceManager.evalDiceMathExpression(sTableExpr);
 											for kTableName,vTableName in pairs(aTableNames) do
 												if kTableName == nTableCount then
 													TableManager.processTableRoll("", vTableName);
@@ -1885,8 +1885,8 @@
 								local nEncounterChance = window.encounterchancenum.getValue();
 								local nBattleChance = window.battlechance.getValue();
 								local sChanceExpr = sD100xrp:gsub("$PC", tostring(PartyManager.getPartyCount()));
-								local nEncounterChanceResult = StringManager.evalDiceMathExpression(sChanceExpr);
-								local nBattleChanceResult = StringManager.evalDiceMathExpression(sChanceExpr);
+								local nEncounterChanceResult = DiceManager.evalDiceMathExpression(sChanceExpr);
+								local nBattleChanceResult = DiceManager.evalDiceMathExpression(sChanceExpr);
 								local aTableClasses = LibraryData.getMappings("table");
 								if nEncounterChanceResult &lt; nEncounterChance then
 									if nBattleChanceResult &lt; nBattleChance then
@@ -1930,7 +1930,7 @@
 										
 											sExpr = sExpr:gsub("$PC", tostring(PartyManager.getPartyCount()));
 											
-											nCount = StringManager.evalDiceMathExpression(sExpr);
+											nCount = DiceManager.evalDiceMathExpression(sExpr);
 											for k,v in pairs(aViableMap) do
 												local sPath = DB.getPath(v);
 												local vClass = LibraryData.getRecordDisplayClass("image", sPath);
@@ -1968,7 +1968,7 @@
 											end
 											local sTableExpr = "1d" .. nTableNames;
 											sTableExpr = sTableExpr:gsub("$PC", tostring(PartyManager.getPartyCount()));
-											nTableCount = StringManager.evalDiceMathExpression(sTableExpr);
+											nTableCount = DiceManager.evalDiceMathExpression(sTableExpr);
 											for kTableName,vTableName in pairs(aTableNames) do
 												if kTableName == nTableCount then
 													TableManager.processTableRoll("", vTableName);
