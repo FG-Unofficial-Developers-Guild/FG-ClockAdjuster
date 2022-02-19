@@ -2014,16 +2014,6 @@
 					end
 				</script>
 			</basicnumber>
-			
-			<!--<progressbar name="travelprogress">
-				<anchored height="20" width="50">
-					<left parent="travelbyhours" anchor="right" offset="10" />
-					<top parent="travelbyhours" anchor="top" />
-				</anchored>
-				<source><max>destination</max><used>distancetraveled</used></source>
-				<textprefix><text>distance</text></textprefix>
-				<healthbar />
-			</progressbar>-->
 		</sheetdata>
 	</windowclass>
 	
