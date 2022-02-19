@@ -192,7 +192,6 @@ local function nextRound_new(nRounds, bTimeChanged)
 
 			local nDateinMinutes = TimeManager.getCurrentDateinMinutes();
 			DB.setValue('calendar.dateinminutes', 'number', nDateinMinutes);
-			DB.setValue('calendar.dateinminutesstring', 'string', tostring(nDateinMinutes));
 		end
 		-- end bmos resetting rounds and advancing time
 
@@ -230,7 +229,6 @@ local function nextRound_new(nRounds, bTimeChanged)
 
 			local nDateinMinutes = TimeManager.getCurrentDateinMinutes();
 			DB.setValue('calendar.dateinminutes', 'number', nDateinMinutes);
-			DB.setValue('calendar.dateinminutesstring', 'string', tostring(nDateinMinutes));
 		end
 		-- end bmos resetting rounds and advancing time
 
