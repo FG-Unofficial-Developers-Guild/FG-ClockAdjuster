@@ -2,6 +2,15 @@
 -- Please see the LICENSE.md file included with this distribution for attribution and copyright information.
 --
 
+CAL_CLOCKADJUSTERNOTIFY = "calendar.clockadjusternotify";
+CAL_CHK_DAY = "calendar.check.day";
+CAL_CUR_DAY = "calendar.current.day";
+CAL_CUR_HOUR = "calendar.current.hour";
+CAL_CUR_MIN = "calendar.current.minute";
+CAL_CUR_MONTH = "calendar.current.month";
+CAL_CUR_YEAR = "calendar.current.year";
+CAL_NEWCAMPAIGN = "calendar.newcampaign";
+CAL_DATEINMIN = "calendar.dateinminutes"
 local bNoticePosted = false
 
 function onInit()
@@ -64,15 +73,15 @@ end
 	
 function getCurrentDate()
 	-- Debug.console("getCurrentDateinMinutes called;");
-	local nMinutes = DB.getValue("calendar.current.minute", 0);
+	local nMinutes = DB.getValue(CAL_CUR_MIN, 0);
 	-- Debug.console("getCurrentDateinMinutes; nMinutes =", nMinutes);
-	local nHours = DB.getValue("calendar.current.hour", 0);
+	local nHours = DB.getValue(CAL_CUR_HOUR, 0);
 	-- Debug.console("getCurrentDateinMinutes; nHours =", nHours);
-	local nDays = DB.getValue("calendar.current.day", 0);
+	local nDays = DB.getValue(CAL_CUR_DAY, 0);
 	-- Debug.console("getCurrentDateinMinutes; nDays =", nDays);
-	local nMonths = DB.getValue("calendar.current.month", 0);
+	local nMonths = DB.getValue(CAL_CUR_MONTH, 0);
 	-- Debug.console("getCurrentDateinMinutes; nMonths =", nMonths);
-	local nYears = DB.getValue("calendar.current.year", 0);
+	local nYears = DB.getValue(CAL_CUR_YEAR, 0);
 
 	if (bNoticePosted == false) and
 		(not DB.getValue("calendar.data.complete") or (not nMinutes or not nHours or not nDays or not nMonths or not nYears)) then

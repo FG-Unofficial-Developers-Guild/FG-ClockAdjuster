@@ -28,39 +28,38 @@
 				<center />
 				<script>
 					function onInit()
-						if DB.getValue("calendar.newcampaign") == nil or DB.getValue("calendar.newcampaign") == 0 then
-												
-							local nYear = DB.getValue("calendar.current.year", 0);
-							if nYear == nil or nYear == 0 then
-								DB.setValue("calendar.current.year", "number", 1);
+						if not DB.getValue(TimeManager.CAL_NEWCAMPAIGN, 0) == 1 then
+							local nYear = DB.getValue(TimeManager.CAL_CUR_YEAR);
+							if not nYear then
+								DB.setValue(TimeManager.CAL_CUR_YEAR, "number", 0);
 							end
-							local nMonth = DB.getValue("calendar.current.month", 0);
-							if nMonth == nil or nMonth == 0 then
-								DB.setValue("calendar.current.month", "number", 1);
+							local nMonth = DB.getValue(TimeManager.CAL_CUR_MONTH);
+							if not nMonth or nMonth == 0 then
+								DB.setValue(TimeManager.CAL_CUR_MONTH, "number", 1);
 							end
-							local nDay = DB.getValue("calendar.current.day", 0);
-							if nDay == nil or nDay == 0 then
-								DB.setValue("calendar.current.day", "number", 1);
+							local nDay = DB.getValue(TimeManager.CAL_CUR_DAY);
+							if not nDay then
+								DB.setValue(TimeManager.CAL_CUR_DAY, "number", 1);
 							end
-							local nMinute = DB.getValue("calendar.current.minute", 0);
-							if nMinute == nil then
-								DB.setValue("calendar.current.minute", "number", 0);
+							local nMinute = DB.getValue(TimeManager.CAL_CUR_MIN);
+							if not nMinute then
+								DB.setValue(TimeManager.CAL_CUR_MIN, "number", 0);
 							end
-							local nHour = DB.getValue("calendar.current.hour", 0);
-							if nHour == nil then
-								DB.setValue("calendar.current.hour", "number", 0);
+							local nHour = DB.getValue(TimeManager.CAL_CUR_HOUR);
+							if not nHour then
+								DB.setValue(TimeManager.CAL_CUR_HOUR, "number", 0);
 							end
 							Interface.openWindow("calendar", "DB");
-							DB.setValue("calendar.newcampaign", "number", 1);
+							DB.setValue(TimeManager.CAL_NEWCAMPAIGN, "number", 1);
 						end
-						DB.addHandler("calendar.current.hour", "onUpdate", onSourceChanged);
+						DB.addHandler(TimeManager.CAL_CUR_HOUR, "onUpdate", onSourceChanged);
 						onSourceChanged();
 						local nDateinMinutes = TimeManager.getCurrentDateinMinutes();
-						DB.setValue("calendar.dateinminutes", "number", nDateinMinutes); DB.setValue("calendar.dateinminutesstring", "string", tostring(nDateinMinutes))
+						DB.setValue(TimeManager.CAL_DATEINMIN, "number", nDateinMinutes);
 					end
 					
 					function onClose()
-						DB.removeHandler("calendar.current.hour", "onUpdate", onSourceChanged);
+						DB.removeHandler(TimeManager.CAL_CUR_HOUR, "onUpdate", onSourceChanged);
 					end
 					
 					function onSourceChanged()
@@ -84,18 +83,18 @@
 				<center />
 				<script>
 					function onInit()
-						DB.addHandler("calendar.current.minute", "onUpdate", onSourceChanged);
+						DB.addHandler(TimeManager.CAL_CUR_MIN, "onUpdate", onSourceChanged);
 						onSourceChanged();
 						local nDateinMinutes = TimeManager.getCurrentDateinMinutes();
-						DB.setValue("calendar.dateinminutes", "number", nDateinMinutes); DB.setValue("calendar.dateinminutesstring", "string", tostring(nDateinMinutes))
+						DB.setValue(TimeManager.CAL_DATEINMIN, "number", nDateinMinutes);
 					end
 					
 					function onClose()
-						DB.removeHandler("calendar.current.minute", "onUpdate", onSourceChanged);
+						DB.removeHandler(TimeManager.CAL_CUR_MIN, "onUpdate", onSourceChanged);
 					end
 					
 					function onSourceChanged()
-						setValue(string.format("%02d", DB.getValue("calendar.current.minute", 0)));
+						setValue(string.format("%02d", DB.getValue(TimeManager.CAL_CUR_MIN, 0)));
 					end
 				</script>
 			</label>
@@ -113,18 +112,18 @@
 				<center />
 				<script>
 					function onInit()
-						DB.addHandler("calendar.current.day", "onUpdate", onSourceChanged);
+						DB.addHandler(TimeManager.CAL_CUR_DAY, "onUpdate", onSourceChanged);
 						onSourceChanged();
 						local nDateinMinutes = TimeManager.getCurrentDateinMinutes();
-						DB.setValue("calendar.dateinminutes", "number", nDateinMinutes); DB.setValue("calendar.dateinminutesstring", "string", tostring(nDateinMinutes))
+						DB.setValue(TimeManager.CAL_DATEINMIN, "number", nDateinMinutes);
 					end
 					
 					function onClose()
-						DB.removeHandler("calendar.current.day", "onUpdate", onSourceChanged);
+						DB.removeHandler(TimeManager.CAL_CUR_DAY, "onUpdate", onSourceChanged);
 					end
 					
 					function onSourceChanged()
-						setValue(string.format("%02d", DB.getValue("calendar.current.day", 0)));
+						setValue(string.format("%02d", DB.getValue(TimeManager.CAL_CUR_DAY, 0)));
 					end
 				</script>
 			</label>
@@ -138,18 +137,18 @@
 				<center />
 				<script>
 					function onInit()
-						DB.addHandler("calendar.current.month", "onUpdate", onSourceChanged);
+						DB.addHandler(TimeManager.CAL_CUR_MONTH, "onUpdate", onSourceChanged);
 						onSourceChanged();
 						local nDateinMinutes = TimeManager.getCurrentDateinMinutes();
-						DB.setValue("calendar.dateinminutes", "number", nDateinMinutes); DB.setValue("calendar.dateinminutesstring", "string", tostring(nDateinMinutes))
+						DB.setValue(TimeManager.CAL_DATEINMIN, "number", nDateinMinutes);
 					end
 					
 					function onClose()
-						DB.removeHandler("calendar.current.month", "onUpdate", onSourceChanged);
+						DB.removeHandler(TimeManager.CAL_CUR_MONTH, "onUpdate", onSourceChanged);
 					end
 					
 					function onSourceChanged()
-						setValue(string.format("%02d", DB.getValue("calendar.current.month", 0)));
+						setValue(string.format("%02d", DB.getValue(TimeManager.CAL_CUR_MONTH, 0)));
 					end
 				</script>
 			</label>
@@ -163,20 +162,20 @@
 				<center />
 				<script>
 					function onInit()
-						DB.addHandler("calendar.current.year", "onUpdate", onSourceChanged);
+						DB.addHandler(TimeManager.CAL_CUR_YEAR, "onUpdate", onSourceChanged);
 						onSourceChanged();
 						local nDateinMinutes = TimeManager.getCurrentDateinMinutes();
-						DB.setValue("calendar.dateinminutes", "number", nDateinMinutes); DB.setValue("calendar.dateinminutesstring", "string", tostring(nDateinMinutes))
+						DB.setValue(TimeManager.CAL_DATEINMIN, "number", nDateinMinutes);
 					end
 					
 					function onClose()
-						DB.removeHandler("calendar.current.year", "onUpdate", onSourceChanged);
+						DB.removeHandler(TimeManager.CAL_CUR_YEAR, "onUpdate", onSourceChanged);
 						local nDateinMinutes = TimeManager.getCurrentDateinMinutes();
-						DB.setValue("calendar.dateinminutes", "number", nDateinMinutes); DB.setValue("calendar.dateinminutesstring", "string", tostring(nDateinMinutes))
+						DB.setValue(TimeManager.CAL_DATEINMIN, "number", nDateinMinutes);
 					end
 					
 					function onSourceChanged()
-						setValue(string.format("%02d", DB.getValue("calendar.current.year", 0)));
+						setValue(string.format("%02d", DB.getValue(TimeManager.CAL_CUR_YEAR, 0)));
 					end
 				</script>
 			</label>
@@ -213,9 +212,9 @@
 							TableManager.processTableRoll("", "Weather Temperature");
 							TableManager.processTableRoll("", "Weather Precipitation");
 						end
-						if DB.getValue("calendar.check.day") == nil or DB.getValue("calendar.check.day") ~= DB.getValue("calendar.current.day") then
+						if DB.getValue(TimeManager.CAL_CHK_DAY) == nil or DB.getValue(TimeManager.CAL_CHK_DAY) ~= DB.getValue(TimeManager.CAL_CUR_DAY) then
 							CalendarManager.outputDate();
-							DB.setValue("calendar.check.day", "number", DB.getValue("calendar.current.day"));
+							DB.setValue(TimeManager.CAL_CHK_DAY, "number", DB.getValue(TimeManager.CAL_CUR_DAY));
 						end
 						if nHour &gt; 0 then 
 							CalendarManager.outputTime();
@@ -227,7 +226,7 @@
 						bTimeStep = true;
 						
 						local nDateinMinutes = TimeManager.getCurrentDateinMinutes();
-						DB.setValue("calendar.dateinminutes", "number", nDateinMinutes); DB.setValue("calendar.dateinminutesstring", "string", tostring(nDateinMinutes))
+						DB.setValue(TimeManager.CAL_DATEINMIN, "number", nDateinMinutes);
 
 						local nCurrentRound = DB.getValue("combattracker.round", 0);
 						nCurrentRound = nCurrentRound % 10
@@ -260,9 +259,9 @@
 							LongTermEffects.advanceRoundsOnTimeChanged(nRounds)
 						end
 						CalendarManager.adjustMinutes(nMinute);
-						if DB.getValue("calendar.check.day") == nil or DB.getValue("calendar.check.day") ~= DB.getValue("calendar.current.day") then
+						if DB.getValue(TimeManager.CAL_CHK_DAY) == nil or DB.getValue(TimeManager.CAL_CHK_DAY) ~= DB.getValue(TimeManager.CAL_CUR_DAY) then
 							CalendarManager.outputDate();
-							DB.setValue("calendar.check.day", "number", DB.getValue("calendar.current.day"));
+							DB.setValue(TimeManager.CAL_CHK_DAY, "number", DB.getValue(TimeManager.CAL_CUR_DAY));
 						end
 						if nMinute &gt; 0 then 
 							CalendarManager.outputTime(); 
@@ -274,7 +273,7 @@
 						bTimeStep = true;
 
 						local nDateinMinutes = TimeManager.getCurrentDateinMinutes();
-						DB.setValue("calendar.dateinminutes", "number", nDateinMinutes); DB.setValue("calendar.dateinminutesstring", "string", tostring(nDateinMinutes))
+						DB.setValue(TimeManager.CAL_DATEINMIN, "number", nDateinMinutes);
 
 						local nCurrentRound = DB.getValue("combattracker.round", 0);
 						nCurrentRound = nCurrentRound % 10
@@ -316,8 +315,8 @@
 							TableManager.processTableRoll("", "Weather Temperature");
 							TableManager.processTableRoll("", "Weather Precipitation");
 						end
-						if DB.getValue("calendar.check.day") == nil or DB.getValue("calendar.check.day") ~= DB.getValue("calendar.current.day") then
-							DB.setValue("calendar.check.day", "number", DB.getValue("calendar.current.day"));
+						if DB.getValue(TimeManager.CAL_CHK_DAY) == nil or DB.getValue(TimeManager.CAL_CHK_DAY) ~= DB.getValue(TimeManager.CAL_CUR_DAY) then
+							DB.setValue(TimeManager.CAL_CHK_DAY, "number", DB.getValue(TimeManager.CAL_CUR_DAY));
 						end
 						if nDay &gt; 0 then 
 							CalendarManager.outputDate(); 
@@ -329,7 +328,7 @@
 						bTimeStep = true;
 						
 						local nDateinMinutes = TimeManager.getCurrentDateinMinutes();
-						DB.setValue("calendar.dateinminutes", "number", nDateinMinutes); DB.setValue("calendar.dateinminutesstring", "string", tostring(nDateinMinutes))
+						DB.setValue(TimeManager.CAL_DATEINMIN, "number", nDateinMinutes);
 
 						local nCurrentRound = DB.getValue("combattracker.round", 0);
 						nCurrentRound = nCurrentRound % 10
@@ -377,7 +376,7 @@
 						bTimeStep = true;
 						
 						local nDateinMinutes = TimeManager.getCurrentDateinMinutes();
-						DB.setValue("calendar.dateinminutes", "number", nDateinMinutes); DB.setValue("calendar.dateinminutesstring", "string", tostring(nDateinMinutes))
+						DB.setValue(TimeManager.CAL_DATEINMIN, "number", nDateinMinutes);
 
 						local nCurrentRound = DB.getValue("combattracker.round", 0);
 						nCurrentRound = nCurrentRound % 10
@@ -418,7 +417,7 @@
 						bTimeStep = true;
 						
 						local nDateinMinutes = TimeManager.getCurrentDateinMinutes();
-						DB.setValue("calendar.dateinminutes", "number", nDateinMinutes); DB.setValue("calendar.dateinminutesstring", "string", tostring(nDateinMinutes))
+						DB.setValue(TimeManager.CAL_DATEINMIN, "number", nDateinMinutes);
 
 						local nCurrentRound = DB.getValue("combattracker.round", 0);
 						nCurrentRound = nCurrentRound % 10
@@ -467,7 +466,7 @@
 						bTimeStep = true;
 						
 						local nDateinMinutes = TimeManager.getCurrentDateinMinutes();
-						DB.setValue("calendar.dateinminutes", "number", nDateinMinutes); DB.setValue("calendar.dateinminutesstring", "string", tostring(nDateinMinutes))
+						DB.setValue(TimeManager.CAL_DATEINMIN, "number", nDateinMinutes);
 
 						local nCurrentRound = DB.getValue("combattracker.round", 0);
 						nCurrentRound = nCurrentRound % 10
@@ -499,9 +498,9 @@
 					function onDoubleClick()
 						CalendarManager.adjustHours((getValue() or 0));
 						
-						if DB.getValue("calendar.check.day") == nil or DB.getValue("calendar.check.day") ~= DB.getValue("calendar.current.day") then
+						if DB.getValue(TimeManager.CAL_CHK_DAY) == nil or DB.getValue(TimeManager.CAL_CHK_DAY) ~= DB.getValue(TimeManager.CAL_CUR_DAY) then
 							CalendarManager.outputDate();
-							DB.setValue("calendar.check.day", "number", DB.getValue("calendar.current.day"));
+							DB.setValue(TimeManager.CAL_CHK_DAY, "number", DB.getValue(TimeManager.CAL_CUR_DAY));
 						end
 						if window.checkweather.getValue() == 1 then
 							local WeatherWind = "Weather - Wind";
@@ -533,7 +532,7 @@
 						end
 
 						local nDateinMinutes = TimeManager.getCurrentDateinMinutes();
-						DB.setValue("calendar.dateinminutes", "number", nDateinMinutes); DB.setValue("calendar.dateinminutesstring", "string", tostring(nDateinMinutes))
+						DB.setValue(TimeManager.CAL_DATEINMIN, "number", nDateinMinutes);
 
 						local nCurrentRound = DB.getValue("combattracker.round", 0);
 						nCurrentRound = nCurrentRound % 10
@@ -564,9 +563,9 @@
 					function onDoubleClick()
 						CalendarManager.adjustMinutes((getValue() or 0));
 						
-						if DB.getValue("calendar.check.day") == nil or DB.getValue("calendar.check.day") ~= DB.getValue("calendar.current.day") then
+						if DB.getValue(TimeManager.CAL_CHK_DAY) == nil or DB.getValue(TimeManager.CAL_CHK_DAY) ~= DB.getValue(TimeManager.CAL_CUR_DAY) then
 							CalendarManager.outputDate();
-							DB.setValue("calendar.check.day", "number", DB.getValue("calendar.current.day"));
+							DB.setValue(TimeManager.CAL_CHK_DAY, "number", DB.getValue(TimeManager.CAL_CUR_DAY));
 						end
 
 						local nMinutes = getValue() or 0
@@ -590,7 +589,7 @@
 						end
 						
 						local nDateinMinutes = TimeManager.getCurrentDateinMinutes();
-						DB.setValue("calendar.dateinminutes", "number", nDateinMinutes); DB.setValue("calendar.dateinminutesstring", "string", tostring(nDateinMinutes))
+						DB.setValue(TimeManager.CAL_DATEINMIN, "number", nDateinMinutes);
 
 						local nCurrentRound = DB.getValue("combattracker.round", 0);
 						nCurrentRound = nCurrentRound % 10
@@ -605,20 +604,20 @@
 				<tooltip textres="desktop_adv6am_tooltip" />
 				<script>
 					function onButtonPress()
-						local nCurrentHour = DB.getValue("calendar.current.hour", 0);
-						local nCurrentMinute = DB.getValue("calendar.current.minute", 0);
+						local nCurrentHour = DB.getValue(TimeManager.CAL_CUR_HOUR, 0);
+						local nCurrentMinute = DB.getValue(TimeManager.CAL_CUR_MIN, 0);
 						
 						if TimeManager.getCurrentDate() then
 							if nCurrentHour &gt;= 6 then
-								DB.setValue("calendar.current.hour", "number", 6);
+								DB.setValue(TimeManager.CAL_CUR_HOUR, "number", 6);
 								CalendarManager.adjustDays(1);
 								if nCurrentMinute &gt;= 1 then
-									DB.setValue("calendar.current.minute", "number", 0);
+									DB.setValue(TimeManager.CAL_CUR_MIN, "number", 0);
 								end
 							elseif nCurrentHour &lt; 6 then
-								DB.setValue("calendar.current.hour", "number", 6);
+								DB.setValue(TimeManager.CAL_CUR_HOUR, "number", 6);
 								if nCurrentMinute &gt;= 1 then
-									DB.setValue("calendar.current.minute", "number", 0);
+									DB.setValue(TimeManager.CAL_CUR_MIN, "number", 0);
 								end
 							end
 							if window.checkweather.getValue() == 1 then
@@ -629,14 +628,14 @@
 								TableManager.processTableRoll("", "Weather Temperature");
 								TableManager.processTableRoll("", "Weather Precipitation");
 							end
-							if DB.getValue("calendar.check.day") == nil or DB.getValue("calendar.check.day") ~= DB.getValue("calendar.current.day") then
+							if DB.getValue(TimeManager.CAL_CHK_DAY) == nil or DB.getValue(TimeManager.CAL_CHK_DAY) ~= DB.getValue(TimeManager.CAL_CUR_DAY) then
 								CalendarManager.outputDate();
-								DB.setValue("calendar.check.day", "number", DB.getValue("calendar.current.day"));
+								DB.setValue(TimeManager.CAL_CHK_DAY, "number", DB.getValue(TimeManager.CAL_CUR_DAY));
 							end
 							CalendarManager.outputTime();
 							
 							local nDateinMinutes = TimeManager.getCurrentDateinMinutes();
-							DB.setValue("calendar.dateinminutes", "number", nDateinMinutes); DB.setValue("calendar.dateinminutesstring", "string", tostring(nDateinMinutes))
+							DB.setValue(TimeManager.CAL_DATEINMIN, "number", nDateinMinutes);
 
 							local nCurrentRound = DB.getValue("combattracker.round", 0);
 							nCurrentRound = nCurrentRound % 10
@@ -651,20 +650,20 @@
 				<tooltip textres="desktop_adv12pm_tooltip" />
 				<script>
 					function onButtonPress()
-						local nCurrentHour = DB.getValue("calendar.current.hour", 0);
-						local nCurrentMinute = DB.getValue("calendar.current.minute", 0);
+						local nCurrentHour = DB.getValue(TimeManager.CAL_CUR_HOUR, 0);
+						local nCurrentMinute = DB.getValue(TimeManager.CAL_CUR_MIN, 0);
 						
 						if TimeManager.getCurrentDate() then
 							if nCurrentHour &gt;= 12 then
-								DB.setValue("calendar.current.hour", "number", 12);
+								DB.setValue(TimeManager.CAL_CUR_HOUR, "number", 12);
 								CalendarManager.adjustDays(1);
 								if nCurrentMinute &gt;= 1 then
-									DB.setValue("calendar.current.minute", "number", 0);
+									DB.setValue(TimeManager.CAL_CUR_MIN, "number", 0);
 								end
 							elseif nCurrentHour &lt; 12 then
-								DB.setValue("calendar.current.hour", "number", 12);
+								DB.setValue(TimeManager.CAL_CUR_HOUR, "number", 12);
 								if nCurrentMinute &gt;= 1 then
-									DB.setValue("calendar.current.minute", "number", 0);
+									DB.setValue(TimeManager.CAL_CUR_MIN, "number", 0);
 								end
 							end
 							if window.checkweather.getValue() == 1 then
@@ -675,14 +674,14 @@
 								TableManager.processTableRoll("", "Weather Temperature");
 								TableManager.processTableRoll("", "Weather Precipitation");
 							end
-							if DB.getValue("calendar.check.day") == nil or DB.getValue("calendar.check.day") ~= DB.getValue("calendar.current.day") then
+							if DB.getValue(TimeManager.CAL_CHK_DAY) == nil or DB.getValue(TimeManager.CAL_CHK_DAY) ~= DB.getValue(TimeManager.CAL_CUR_DAY) then
 								CalendarManager.outputDate();
-								DB.setValue("calendar.check.day", "number", DB.getValue("calendar.current.day"));
+								DB.setValue(TimeManager.CAL_CHK_DAY, "number", DB.getValue(TimeManager.CAL_CUR_DAY));
 							end
 							CalendarManager.outputTime();
 						
 							local nDateinMinutes = TimeManager.getCurrentDateinMinutes();
-							DB.setValue("calendar.dateinminutes", "number", nDateinMinutes); DB.setValue("calendar.dateinminutesstring", "string", tostring(nDateinMinutes))
+							DB.setValue(TimeManager.CAL_DATEINMIN, "number", nDateinMinutes);
 
 							local nCurrentRound = DB.getValue("combattracker.round", 0);
 							nCurrentRound = nCurrentRound % 10
@@ -697,20 +696,20 @@
 				<tooltip textres="desktop_adv6pm_tooltip" />
 				<script>
 					function onButtonPress()
-						local nCurrentHour = DB.getValue("calendar.current.hour", 0);
-						local nCurrentMinute = DB.getValue("calendar.current.minute", 0);
+						local nCurrentHour = DB.getValue(TimeManager.CAL_CUR_HOUR, 0);
+						local nCurrentMinute = DB.getValue(TimeManager.CAL_CUR_MIN, 0);
 						
 						if TimeManager.getCurrentDate() then
 							if nCurrentHour &gt;= 18 then
-								DB.setValue("calendar.current.hour", "number", 18);
+								DB.setValue(TimeManager.CAL_CUR_HOUR, "number", 18);
 								CalendarManager.adjustDays(1);
 								if nCurrentMinute &gt;= 1 then
-									DB.setValue("calendar.current.minute", "number", 0);
+									DB.setValue(TimeManager.CAL_CUR_MIN, "number", 0);
 								end
 							elseif nCurrentHour &lt; 18 then
-								DB.setValue("calendar.current.hour", "number", 18);
+								DB.setValue(TimeManager.CAL_CUR_HOUR, "number", 18);
 								if nCurrentMinute &gt;= 1 then
-									DB.setValue("calendar.current.minute", "number", 0);
+									DB.setValue(TimeManager.CAL_CUR_MIN, "number", 0);
 								end
 							end
 							if window.checkweather.getValue() == 1 then
@@ -721,14 +720,14 @@
 								TableManager.processTableRoll("", "Weather Temperature");
 								TableManager.processTableRoll("", "Weather Precipitation");
 							end
-							if DB.getValue("calendar.check.day") == nil or DB.getValue("calendar.check.day") ~= DB.getValue("calendar.current.day") then
+							if DB.getValue(TimeManager.CAL_CHK_DAY) == nil or DB.getValue(TimeManager.CAL_CHK_DAY) ~= DB.getValue(TimeManager.CAL_CUR_DAY) then
 								CalendarManager.outputDate();
-								DB.setValue("calendar.check.day", "number", DB.getValue("calendar.current.day"));
+								DB.setValue(TimeManager.CAL_CHK_DAY, "number", DB.getValue(TimeManager.CAL_CUR_DAY));
 							end
 							CalendarManager.outputTime();
 							
 							local nDateinMinutes = TimeManager.getCurrentDateinMinutes();
-							DB.setValue("calendar.dateinminutes", "number", nDateinMinutes); DB.setValue("calendar.dateinminutesstring", "string", tostring(nDateinMinutes))
+							DB.setValue(TimeManager.CAL_DATEINMIN, "number", nDateinMinutes);
 
 							local nCurrentRound = DB.getValue("combattracker.round", 0);
 							nCurrentRound = nCurrentRound % 10
@@ -743,20 +742,20 @@
 				<tooltip textres="desktop_adv12am_tooltip" />
 				<script>
 					function onButtonPress()
-						local nCurrentHour = DB.getValue("calendar.current.hour", 0);
-						local nCurrentMinute = DB.getValue("calendar.current.minute", 0);
+						local nCurrentHour = DB.getValue(TimeManager.CAL_CUR_HOUR, 0);
+						local nCurrentMinute = DB.getValue(TimeManager.CAL_CUR_MIN, 0);
 						
 						if TimeManager.getCurrentDate() then
 							if nCurrentHour &gt;= 0 then
-								DB.setValue("calendar.current.hour", "number", 0);
+								DB.setValue(TimeManager.CAL_CUR_HOUR, "number", 0);
 								CalendarManager.adjustDays(1);
 								if nCurrentMinute &gt;= 1 then
-									DB.setValue("calendar.current.minute", "number", 0);
+									DB.setValue(TimeManager.CAL_CUR_MIN, "number", 0);
 								end
 							elseif nCurrentHour &lt; 0 then
-								DB.setValue("calendar.current.hour", "number", 0);
+								DB.setValue(TimeManager.CAL_CUR_HOUR, "number", 0);
 								if nCurrentMinute &gt;= 1 then
-									DB.setValue("calendar.current.minute", "number", 0);
+									DB.setValue(TimeManager.CAL_CUR_MIN, "number", 0);
 								end
 							end
 							
@@ -768,14 +767,14 @@
 								TableManager.processTableRoll("", "Weather Temperature");
 								TableManager.processTableRoll("", "Weather Precipitation");
 							end
-							if DB.getValue("calendar.check.day") == nil or DB.getValue("calendar.check.day") ~= DB.getValue("calendar.current.day") then
+							if DB.getValue(TimeManager.CAL_CHK_DAY) == nil or DB.getValue(TimeManager.CAL_CHK_DAY) ~= DB.getValue(TimeManager.CAL_CUR_DAY) then
 								CalendarManager.outputDate();
-								DB.setValue("calendar.check.day", "number", DB.getValue("calendar.current.day"));
+								DB.setValue(TimeManager.CAL_CHK_DAY, "number", DB.getValue(TimeManager.CAL_CUR_DAY));
 							end
 							CalendarManager.outputTime();
 							
 							local nDateinMinutes = TimeManager.getCurrentDateinMinutes();
-							DB.setValue("calendar.dateinminutes", "number", nDateinMinutes); DB.setValue("calendar.dateinminutesstring", "string", tostring(nDateinMinutes))
+							DB.setValue(TimeManager.CAL_DATEINMIN, "number", nDateinMinutes);
 
 							local nCurrentRound = DB.getValue("combattracker.round", 0);
 							nCurrentRound = nCurrentRound % 10
@@ -873,10 +872,10 @@
 				<allowdelete />
 				<script>
 					function onInit()
-						DB.addHandler("calendar.dateinminutesstring", "onUpdate", onTimeChanged);
+						DB.addHandler(TimeManager.CAL_DATEINMIN, "onUpdate", onTimeChanged);
 					end
 					function onClose()
-						DB.removeHandler("calendar.dateinminutesstring", "onUpdate", onTimeChanged);
+						DB.removeHandler(TimeManager.CAL_DATEINMIN, "onUpdate", onTimeChanged);
 					end
 					function onTimeChanged()
 						for _,w in pairs(getWindows()) do
@@ -2063,10 +2062,10 @@
 				<allowdelete />
 				<script>
 					function onInit()
-						DB.addHandler("calendar.dateinminutesstring", "onUpdate", onTimeChanged);
+						DB.addHandler(TimeManager.CAL_DATEINMIN, "onUpdate", onTimeChanged);
 					end
 					function onClose()
-						DB.removeHandler("calendar.dateinminutesstring", "onUpdate", onTimeChanged);
+						DB.removeHandler(TimeManager.CAL_DATEINMIN, "onUpdate", onTimeChanged);
 					end
 					function onTimeChanged()
 						for _,w in pairs(getWindows()) do
