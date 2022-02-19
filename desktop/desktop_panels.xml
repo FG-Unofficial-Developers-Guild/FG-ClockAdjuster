@@ -2040,7 +2040,7 @@
 				<child><backcolor>1A40301E</backcolor></child>
 				<datasource>.timedreminderlist</datasource>
 				<class>list_timedreminder</class>
-				<empty font="reference-r" text="Right-click to add an reminder" hidereadonly="true" />
+				<empty font="reference-r" text="Right-click to add a reminder" hidereadonly="true" />
 				<acceptdrop>
 					<class>timedreminder</class>
 					<class>list_timedreminder</class>
