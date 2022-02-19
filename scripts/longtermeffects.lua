@@ -49,7 +49,7 @@ local function resetInit_new()
 	CombatManager.clearGMIdentity();
 
 	-- Reset the round counter (bmos changed this to 0 instead of 1)
-	DB.setValue("combattracker.round", "number", 0);
+	DB.setValue(CombatManager.CT_ROUND, 'number', 0);
 
 	CombatManager.onCombatResetEvent();
 end
@@ -158,7 +158,7 @@ local function nextRound_new(nRounds, bTimeChanged)
 	end
 
 	local nodeActive = CombatManager.getActiveCT();
-	local nCurrent = DB.getValue("combattracker.round", 0);
+	local nCurrent = DB.getValue(CombatManager.CT_ROUND, 0);
 
 	-- If current actor, then advance based on that
 	local nStartCounter = 1;
@@ -206,7 +206,7 @@ local function nextRound_new(nRounds, bTimeChanged)
 		if shouldSwitchToQuickSimulation() then
 			-- Debug.chat('[ Skipping is ok from ' .. nCurrent .. ']');
 			advanceRoundsOnTimeChanged(nRounds + 1 - i);
-			DB.setValue("combattracker.round", 'number', nRounds - 1);
+			DB.setValue(CombatManager.CT_ROUND, 'number', nRounds - 1);
 			break
 		elseif nRounds and nRounds >= 99 then
 			-- put chat message here warning it might take a while to process
@@ -240,7 +240,7 @@ local function nextRound_new(nRounds, bTimeChanged)
 	end
 
 	-- Update round counter
-	DB.setValue("combattracker.round", "number", nCurrent);
+	DB.setValue(CombatManager.CT_ROUND, 'number', nCurrent);
 
 	-- Custom round start callback (such as per round initiative rolling)
 	CombatManager.onRoundStartEvent(nCurrent);
