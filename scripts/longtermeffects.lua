@@ -9,7 +9,7 @@ function advanceRoundsOnTimeChanged(nRounds)
 	if nRounds and nRounds > 0 then
 		for _,nodeCT in pairs(DB.getChildren(CombatManager.CT_LIST)) do
 			for _,nodeEffect in pairs(DB.getChildren(nodeCT, 'effects')) do
-				local nActive = DB.getValue(nodeEffect, "isactive", 0);
+				local nActive = DB.getValue(nodeEffect, 'isactive', 0);
 				if nActive ~= 0 then
 					local nodeCT = nodeEffect.getChild('...');
 					local nDuration = DB.getValue(nodeEffect, 'duration');
@@ -29,20 +29,20 @@ end
 
 local function onEffectAddStart_new(rEffect)
 	rEffect.nDuration = rEffect.nDuration or 1;
-	if rEffect.sUnits == "minute" then
+	if rEffect.sUnits == 'minute' then
 		rEffect.nDuration = rEffect.nDuration * 10;
-	elseif rEffect.sUnits == "hour" then
+	elseif rEffect.sUnits == 'hour' then
 		rEffect.nDuration = rEffect.nDuration * 600;
-	elseif rEffect.sUnits == "day" then
+	elseif rEffect.sUnits == 'day' then
 		rEffect.nDuration = rEffect.nDuration * 14400;
 	end
-	rEffect.sUnits = "";
+	rEffect.sUnits = '';
 end
 
 local function resetInit_new()
 	-- De-activate all entries
 	for _,v in pairs(CombatManager.getCombatantNodes()) do
-		DB.setValue(v, "active", "number", 0);
+		DB.setValue(v, 'active', 'number', 0);
 	end
 
 	-- Clear GM identity additions (based on option)
@@ -164,7 +164,7 @@ local function nextRound_new(nRounds, bTimeChanged)
 	local nStartCounter = 1;
 	local aEntries = CombatManager.getSortedCombatantList();
 	if nodeActive then
-		DB.setValue(nodeActive, "active", "number", 0);
+		DB.setValue(nodeActive, 'active', 'number', 0);
 		CombatManager.clearGMIdentity();
 
 		local bFastTurn = false;
@@ -191,19 +191,20 @@ local function nextRound_new(nRounds, bTimeChanged)
 			CalendarManager.outputTime();
 
 			local nDateinMinutes = TimeManager.getCurrentDateinMinutes();
-			DB.setValue("calendar.dateinminutes", "number", nDateinMinutes); DB.setValue("calendar.dateinminutesstring", "string", tostring(nDateinMinutes))
+			DB.setValue('calendar.dateinminutes', 'number', nDateinMinutes);
+			DB.setValue('calendar.dateinminutesstring', 'string', tostring(nDateinMinutes));
 		end
 		-- end bmos resetting rounds and advancing time
 
-		local msg = {font = "narratorfont", icon = "turn_flag"};
-		msg.text = "[" .. Interface.getString("combat_tag_round") .. " " .. nCurrent .. "]";
+		local msg = {font = 'narratorfont', icon = 'turn_flag'};
+		msg.text = '[' .. Interface.getString('combat_tag_round') .. ' ' .. nCurrent .. ']';
 		Comm.deliverChatMessage(msg);
 	end
 
 	for i = nStartCounter, nRounds do
 		-- check if full processing of rounds is unecessary
 		if shouldSwitchToQuickSimulation() then
-			-- Debug.chat("[ Skipping is ok from " .. nCurrent .. "]");
+			-- Debug.chat('[ Skipping is ok from ' .. nCurrent .. ']');
 			advanceRoundsOnTimeChanged(nRounds + 1 - i);
 			DB.setValue("combattracker.round", 'number', nRounds - 1);
 			break
@@ -228,12 +229,13 @@ local function nextRound_new(nRounds, bTimeChanged)
 			CalendarManager.outputTime();
 
 			local nDateinMinutes = TimeManager.getCurrentDateinMinutes();
-			DB.setValue("calendar.dateinminutes", "number", nDateinMinutes); DB.setValue("calendar.dateinminutesstring", "string", tostring(nDateinMinutes))
+			DB.setValue('calendar.dateinminutes', 'number', nDateinMinutes);
+			DB.setValue('calendar.dateinminutesstring', 'string', tostring(nDateinMinutes));
 		end
 		-- end bmos resetting rounds and advancing time
 
-		local msg = {font = "narratorfont", icon = "turn_flag"};
-		msg.text = "[" .. Interface.getString("combat_tag_round") .. " " .. nCurrent .. "]";
+		local msg = {font = 'narratorfont', icon = 'turn_flag'};
+		msg.text = '[' .. Interface.getString('combat_tag_round') .. ' ' .. nCurrent .. ']';
 		Comm.deliverChatMessage(msg);
 	end
 
@@ -244,7 +246,7 @@ local function nextRound_new(nRounds, bTimeChanged)
 	CombatManager.onRoundStartEvent(nCurrent);
 
 	-- Check option to see if we should advance to first actor or stop on round start
-	if OptionsManager.isOption("RNDS", "off") then
+	if OptionsManager.isOption('RNDS', 'off') then
 		local bSkipBell = (nRounds > 1);
 		if #aEntries > 0 then
 			CombatManager.nextActor(bSkipBell, true);
