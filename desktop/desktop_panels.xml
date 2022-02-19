@@ -427,7 +427,7 @@
 			</basicnumber>
 			
 			<label name="addall">
-				<anchored to="addminute" position="righthigh" offset="11" width="24" />
+				<anchored to="addminute" position="righthigh" offset="9" width="24" />
 				<static textres="desktop_panel_add" />
 				<tooltip textres="desktop_addall_tooltip" />
 				<script>
