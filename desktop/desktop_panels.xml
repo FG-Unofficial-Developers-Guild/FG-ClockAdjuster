@@ -444,7 +444,7 @@
 						local nDay = window.addday.getValue() or 0;
 						local nMonth = window.addmonth.getValue() or 0;
 						local nYear = window.addyear.getValue() or 0;
-						local nRounds = (nHour * 600) + (nMinute * 10) + (nDay * 14400) + (nDay * 403200);
+						local nRounds = (nHour * 600) + (nMinute * 10) + (nDay * 14400) + (nMonth * 403200);
 
 						if OptionsManager.isOption('TIMEROUNDS', 'slow') and nRounds &lt; 4801 then
 							CombatManager.nextRound(nRounds, true);
