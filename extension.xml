@@ -4,7 +4,7 @@
 
 <root version='3.3' release='3'>
 	<properties>
-		<name>Clock Adjuster</name>
+		<name>Feature: Clock Adjuster</name>
 		<version>2.5</version>
 		<author>pr6i6est and bmos</author>
 		<description>Provides an interface for easier time management</description>
