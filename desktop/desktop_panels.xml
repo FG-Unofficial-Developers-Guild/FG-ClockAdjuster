@@ -26,6 +26,8 @@
 				</stateframe>
 				<readonly />
 				<center />
+				<!-- Opening timedevents, timedreminders, and travelmanager in onInit() allows for their
+				triggers to work correctly on campaign open, otherwise they don't work until opened manually. -->
 				<script>
 					function onInit()
 						if not DB.getValue(TimeManager.CAL_NEWCAMPAIGN, 0) == 1 then
