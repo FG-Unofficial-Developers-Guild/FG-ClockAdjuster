@@ -26,6 +26,8 @@
 				</stateframe>
 				<readonly />
 				<center />
+				<!-- Opening timedevents, timedreminders, and travelmanager in onInit() allows for their
+				triggers to work correctly on campaign open, otherwise they don't work until opened manually. -->
 				<script>
 					function onInit()
 						if not DB.getValue(TimeManager.CAL_NEWCAMPAIGN, 0) == 1 then
@@ -56,6 +58,13 @@
 						onSourceChanged();
 						local nDateinMinutes = TimeManager.getCurrentDateinMinutes();
 						DB.setValue(TimeManager.CAL_DATEINMIN, "number", nDateinMinutes);
+
+						Interface.openWindow("timedevents", "DB");
+						Interface.toggleWindow("timedevents", "DB");
+						Interface.openWindow("timedreminders", "DB");
+						Interface.toggleWindow("timedreminders", "DB");
+						Interface.openWindow("travelmanager", "DB");
+						Interface.toggleWindow("travelmanager", "DB");
 					end
 					
 					function onClose()
@@ -437,7 +446,7 @@
 						local nDay = window.addday.getValue() or 0;
 						local nMonth = window.addmonth.getValue() or 0;
 						local nYear = window.addyear.getValue() or 0;
-						local nRounds = (nHour * 600) + (nMinute * 10) + (nDay * 14400) + (nDay * 403200);
+						local nRounds = (nHour * 600) + (nMinute * 10) + (nDay * 14400) + (nMonth * 403200);
 
 						if OptionsManager.isOption('TIMEROUNDS', 'slow') and nRounds &lt; 4801 then
 							CombatManager.nextRound(nRounds, true);

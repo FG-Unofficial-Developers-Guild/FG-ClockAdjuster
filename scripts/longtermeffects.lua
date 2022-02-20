@@ -1,4 +1,4 @@
--- 
+--
 -- Please see the LICENSE.md file included with this distribution for attribution and copyright information.
 --
 
@@ -11,19 +11,19 @@ function advanceRoundsOnTimeChanged(nRounds)
 			for _,nodeEffect in pairs(DB.getChildren(nodeCT, 'effects')) do
 				local nActive = DB.getValue(nodeEffect, 'isactive', 0);
 				if nActive ~= 0 then
-					local nodeCT = nodeEffect.getChild('...');
+					local nodeActor = nodeEffect.getChild('...');
 					local nDuration = DB.getValue(nodeEffect, 'duration');
 					local bHasDuration = (nDuration and nDuration ~= 0);
 					if bHasDuration and (nDuration <= nRounds) then
-						EffectManager.expireEffect(nodeCT, nodeEffect);
+						EffectManager.expireEffect(nodeActor, nodeEffect);
 					elseif bHasDuration then
 						DB.setValue(nodeEffect, 'duration', 'number', nDuration - nRounds);
 					end
 				end
 			end
 		end
-		
-		return true
+
+		return true;
 	end
 end
 
@@ -61,7 +61,7 @@ local function filterTable(tTable, filterFunction)
 			table.insert(tFiltered, key, value)
 		end
 	end
-	
+
 	return tFiltered;
 end
 
@@ -72,13 +72,13 @@ local function splitEffectIntoComponentsTypes(sEffect)
 		local component = EffectManager.parseEffectCompSimple(effectComp).type
 		table.insert(aComponentTypes, index, component)
 	end
-	
+
 	return aComponentTypes;
 end
 
 local function effectTypeShouldBeChecked(sEffectComponentType)
 	local arrsComponentsToInclude = { 'FHEAL', 'REGEN', 'DMGO' };
-	
+
 	return StringManager.contains(arrsComponentsToInclude, sEffectComponentType);
 end
 
@@ -118,7 +118,7 @@ end
 
 local function getIsStableAndEffectsToCheck(nodeCT)
 	-- Returns if node has effect stable, and flat list of all effect types.
-	-- Does two thing at once. as I dont want to iterate twice over all effects 
+	-- Does two thing at once. as I dont want to iterate twice over all effects
 	local bIsCTStable = false;
 	local aEffectsRequiringSlowMode = {};
 	for _, nEffect in pairs(DB.getChildren(nodeCT, 'effects')) do
@@ -212,9 +212,9 @@ local function nextRound_new(nRounds, bTimeChanged)
 		end
 		-- end checking for necessity of full processing of rounds
 
-		for i = 1,#aEntries do
-			CombatManager.onTurnStartEvent(aEntries[i]);
-			CombatManager.onTurnEndEvent(aEntries[i]);
+		for j = 1,#aEntries do
+			CombatManager.onTurnStartEvent(aEntries[j]);
+			CombatManager.onTurnEndEvent(aEntries[j]);
 		end
 
 		CombatManager.onInitChangeEvent();
@@ -252,19 +252,19 @@ local function nextRound_new(nRounds, bTimeChanged)
 	end
 end
 
-local function clearExpiringEffects_new(bShort)
+local function clearExpiringEffects_new()
 end
 
 -- Function Overrides
 function onInit()
-	local sRuleset = User.getRulesetName()
+	local sRuleset = User.getRulesetName();
 	if sRuleset == '3.5E' or sRuleset == 'PFRPG' or sRuleset == 'PFRPG2' or sRuleset == '5E' then
 		nextRound_old = CombatManager.nextRound;
 		CombatManager.nextRound = nextRound_new;
-		
+
 		resetInit_old = CombatManager.resetInit;
 		CombatManager.resetInit = resetInit_new;
-		
+
 		clearExpiringEffects_old = CombatManager2.clearExpiringEffects;
 		CombatManager2.clearExpiringEffects = clearExpiringEffects_new;
 
