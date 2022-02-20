@@ -56,6 +56,13 @@
 						onSourceChanged();
 						local nDateinMinutes = TimeManager.getCurrentDateinMinutes();
 						DB.setValue(TimeManager.CAL_DATEINMIN, "number", nDateinMinutes);
+
+						Interface.openWindow("timedevents", "DB");
+						Interface.toggleWindow("timedevents", "DB");
+						Interface.openWindow("timedreminders", "DB");
+						Interface.toggleWindow("timedreminders", "DB");
+						Interface.openWindow("travelmanager", "DB");
+						Interface.toggleWindow("travelmanager", "DB");
 					end
 					
 					function onClose()
