@@ -130,7 +130,7 @@ end
 
 function getCurrentDateinMinutes()
 	local nMinutes, nHours, nDays, nMonths, nYears = getCurrentDate()
-	local nRounds = (DB.getValue("combattracker.round", 0) % 10);
+	local nRounds = (DB.getValue(CombatManager.CT_ROUND, 0) % 10);
 
 	local nRoundsinMinutes = (0.1 * nRounds);
 	-- Debug.console("getCurrentDateinMinutes; nRoundsinMinutes =", nRoundsinMinutes);

@@ -237,9 +237,9 @@
 						local nDateinMinutes = TimeManager.getCurrentDateinMinutes();
 						DB.setValue(TimeManager.CAL_DATEINMIN, "number", nDateinMinutes);
 
-						local nCurrentRound = DB.getValue("combattracker.round", 0);
+						local nCurrentRound = DB.getValue(CombatManager.CT_ROUND, 0);
 						nCurrentRound = nCurrentRound % 10
-						DB.setValue("combattracker.round", 'number', nCurrentRound);
+						DB.setValue(CombatManager.CT_ROUND, 'number', nCurrentRound);
 					end
 				</script>
 			</basicnumber>
@@ -284,9 +284,9 @@
 						local nDateinMinutes = TimeManager.getCurrentDateinMinutes();
 						DB.setValue(TimeManager.CAL_DATEINMIN, "number", nDateinMinutes);
 
-						local nCurrentRound = DB.getValue("combattracker.round", 0);
+						local nCurrentRound = DB.getValue(CombatManager.CT_ROUND, 0);
 						nCurrentRound = nCurrentRound % 10
-						DB.setValue("combattracker.round", 'number', nCurrentRound);
+						DB.setValue(CombatManager.CT_ROUND, 'number', nCurrentRound);
 					end
 				</script>
 			</basicnumber>
@@ -339,9 +339,9 @@
 						local nDateinMinutes = TimeManager.getCurrentDateinMinutes();
 						DB.setValue(TimeManager.CAL_DATEINMIN, "number", nDateinMinutes);
 
-						local nCurrentRound = DB.getValue("combattracker.round", 0);
+						local nCurrentRound = DB.getValue(CombatManager.CT_ROUND, 0);
 						nCurrentRound = nCurrentRound % 10
-						DB.setValue("combattracker.round", 'number', nCurrentRound);
+						DB.setValue(CombatManager.CT_ROUND, 'number', nCurrentRound);
 					end
 				</script>
 			</basicnumber>
@@ -387,9 +387,9 @@
 						local nDateinMinutes = TimeManager.getCurrentDateinMinutes();
 						DB.setValue(TimeManager.CAL_DATEINMIN, "number", nDateinMinutes);
 
-						local nCurrentRound = DB.getValue("combattracker.round", 0);
+						local nCurrentRound = DB.getValue(CombatManager.CT_ROUND, 0);
 						nCurrentRound = nCurrentRound % 10
-						DB.setValue("combattracker.round", 'number', nCurrentRound);
+						DB.setValue(CombatManager.CT_ROUND, 'number', nCurrentRound);
 					end
 				</script>
 			</basicnumber>
@@ -428,9 +428,9 @@
 						local nDateinMinutes = TimeManager.getCurrentDateinMinutes();
 						DB.setValue(TimeManager.CAL_DATEINMIN, "number", nDateinMinutes);
 
-						local nCurrentRound = DB.getValue("combattracker.round", 0);
+						local nCurrentRound = DB.getValue(CombatManager.CT_ROUND, 0);
 						nCurrentRound = nCurrentRound % 10
-						DB.setValue("combattracker.round", 'number', nCurrentRound);
+						DB.setValue(CombatManager.CT_ROUND, 'number', nCurrentRound);
 					end
 				</script>
 			</basicnumber>
@@ -477,9 +477,9 @@
 						local nDateinMinutes = TimeManager.getCurrentDateinMinutes();
 						DB.setValue(TimeManager.CAL_DATEINMIN, "number", nDateinMinutes);
 
-						local nCurrentRound = DB.getValue("combattracker.round", 0);
+						local nCurrentRound = DB.getValue(CombatManager.CT_ROUND, 0);
 						nCurrentRound = nCurrentRound % 10
-						DB.setValue("combattracker.round", 'number', nCurrentRound);
+						DB.setValue(CombatManager.CT_ROUND, 'number', nCurrentRound);
 					end
 				</script>
 				<center />
@@ -543,9 +543,9 @@
 						local nDateinMinutes = TimeManager.getCurrentDateinMinutes();
 						DB.setValue(TimeManager.CAL_DATEINMIN, "number", nDateinMinutes);
 
-						local nCurrentRound = DB.getValue("combattracker.round", 0);
+						local nCurrentRound = DB.getValue(CombatManager.CT_ROUND, 0);
 						nCurrentRound = nCurrentRound % 10
-						DB.setValue("combattracker.round", 'number', nCurrentRound);
+						DB.setValue(CombatManager.CT_ROUND, 'number', nCurrentRound);
 					end
 				</script>
 			</basicnumber>
@@ -600,9 +600,9 @@
 						local nDateinMinutes = TimeManager.getCurrentDateinMinutes();
 						DB.setValue(TimeManager.CAL_DATEINMIN, "number", nDateinMinutes);
 
-						local nCurrentRound = DB.getValue("combattracker.round", 0);
+						local nCurrentRound = DB.getValue(CombatManager.CT_ROUND, 0);
 						nCurrentRound = nCurrentRound % 10
-						DB.setValue("combattracker.round", 'number', nCurrentRound);
+						DB.setValue(CombatManager.CT_ROUND, 'number', nCurrentRound);
 					end
 				</script>
 			</basicnumber>
@@ -646,9 +646,9 @@
 							local nDateinMinutes = TimeManager.getCurrentDateinMinutes();
 							DB.setValue(TimeManager.CAL_DATEINMIN, "number", nDateinMinutes);
 
-							local nCurrentRound = DB.getValue("combattracker.round", 0);
+							local nCurrentRound = DB.getValue(CombatManager.CT_ROUND, 0);
 							nCurrentRound = nCurrentRound % 10
-							DB.setValue("combattracker.round", 'number', nCurrentRound);
+							DB.setValue(CombatManager.CT_ROUND, 'number', nCurrentRound);
 						end
 					end
 				</script>
@@ -692,9 +692,9 @@
 							local nDateinMinutes = TimeManager.getCurrentDateinMinutes();
 							DB.setValue(TimeManager.CAL_DATEINMIN, "number", nDateinMinutes);
 
-							local nCurrentRound = DB.getValue("combattracker.round", 0);
+							local nCurrentRound = DB.getValue(CombatManager.CT_ROUND, 0);
 							nCurrentRound = nCurrentRound % 10
-							DB.setValue("combattracker.round", 'number', nCurrentRound);
+							DB.setValue(CombatManager.CT_ROUND, 'number', nCurrentRound);
 						end
 					end
 				</script>
@@ -738,9 +738,9 @@
 							local nDateinMinutes = TimeManager.getCurrentDateinMinutes();
 							DB.setValue(TimeManager.CAL_DATEINMIN, "number", nDateinMinutes);
 
-							local nCurrentRound = DB.getValue("combattracker.round", 0);
+							local nCurrentRound = DB.getValue(CombatManager.CT_ROUND, 0);
 							nCurrentRound = nCurrentRound % 10
-							DB.setValue("combattracker.round", 'number', nCurrentRound);
+							DB.setValue(CombatManager.CT_ROUND, 'number', nCurrentRound);
 						end
 					end
 				</script>
@@ -785,9 +785,9 @@
 							local nDateinMinutes = TimeManager.getCurrentDateinMinutes();
 							DB.setValue(TimeManager.CAL_DATEINMIN, "number", nDateinMinutes);
 
-							local nCurrentRound = DB.getValue("combattracker.round", 0);
+							local nCurrentRound = DB.getValue(CombatManager.CT_ROUND, 0);
 							nCurrentRound = nCurrentRound % 10
-							DB.setValue("combattracker.round", 'number', nCurrentRound);
+							DB.setValue(CombatManager.CT_ROUND, 'number', nCurrentRound);
 						end
 					end
 				</script>
