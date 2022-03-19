@@ -52,7 +52,7 @@ end
 
 --- Timer Functions
 function setStartTime(nodeActor)
-	nStartTime = getCurrentDateinMinutes();
+	local nStartTime = getCurrentDateinMinutes();
 	DB.setValue(nodeActor, "starttime", "number", nStartTime);
 end
 
