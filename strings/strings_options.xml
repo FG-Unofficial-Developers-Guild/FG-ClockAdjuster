@@ -9,4 +9,15 @@
 	<!-- option states -->
 	<string name="enc_opt_time_rounds_fast">Quick Mode</string>
 	<string name="enc_opt_time_rounds_slow">Full Process</string>
+
+	<!-- option defaults -->
+	<string name="option_header_CLOCKADJUSTER">Clock Adjuster (GM)</string>
+	<string name="option_label_CLOCKADJUSTER_DEFAULT_HOURS">Default Hours</string>
+	<string name="option_label_CLOCKADJUSTER_DEFAULT_MINUTES">Default Minutes</string>
+	<string name="option_label_CLOCKADJUSTER_DEFAULT_DAYS">Default Days</string>
+	<string name="option_label_CLOCKADJUSTER_DEFAULT_MONTHS">Default Months</string>
+	<string name="option_label_CLOCKADJUSTER_DEFAULT_YEARS">Default Years</string>
+	<string name="option_label_CLOCKADJUSTER_DEFAULT_LONG">Default Long Rest (hours)</string>
+	<string name="option_label_CLOCKADJUSTER_DEFAULT_SHORT">Default Short Rest (minutes)</string>
+	<string name="option_CLOCKADJUSTER_ZERO">0</string>
 </root>

@@ -198,10 +198,11 @@
 				<tooltip textres="desktop_addhour_tooltip" />
 				<script>
 					function onInit()
-						DB.setValue(getDatabaseNode(), "addhour", "number", (getValue() or 0));
+						setValue(tonumber(OptionsManager.getOption(TimeManager.CLOCKADJUSTER_DEFAULT_HOURS)) or 0);
+						OptionsManager.registerCallback(TimeManager.CLOCKADJUSTER_DEFAULT_HOURS, onOptionChanged);
 					end
-					function onClose()
-						DB.setValue(getDatabaseNode(), "addhour", "number", (getValue() or 0));
+					function onOptionChanged()
+						setValue(tonumber(OptionsManager.getOption(TimeManager.CLOCKADJUSTER_DEFAULT_HOURS)) or 0);
 					end
 					function onDoubleClick()
 						local nHour = getValue() or 0;
@@ -253,10 +254,11 @@
 				<tooltip textres="desktop_addminute_tooltip" />
 				<script>
 					function onInit()
-						DB.setValue(getDatabaseNode(), "addminute", "number", (getValue() or 0));
+						setValue(tonumber(OptionsManager.getOption(TimeManager.CLOCKADJUSTER_DEFAULT_MINUTES)) or 0);
+						OptionsManager.registerCallback(TimeManager.CLOCKADJUSTER_DEFAULT_MINUTES, onOptionChanged);
 					end
-					function onClose()
-						DB.setValue(getDatabaseNode(), "addminute", "number", (getValue() or 0));
+					function onOptionChanged()
+						setValue(tonumber(OptionsManager.getOption(TimeManager.CLOCKADJUSTER_DEFAULT_MINUTES)) or 0);
 					end
 					function onDoubleClick()
 						local nMinute = getValue() or 0;
@@ -300,12 +302,12 @@
 				<tooltip textres="desktop_addday_tooltip" />
 				<script>
 					function onInit()
-						DB.setValue(getDatabaseNode(), "addday", "number", (getValue() or 0));
+						setValue(tonumber(OptionsManager.getOption(TimeManager.CLOCKADJUSTER_DEFAULT_DAYS)) or 0);
+						OptionsManager.registerCallback(TimeManager.CLOCKADJUSTER_DEFAULT_DAYS, onOptionChanged);
 					end
-					function onClose()
-						DB.setValue(getDatabaseNode(), "addday", "number", (getValue() or 0));
+					function onOptionChanged()
+						setValue(tonumber(OptionsManager.getOption(TimeManager.CLOCKADJUSTER_DEFAULT_DAYS)) or 0);
 					end
-					
 					function onDoubleClick()
 						local nDay = getValue() or 0;
 						local nRounds = nDay * 14400;
@@ -351,10 +353,11 @@
 				<tooltip textres="desktop_addmonth_tooltip" />
 				<script>
 					function onInit()
-						DB.setValue(getDatabaseNode(), "addmonth", "number", (getValue() or 0));
+						setValue(tonumber(OptionsManager.getOption(TimeManager.CLOCKADJUSTER_DEFAULT_MONTHS)) or 0);
+						OptionsManager.registerCallback(TimeManager.CLOCKADJUSTER_DEFAULT_MONTHS, onOptionChanged);
 					end
-					function onClose()
-						DB.setValue(getDatabaseNode(), "addmonth", "number", (getValue() or 0));
+					function onOptionChanged()
+						setValue(tonumber(OptionsManager.getOption(TimeManager.CLOCKADJUSTER_DEFAULT_MONTHS)) or 0);
 					end
 					function onDoubleClick()
 						local nMonth = getValue() or 0;
@@ -399,10 +402,11 @@
 				<tooltip textres="desktop_addyears_tooltip" />
 				<script>
 					function onInit()
-						DB.setValue(getDatabaseNode(), "addyear", "number", (getValue() or 0));
+						setValue(tonumber(OptionsManager.getOption(TimeManager.CLOCKADJUSTER_DEFAULT_YEARS)) or 0);
+						OptionsManager.registerCallback(TimeManager.CLOCKADJUSTER_DEFAULT_YEARS, onOptionChanged);
 					end
-					function onClose()
-						DB.setValue(getDatabaseNode(), "addyear", "number", (getValue() or 0));
+					function onOptionChanged()
+						setValue(tonumber(OptionsManager.getOption(TimeManager.CLOCKADJUSTER_DEFAULT_YEARS)) or 0);
 					end
 					function onDoubleClick()
 						local nYear = (window.addyear.getValue() or 0);
