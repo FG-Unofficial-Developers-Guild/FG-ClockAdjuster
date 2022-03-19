@@ -275,8 +275,6 @@ function onInit()
 			EffectManager5E.onEffectAddStart = onEffectAddStart_new;
 		end
 	end
-
-	OptionsManager.registerOption2('TIMEROUNDS', false, 'option_header_game', 'opt_lab_time_rounds', 'option_entry_cycler', { labels = 'enc_opt_time_rounds_slow', values = 'slow', baselabel = 'enc_opt_time_rounds_fast', baseval = 'fast', default = 'fast' });
 end
 
 function onClose()
