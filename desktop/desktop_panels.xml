@@ -198,10 +198,10 @@
 				<tooltip textres="desktop_addhour_tooltip" />
 				<script>
 					function onInit()
-						setValue(DB.getValue(getDatabaseNode(), "addhour", 0));
+						setValue(DB.getValue("calendar.addhour", 0));
 					end
 					function onClose()
-						DB.setValue(getDatabaseNode(), "addhour", "number", (getValue() or 0));
+						DB.setValue("calendar.addhour", "number", getValue() or 0);
 					end
 					function onDoubleClick()
 						local nHour = getValue() or 0;
@@ -241,7 +241,7 @@
 						nCurrentRound = nCurrentRound % 10
 						DB.setValue(CombatManager.CT_ROUND, 'number', nCurrentRound);
 
-						DB.setValue(getDatabaseNode(), "addhour", "number", (getValue() or 0));
+						DB.setValue("calendar.addhour", "number", getValue() or 0);
 					end
 				</script>
 			</basicnumber>
@@ -255,10 +255,10 @@
 				<tooltip textres="desktop_addminute_tooltip" />
 				<script>
 					function onInit()
-						setValue(DB.getValue(getDatabaseNode(), "addminute", 0));
+						setValue(DB.getValue("calendar.addminute", 0));
 					end
 					function onClose()
-						DB.setValue(getDatabaseNode(), "addminute", "number", (getValue() or 0));
+						DB.setValue("calendar.addminute", "number", getValue() or 0);
 					end
 					function onDoubleClick()
 						local nMinute = getValue() or 0;
@@ -290,7 +290,7 @@
 						nCurrentRound = nCurrentRound % 10
 						DB.setValue(CombatManager.CT_ROUND, 'number', nCurrentRound);
 
-						DB.setValue(getDatabaseNode(), "addminute", "number", (getValue() or 0));
+						DB.setValue("calendar.addminute", "number", getValue() or 0);
 					end
 				</script>
 			</basicnumber>
@@ -304,10 +304,10 @@
 				<tooltip textres="desktop_addday_tooltip" />
 				<script>
 					function onInit()
-						setValue(DB.getValue(getDatabaseNode(), "addday", 0));
+						setValue(DB.getValue("calendar.addday", 0));
 					end
 					function onClose()
-						DB.setValue(getDatabaseNode(), "addday", "number", (getValue() or 0));
+						DB.setValue("calendar.addday", "number", getValue() or 0);
 					end
 					
 					function onDoubleClick()
@@ -347,7 +347,7 @@
 						nCurrentRound = nCurrentRound % 10
 						DB.setValue(CombatManager.CT_ROUND, 'number', nCurrentRound);
 
-						DB.setValue(getDatabaseNode(), "addday", "number", (getValue() or 0));
+						DB.setValue("calendar.addday", "number", getValue() or 0);
 					end
 				</script>
 			</basicnumber>
@@ -357,10 +357,10 @@
 				<tooltip textres="desktop_addmonth_tooltip" />
 				<script>
 					function onInit()
-						setValue(DB.getValue(getDatabaseNode(), "addmonth", 0));
+						setValue(DB.getValue("calendar.addmonth", 0));
 					end
 					function onClose()
-						DB.setValue(getDatabaseNode(), "addmonth", "number", (getValue() or 0));
+						DB.setValue("calendar.addmonth", "number", getValue() or 0);
 					end
 					function onDoubleClick()
 						local nMonth = getValue() or 0;
@@ -397,7 +397,7 @@
 						nCurrentRound = nCurrentRound % 10
 						DB.setValue(CombatManager.CT_ROUND, 'number', nCurrentRound);
 
-						DB.setValue(getDatabaseNode(), "addmonth", "number", (getValue() or 0));
+						DB.setValue("calendar.addmonth", "number", getValue() or 0);
 					end
 				</script>
 			</basicnumber>
@@ -407,10 +407,10 @@
 				<tooltip textres="desktop_addyears_tooltip" />
 				<script>
 					function onInit()
-						setValue(DB.getValue(getDatabaseNode(), "addyear", 0));
+						setValue(DB.getValue("calendar.addyear", 0));
 					end
 					function onClose()
-						DB.setValue(getDatabaseNode(), "addyear", "number", (getValue() or 0));
+						DB.setValue("calendar.addyear", "number", getValue() or 0);
 					end
 					function onDoubleClick()
 						local nYear = (window.addyear.getValue() or 0);
@@ -440,7 +440,7 @@
 						nCurrentRound = nCurrentRound % 10
 						DB.setValue(CombatManager.CT_ROUND, 'number', nCurrentRound);
 
-						DB.setValue(getDatabaseNode(), "addyear", "number", (getValue() or 0));
+						DB.setValue("calendar.addyear", "number", getValue() or 0);
 					end
 				</script>
 			</basicnumber>
