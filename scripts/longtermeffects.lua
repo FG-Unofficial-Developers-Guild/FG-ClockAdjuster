@@ -5,6 +5,7 @@
 local nextRound_old, resetInit_old, clearExpiringEffects_old;
 
 ---	This function compiles all effects and decrements their durations when time is advanced
+--	luacheck: globals advanceRoundsOnTimeChanged
 function advanceRoundsOnTimeChanged(nRounds)
 	if nRounds and nRounds > 0 then
 		for _,nodeCT in pairs(DB.getChildren(CombatManager.CT_LIST)) do
