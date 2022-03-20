@@ -18,23 +18,13 @@ function onInit()
 end
 
 --- Timer Functions
-function setStartTime(rActor, sFirst)
-	-- Debug.console("setStartTime called; " .. sFirst .."");
-	local nodeActor = rActor;
-	nStartTime = getCurrentDateinMinutes(rActor);
-	-- Debug.console("setStartTime; nStartTime =", nStartTime);
+function setStartTime(nodeActor)
+	local nStartTime = getCurrentDateinMinutes();
 	DB.setValue(nodeActor, "starttime", "number", nStartTime);
-	Debug.console("setStartTime", rActor, sFirst, nStartTime, DB.getValue(nodeActor, "starttime"));
-	-- Debug.console("setStartTime; DB.setValue(nodeActor, " .. sFirst .. ".starttime, number, " .. nStartTime .. ") = ", DB.setValue(nodeActor, "" .. sFirst .. ".starttime", "number", nStartTime));
 end
 
-function getStartTime(rActor, sFirst)
-	-- Debug.console("getStartTime called; " .. sFirst .."");
-	local nodeActor = rActor;
-	FetchStartTime = DB.getValue(nodeActor, "starttime", 0);
-	-- Debug.console("setStartTime; FetchStartTime = DB.getValue(" .. nodeActor .. ", " .. sFirst .. ".starttime, " .. nStartTime .. ") = " .. DB.getValue(nodeActor, "" .. sFirst .. ".starttime", nStartTime) .. "");
-
-	return FetchStartTime;
+function getStartTime(nodeActor)
+	return DB.getValue(nodeActor, "starttime", 0);
 end
 
 function setTimerStart(rActor, sFirst)
