@@ -5,12 +5,11 @@
 <root version='3.3' release='3'>
 	<properties>
 		<name>Feature: Clock Adjuster</name>
-		<version>2.6</version>
 		<author>PR6I6E6ST, bmos, PokeyCA, MeAndUnique, Corun-Kail, and JustinFreitas</author>
 		<description>Provides an interface for easy time tracking and management</description>
 	</properties>
 	
-	<announcement text="https://www.fantasygrounds.com/forums/showthread.php?57561-Utility-Clock-Adjuster\rClock Adjuster v2.6:\rProvides an interface for easy time tracking and management.\nThis extension is a combined effort of PR6I6E6ST (Troy Monteith), bmos, PokeyCA, MeAndUnique, Corun-Kail, and JustinFreitas." font="emotefont" />
+	<announcement text="https://www.fantasygrounds.com/forums/showthread.php?57561-Utility-Clock-Adjuster\rClock Adjuster v2022-03-20:\rProvides an interface for easy time tracking and management.\nThis extension is a combined effort of PR6I6E6ST (Troy Monteith), bmos, PokeyCA, MeAndUnique, Corun-Kail, and JustinFreitas." font="emotefont" />
 	
 	<base>
 		<includefile source="desktop/desktop_panels.xml" />
