@@ -5,22 +5,29 @@
 <root version='3.3' release='3'>
 	<properties>
 		<name>Feature: Clock Adjuster</name>
-		<version>2.5</version>
-		<author>pr6i6est and bmos</author>
-		<description>Provides an interface for easier time management</description>
+		<author>PR6I6E6ST, bmos, PokeyCA, MeAndUnique, Corun-Kail, and JustinFreitas</author>
+		<version>0.5</version>
+		<description>Provides an interface for easy time tracking and management</description>
 	</properties>
 	
-	<announcement text="Clock Adjuster:\rThis extension is a GM tool which provides an interface for easy time tracking and management.\nThis extension is a combined effort of PR6I6E6ST (Troy Monteith), bmos, PokeyCA, MeAndUnique, Corun-Kail, and JustinFreitas." font="emotefont" />
+	<announcement text="https://www.fantasygrounds.com/forums/showthread.php?57561-Utility-Clock-Adjuster\rClock Adjuster v2022-03-20:\rProvides an interface for easy time tracking and management.\nThis extension is a combined effort of PR6I6E6ST (Troy Monteith), bmos, PokeyCA, MeAndUnique, Corun-Kail, and JustinFreitas." font="emotefont" />
 	
 	<base>
 		<includefile source="desktop/desktop_panels.xml" />
+		<includefile source="desktop/windows_reminders.xml" />
+		<includefile source="desktop/windows_events.xml" />
+		<includefile source="desktop/windows_travel.xml" />
+		
 		<includefile source="graphics/graphics_frames.xml" />
 		<includefile source="graphics/graphics_icons.xml" />
+		
 		<includefile source="strings/strings_clock.xml" />
 		<includefile source="strings/strings_options.xml" />
 		<includefile source="strings/strings_timedevents.xml" />
+		
 		<script name="TimeManager" file="scripts/manager_time.lua" />
-		<script name="ClockAdjuster" file="scripts/clock_adjuster.lua" />
 		<script name="LongTermEffects" file="scripts/longtermeffects.lua" />
+		<script name="ReminderManager" file="scripts/manager_reminders.lua" />
+		<script name="TravelManager" file="scripts/manager_travel.lua" />
 	</base>
 </root>

@@ -1,0 +1,283 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+
+<!-- Please see the LICENSE.md file included with this distribution for attribution and copyright information. -->
+
+<root version="3.0">
+	<windowclass name="travelmanager">
+		<frame>recordsheet</frame>
+		<size width="250" height="250" />
+		<placement>
+			<position x="10" y="30" />
+			<size width="250" height="250" />
+		</placement>
+		<sizelimits>
+			<maximum height="250" width="250" />
+		</sizelimits>
+		<nodelete />
+		<softclose />
+		<resize />
+		<sheetdata>
+			<label name="traveledlabel">
+				<anchored position="insidetopleft" offset="10,10" height="20" width="70" />
+				<static text="Traveled" />
+			</label>
+			<label name="totallabel">
+				<anchored to="traveledlabel" position="belowleft" offset="0,10" height="20" width="70" />
+				<static text="Distance:" />
+			</label>
+			<label name="remaininglabel">
+				<anchored to="totallabel" position="belowleft" offset="0,10" height="20" width="70" />
+				<static text="Remaining:" />
+			</label>
+			<label name="travelspeedlabel">
+				<anchored to="remaininglabel" position="belowleft" offset="0,10" height="20" width="70" />
+				<static text="Speed:" />
+			</label>
+			<label name="travelbylabel">
+				<anchored to="travelspeedlabel" position="belowleft" offset="0,10" height="20" width="70" />
+				<static text="Travel by:" />
+			</label>
+			<simplenumber name="distanceremaining" source="travel.remaining">
+				<anchored to="remaininglabel" position="righthigh" height="20" width="20" offset="5" />
+				<tooltip text="Distance Remaining" />
+				<script>
+				</script>
+				<readonly />
+			</simplenumber>
+
+			<basicnumber name="distancetraveled" source="travel.traveled">
+				<anchored to="traveledlabel" position="righthigh" height="20" width="20" offset="5" />
+				<delaykeyupdate />
+				<tooltip text="Distance Traveled" />
+				<script>
+				</script>
+			</basicnumber>
+			<basicnumber name="destination" source="travel.destination">
+				<anchored to="totallabel" position="righthigh" height="20" width="20" offset="5" />
+				<delaykeyupdate />
+				<tooltip text="Total Travel Distance" />
+				<script>
+				</script>
+			</basicnumber>
+			<buttoncontrol name="destinationmeasurement">
+				<anchored height="30" width="60">
+					<left parent="destination" anchor="right" offset="10" />
+					<top parent="destination" anchor="top" />
+				</anchored>
+				<tooltip text="Distance in Miles/Kilometers" />
+				<state text="Mile(s)" />
+				<state text="Kilometer(s)" />
+				<default>0</default>
+				<sourcefields>
+					<current>travel.speedunit</current>
+				</sourcefields>
+				<frame name="fielddark" offset="0,0,0,0" />
+				<script>
+					function onInit()
+						onValueChanged();
+					end
+					function onValueChanged()
+						DB.setValue(DB.createNode("DB.travel.speedunit", "number"), "", "number", getValue());
+					end
+				</script>
+			</buttoncontrol>
+			<basicnumber name="travelspeed" source="travel.speed">
+				<anchored to="travelspeedlabel" position="righthigh" height="20" width="20" offset="5" />
+				<tooltip text="Speed" />
+				<default>6</default>
+				<script>
+				</script>
+			</basicnumber>
+
+
+			<buttoncontrol name="unitofmeasurement">
+				<anchored height="30" width="60">
+					<left parent="travelspeed" anchor="right" offset="10" />
+					<top parent="travelspeed" anchor="top" />
+				</anchored>
+				<state text="Mile(s)" />
+				<state text="Kilometer(s)" />
+				<default>0</default>
+				<sourcefields>
+					<current>travel.speedunit</current>
+				</sourcefields>
+				<frame name="fielddark" offset="0,0,0,0" />
+				<tooltip text="Length Factor of Speed" />
+				<script>
+					function onInit()
+						onValueChanged();
+					end
+					function onValueChanged()
+						DB.setValue(DB.createNode("DB.travel.speedunit", "number"), "", "number", getValue());
+					end
+				</script>
+			</buttoncontrol>
+			<buttoncontrol name="perlimit">
+				<anchored height="30" width="60">
+					<left parent="unitofmeasurement" anchor="right" offset="0" />
+					<top parent="unitofmeasurement" anchor="top" />
+				</anchored>
+				<tooltip text="Time Factor of Speed" />
+				<state text="/hour" />
+				<state text="/day" />
+				<default>0</default>
+				<sourcefields>
+					<current>travel.perlimit</current>
+				</sourcefields>
+				<frame name="fielddark" offset="0,0,0,0" />
+				<script>
+					function onInit()
+						onValueChanged();
+					end
+					function onValueChanged()
+						DB.setValue(DB.createNode("DB.travel.perlimit", "number"), "", "number", getValue());
+					end
+				</script>
+			</buttoncontrol>
+			<basicnumber name="travelbyhours" source="travel.byhours">
+				<anchored to="travelbylabel" position="righthigh" height="20" width="20" offset="5" />
+				<tooltip text="Travel by # of Hours/Days" />
+				<script>
+				</script>
+			</basicnumber>
+			<buttoncontrol name="traveltime">
+				<anchored height="30" width="60">
+					<left parent="travelbyhours" anchor="right" offset="0" />
+					<top parent="travelbyhours" anchor="top" />
+				</anchored>
+				<tooltip text="" />
+				<state text="hours" />
+				<state text="days" />
+				<default>0</default>
+				<sourcefields>
+					<current>travel.perlimit</current>
+				</sourcefields>
+				<script>
+					function onInit()
+						onValueChanged();
+					end
+					function onValueChanged()
+						DB.setValue(DB.createNode("DB.travel.perlimit", "number"), "", "number", getValue());
+					end
+				</script>
+			</buttoncontrol>
+			<buttonfield name="isgmonly" source="travel.isgmonly">
+				<anchored height="20" width="50">
+					<left parent="traveltime" anchor="right" offset="0" />
+					<top parent="traveltime" anchor="top" />
+				</anchored>
+				<gmvisibleonly />
+				<state icon="visibilityon" tooltipres="visibilityon" />
+				<state icon="visibilityoff" tooltipres="visibilityoff" />
+			</buttonfield>
+
+			<label name="travellabel">
+				<anchored to="travelbylabel" position="belowleft" offset="0,10" height="20" width="70" />
+				<static text="Travel" />
+			</label>
+			<buttoncontrol name="travel">
+				<anchored to="travellabel" position="righthigh" offset="0,0" width="20" height="20" />
+				<icon normal="atob_button" pressed="atob_button_down" />
+				<tooltip text="Travel" />
+				<script>
+					function onButtonPress()
+						TravelManager.DoTravel();
+					end
+				</script>
+			</buttoncontrol>
+			<buttoncontrol name="slowtravel">
+				<anchored to="travel" position="righthigh" offset="0,0" width="20" height="20" />
+				<icon normal="atob_button" pressed="atob_button_down" />
+				<tooltip text="Click to Travel at a Slow Pace; NOTE: You must have a table named 'Encounter Chance Slow Travel Pace'" />
+				<script>
+
+					function onButtonPress()
+						local aViableMap = {};
+						local NewHourSpeed = 2;
+						local NewDaySpeed = 18;
+						if DB.getValue("DB.travel.perlimit", "", 0) == 0 then
+							TravelManager.DoTravel(NewHourSpeed);
+						elseif DB.getValue("DB.travel.perlimit", "", 0) == 1 then
+							TravelManager.DoTravel(nil, NewDaySpeed);
+						end
+						
+						local EncounterChance = "Encounter Chance Slow Travel Pace";
+						local NonCombatEncounter = "Non Combat Encounter";
+						TravelManager.travelEncounter(EncounterChance, NonCombatEncounter);
+					end
+				</script>
+			</buttoncontrol>
+			<buttoncontrol name="normaltravel">
+				<anchored to="slowtravel" position="righthigh" offset="0,0" width="20" height="20" />
+				<icon normal="atob_button" pressed="atob_button_down" />
+				<tooltip text="Click to Travel at a Normal Pace; NOTE: You must have a table named 'Encounter Chance Normal Travel Pace'" />
+				<script>
+					function onButtonPress()
+						local aViableMap = {};
+						local NewHourSpeed = 3;
+						local NewDaySpeed = 24;
+						if DB.getValue("DB.travel.perlimit", "", 0) == 0 then
+							TravelManager.DoTravel(NewHourSpeed);
+						elseif DB.getValue("DB.travel.perlimit", "", 0) == 1 then
+							TravelManager.DoTravel(nil, NewDaySpeed);
+						end
+						local EncounterChance = "Encounter Chance Normal Travel Pace";
+						local NonCombatEncounter = "Non Combat Encounter";
+						TravelManager.travelEncounter(EncounterChance, NonCombatEncounter);
+					end
+				</script>
+			</buttoncontrol>
+			<buttoncontrol name="fasttravel">
+				<anchored to="normaltravel" position="righthigh" offset="0,0" width="20" height="20" />
+				<icon normal="atob_button" pressed="atob_button_down" />
+				<tooltip text="Click to Travel at a Fast Pace; NOTE: You must have a table named 'Encounter Chance Fast Travel Pace'" />
+				<script>
+					function onButtonPress()
+						local aViableMap = {};
+						local NewHourSpeed = 4;
+						local NewDaySpeed = 30;
+						if DB.getValue("DB.travel.perlimit", "", 0) == 0 then
+							TravelManager.DoTravel(NewHourSpeed);
+						elseif DB.getValue("DB.travel.perlimit", "", 0) == 1 then
+							TravelManager.DoTravel(nil, NewDaySpeed);
+						end
+						local EncounterChance = "Encounter Chance Fast Travel Pace";
+						local NonCombatEncounter = "Non Combat Encounter";
+						TravelManager.travelEncounter(EncounterChance, NonCombatEncounter);
+					end
+				</script>
+			</buttoncontrol>
+			<button_checkbox name="encounterchance" source="travel.encounterchance">
+				<anchored width="20" height="20">
+					<top parent="fasttravel" anchor="top" offset="0" />
+					<right parent="fasttravel" anchor="right" offset="15" />
+				</anchored>
+				<values>
+					<maximum>1</maximum>
+				</values>
+				<tooltip text="Rolls an encounter chance when using Travel Speed Buttons to the left; Note: Looks for tablenames: Encounter Chance Slow Travel Pace, Encounter Chance Normal Travel Pace, or Encounter Chance Fast Travel Pace" />
+
+			</button_checkbox>
+			<label name="encounterchance_label">
+				<anchored to="travellabel" position="belowleft" offset="0,10" height="20" width="70" />
+				<static text="Chances" />
+			</label>
+			<basicnumber name="encounterchancenum" source="travel.encounterchancenum">
+				<anchored to="encounterchance_label" position="righthigh" offset="0,0" width="20" height="30" />
+				<tooltip text="Chance of Encounter while traveling" />
+				<maximum>100</maximum>
+				<minimum>0</minimum>
+				<script>
+				</script>
+			</basicnumber>
+			<basicnumber name="battlechance" source="travel.battlechance">
+				<anchored to="encounterchancenum" position="righthigh" offset="20,0" width="20" height="30" />
+				<maximum>100</maximum>
+				<minimum>0</minimum>
+				<tooltip text="Chance Encounter is a battle. If no battle, then rolls on table 'Non Combat Encounter' if it exists." />
+				<script>
+				</script>
+			</basicnumber>
+		</sheetdata>
+	</windowclass>
+</root>

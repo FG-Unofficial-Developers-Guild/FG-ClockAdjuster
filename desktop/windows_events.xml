@@ -1,0 +1,339 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+
+<!-- Please see the LICENSE.md file included with this distribution for attribution and copyright information. -->
+
+<root version="3.0">
+	<windowclass name="timedevents">
+		<frame>recordsheet</frame>
+		<placement>
+			<size width="370" height="30" />
+			<position x="260" y="30" />
+		</placement>
+		<sizelimits>
+			<dynamic />
+		</sizelimits>
+		<nodelete />
+		<softclose />
+		<sheetdata>
+			<windowlist name="eventslist">
+				<anchored>
+					<top offset="15" />
+					<left offset="15" />
+					<right offset="-15" />
+					<bottom offset="-15" />
+				</anchored>
+				<sortby><control>year</control><control>month</control><control>day</control><control>hour</control><control>minute</control></sortby>
+				<child><backcolor>1A40301E</backcolor></child>
+				<datasource>.timedeventlist</datasource>
+				<class>list_timedevent</class>
+				<acceptdrop>
+					<class>timedevent</class>
+					<class>list_timedevent</class>
+					<class>referencetext</class>
+					<class>referencetextwide</class>
+					<field>*</field>
+				</acceptdrop>
+				<empty font="reference-r" text="Right-click to add an event" hidereadonly="true" />
+				<allowcreate />
+				<allowdelete />
+				<script>
+				</script>
+			</windowlist>
+			<scrollbar>
+				<anchored to="eventslist" />
+				<target>eventslist</target>
+			</scrollbar>
+		</sheetdata>
+		<dynamic />
+	</windowclass>
+
+	<windowclass name="list_timedevent">
+		<margins control="0,0,0,2" />
+		<softclose />
+		<script>
+			function onInit()
+			end
+			function update()
+				windowlist.update();
+				if isgmonly.getValue() == 1 then
+					if not Session.IsHost == true then
+						setVisible(false);
+					end
+				end
+				completed.setValue(0);
+			end
+			
+		</script>
+		<sheetdata>
+			<genericcontrol name="rightanchor">
+				<anchored width="0" height="0">
+					<top />
+					<right />
+				</anchored>
+				<invisible />
+			</genericcontrol>
+			<button_idelete name="idelete">
+				<anchored width="20" height="20">
+					<top offset="2" />
+					<right parent="rightanchor" anchor="left" relation="relative" offset="-5" />
+				</anchored>
+			</button_idelete>
+			<linkcontrol_id name="shortcut">
+				<anchored width="20" height="20">
+					<top offset="2" />
+					<right parent="rightanchor" anchor="left" relation="relative" offset="-2" />
+				</anchored>
+				<class>timedevent</class>
+				<readonly />
+			</linkcontrol_id>
+			<buttonfield name="isgmonly" source=".isgmonly">
+				<anchored width="20" height="20">
+					<top offset="3" />
+					<right parent="rightanchor" anchor="left" relation="relative" offset="-5" />
+				</anchored>
+				<gmvisibleonly />
+				<state icon="visibilityon" tooltipres="visibilityon" />
+				<state icon="visibilityoff" tooltipres="visibilityoff" />
+			</buttonfield>
+			<buttongroup_counter name=".completedbutton">
+				<anchored width="20" height="20">
+					<top offset="3" />
+					<right parent="rightanchor" anchor="left" relation="relative" offset="-5" />
+				</anchored>
+				<sourcefields>
+					<current>completed</current>
+				</sourcefields>
+				<values>
+					<maximum>1</maximum>
+				</values>
+				<tooltip text="Completed" />
+
+			</buttongroup_counter>
+			<basicnumber name="completed" source=".completed">
+				<anchored width="40" height="20">
+					<top offset="2" />
+					<right parent="rightanchor" anchor="left" relation="relative" offset="-10" />
+				</anchored>
+				<delaykeyupdate />
+				<tabtarget prev="location" />
+				<invisible />
+			</basicnumber>
+			<basicnumber name="year" source=".year">
+				<anchored width="40" height="20">
+					<top offset="2" />
+					<right parent="rightanchor" anchor="left" relation="relative" offset="-10" />
+				</anchored>
+				<delaykeyupdate />
+				<tabtarget prev="location" />
+				<tooltip textres="year_tooltip" />
+			</basicnumber>
+
+			<basicnumber name="month" source=".month">
+				<anchored width="20" height="20">
+					<top offset="2" />
+					<right parent="rightanchor" anchor="left" relation="relative" offset="-10" />
+				</anchored>
+				<delaykeyupdate />
+				<tooltip textres="month_tooltip" />
+			</basicnumber>
+			<basicnumber name="day" source=".day">
+				<anchored width="20" height="20">
+					<top offset="2" />
+					<right parent="rightanchor" anchor="left" relation="relative" offset="-10" />
+				</anchored>
+				<delaykeyupdate />
+				<tooltip textres="day_tooltip" />
+			</basicnumber>
+			<basicnumber name="minute" source=".minute">
+				<anchored width="20" height="20">
+					<top offset="2" />
+					<right parent="rightanchor" anchor="left" relation="relative" offset="-10" />
+				</anchored>
+				<delaykeyupdate />
+				<tooltip textres="minute_tooltip" />
+			</basicnumber>
+			<basicnumber name="hour" source=".hour">
+				<anchored width="20" height="20">
+					<top offset="2" />
+					<right parent="rightanchor" anchor="left" relation="relative" offset="-10" />
+				</anchored>
+				<delaykeyupdate />
+				<tooltip textres="hour_tooltip" />
+			</basicnumber>
+			<stringu name="name" source=".name">
+				<anchored height="20">
+					<top offset="2" />
+					<right parent="rightanchor" anchor="left" relation="relative" offset="-10" />
+					<left offset="10" />
+				</anchored>
+				<tabtarget next="nonid_name" prev="count" />
+			</stringu>
+		</sheetdata>
+	</windowclass>
+
+
+	<windowclass name="timedevent">
+		<frame>referencepage</frame>
+		<placement>
+			<size width="400" height="350" />
+		</placement>
+		<sizelimits>
+			<dynamic />
+		</sizelimits>
+		<minimize>minimized_reference</minimize>
+		<tooltip field="value" />
+		<softclose />
+		<sharable />
+		<script>
+			nString = "";
+			function onLockChanged()
+
+				local bReadOnly = WindowManager.getReadOnlyState(getDatabaseNode());
+				text.setReadOnly(bReadOnly);
+				hour.setReadOnly(bReadOnly);
+				minute.setReadOnly(bReadOnly);
+				day.setReadOnly(bReadOnly);
+				month.setReadOnly(bReadOnly);
+				year.setReadOnly(bReadOnly);
+				nMonth = (month.getValue() or 0);
+				nDay = (day.getValue() or 0);
+				nYear = (year.getValue() or 0);
+				if bDone == nil then
+					bDone = false;
+				end
+				if bDone == false then
+					if bReadOnly == true then
+						nString = (text.getValue() or "");
+						TimeManager.addLogEntry(nMonth, nDay, nYear, nString);
+						bDone = true;
+					end
+				end
+			end
+		</script>
+		<sheetdata>
+			<sub_record_header name="header">
+				<class>timedevents_header</class>
+			</sub_record_header>
+
+			<frame_record_content name="contentframe" />
+			<basicnumber name="hour" source="hour">
+				<anchored width="20" height="20">
+					<top parent="header" anchor="bottom" offset="10" />
+					<left offset="80" />
+				</anchored>
+				<delaykeyupdate />
+				<tabtarget prev="location" />
+				<tooltip textres="hour_tooltip" />
+			</basicnumber>
+
+			<basicnumber name="minute" source="minute">
+				<anchored to="hour" width="20" height="20">
+					<top />
+					<left parent="hour" anchor="right" offset="10" />
+				</anchored>
+				<delaykeyupdate />
+				<tabtarget prev="location" />
+				<tooltip textres="minute_tooltip" />
+			</basicnumber>
+			<basicnumber name="day" source="day">
+				<anchored to="minute" width="20" height="20">
+					<top />
+					<left parent="minute" anchor="right" offset="10" />
+				</anchored>
+				<delaykeyupdate />
+				<tabtarget prev="location" />
+				<tooltip textres="day_tooltip" />
+			</basicnumber>
+			<basicnumber name="month" source="month">
+				<anchored to="day" width="20" height="20">
+					<top />
+					<left parent="day" anchor="right" offset="10" />
+				</anchored>
+				<delaykeyupdate />
+				<tabtarget prev="location" />
+				<tooltip textres="month_tooltip" />
+			</basicnumber>
+			<basicnumber name="year" source="year">
+				<anchored to="month" width="40" height="20">
+					<top />
+					<left parent="month" anchor="right" offset="10" />
+				</anchored>
+				<delaykeyupdate />
+				<tabtarget prev="location" />
+				<tooltip textres="year_tooltip" />
+			</basicnumber>
+			<buttonfield name="isgmonly">
+				<anchored to="year" width="40" height="20">
+					<top />
+					<left parent="year" anchor="right" offset="10" />
+				</anchored>
+				<gmvisibleonly />
+				<state icon="visibilityon" tooltipres="visibilityon" />
+				<state icon="visibilityoff" tooltipres="visibilityoff" />
+			</buttonfield>
+			<buttoncontrol name="openlogentry">
+				<anchored to="isgmonly" position="right" offset="3,0" width="20" height="20" />
+				<icon normal="add_logentry" pressed="add_logentry_down" />
+				<tooltip textres="desktop_openlog_tooltip" />
+				<script>
+					function onButtonPress()
+						nMonth = (window.month.getValue() or 0);
+						nDay = (window.day.getValue() or 0);
+						nYear = (window.year.getValue() or 0);
+						if window.isgmonly.getValue() == 1 then
+							bGMVisible = true;
+						elseif window.isgmonly.getValue() == 0 then
+							bGMVisible = false;
+						end
+						local sName = DB.getValue(window.getDatabaseNode(), "name", "");
+						local nodeOld = TimeManager.addLogEntry(nMonth, nDay, nYear, bGMVisible, window.getDatabaseNode());
+
+					end
+				</script>
+			</buttoncontrol>
+			<button_text name="button_viewall">
+				<anchored to="openlogentry" position="righthigh" offset="5,0" width="70" height="20" />
+				<state text="View Logs" />
+				<script>
+					function onButtonPress()
+						Interface.openWindow("loglist", "calendar.log");
+					end
+				</script>
+			</button_text>
+
+			<ft_record name="text">
+				<anchored>
+					<top offset="110" />
+					<left offset="30" />
+					<right offset="-30" />
+					<bottom offset="-30" />
+				</anchored>
+				<empty textres="ft_empty" hidereadonly="true" />
+			</ft_record>
+			<scrollbar_record>
+				<target>text</target>
+			</scrollbar_record>
+
+			<resize_referencepage />
+			<close_referencepage />
+		</sheetdata>
+	</windowclass>
+
+	<windowclass name="timedevents_header">
+		<margins control="0,0,0,7" />
+		<softclose />
+		<sheetdata>
+			<link_record_header>
+				<class>timedevent</class>
+				<description field="name" />
+			</link_record_header>
+
+			<anchor_record_header_right name="rightanchor" />
+			<icon_record_locked />
+			<button_record_locked />
+
+			<string_record_name name="name" />
+		</sheetdata>
+	</windowclass>
+
+</root>
