@@ -156,9 +156,12 @@
 						end
 						CalendarManager.adjustHours(nHour);
 						if window.checkweather.getValue() == 1 then
-							TableManager.processTableRoll("", "Weather - Wind");
-							TableManager.processTableRoll("", "Weather - Temperature");
-							TableManager.processTableRoll("", "Weather - Precipitation");
+							local WeatherWind = "Weather - Wind";
+							local WeatherTemp = "Weather - Temperature";
+							local WeatherRain = "Weather - Precipitation";
+							TableManager.processTableRoll("", "Weather Wind");
+							TableManager.processTableRoll("", "Weather Temperature");
+							TableManager.processTableRoll("", "Weather Precipitation");
 						end
 						if DB.getValue(TimeManager.CAL_CHK_DAY) == nil or DB.getValue(TimeManager.CAL_CHK_DAY) ~= DB.getValue(TimeManager.CAL_CUR_DAY) then
 							CalendarManager.outputDate();
@@ -260,9 +263,12 @@
 						end
 						CalendarManager.adjustDays(nDay);
 						if window.checkweather.getValue() == 1 then
-							TableManager.processTableRoll("", "Weather - Wind");
-							TableManager.processTableRoll("", "Weather - Temperature");
-							TableManager.processTableRoll("", "Weather - Precipitation");
+							local WeatherWind = "Weather - Wind";
+							local WeatherTemp = "Weather - Temperature";
+							local WeatherRain = "Weather - Precipitation";
+							TableManager.processTableRoll("", "Weather Wind");
+							TableManager.processTableRoll("", "Weather Temperature");
+							TableManager.processTableRoll("", "Weather Precipitation");
 						end
 						if DB.getValue(TimeManager.CAL_CHK_DAY) == nil or DB.getValue(TimeManager.CAL_CHK_DAY) ~= DB.getValue(TimeManager.CAL_CUR_DAY) then
 							DB.setValue(TimeManager.CAL_CHK_DAY, "number", DB.getValue(TimeManager.CAL_CUR_DAY));
@@ -310,9 +316,12 @@
 
 						CalendarManager.adjustMonths(nMonth);
 						if window.checkweather.getValue() == 1 then
-							TableManager.processTableRoll("", "Weather - Wind");
-							TableManager.processTableRoll("", "Weather - Temperature");
-							TableManager.processTableRoll("", "Weather - Precipitation");
+							local WeatherWind = "Weather - Wind";
+							local WeatherTemp = "Weather - Temperature";
+							local WeatherRain = "Weather - Precipitation";
+							TableManager.processTableRoll("", "Weather Wind");
+							TableManager.processTableRoll("", "Weather Temperature");
+							TableManager.processTableRoll("", "Weather Precipitation");
 						end
 						if nMonth &gt; 0 then
 							CalendarManager.outputDate();
@@ -350,9 +359,12 @@
 
 						CalendarManager.adjustYears(nYear);
 						if window.checkweather.getValue() == 1 then
-							TableManager.processTableRoll("", "Weather - Wind");
-							TableManager.processTableRoll("", "Weather - Temperature");
-							TableManager.processTableRoll("", "Weather - Precipitation");
+							local WeatherWind = "Weather - Wind";
+							local WeatherTemp = "Weather - Temperature";
+							local WeatherRain = "Weather - Precipitation";
+							TableManager.processTableRoll("", "Weather Wind");
+							TableManager.processTableRoll("", "Weather Temperature");
+							TableManager.processTableRoll("", "Weather Precipitation");
 						end
 						if nYear &gt; 0 then
 							CalendarManager.outputDate();
@@ -394,9 +406,12 @@
 							LongTermEffects.advanceRoundsOnTimeChanged(nRounds)
 						end
 						if window.checkweather.getValue() == 1 then
-							TableManager.processTableRoll("", "Weather - Wind");
-							TableManager.processTableRoll("", "Weather - Temperature");
-							TableManager.processTableRoll("", "Weather - Precipitation");
+							local WeatherWind = "Weather - Wind";
+							local WeatherTemp = "Weather - Temperature";
+							local WeatherRain = "Weather - Precipitation";
+							TableManager.processTableRoll("", "Weather Wind");
+							TableManager.processTableRoll("", "Weather Temperature");
+							TableManager.processTableRoll("", "Weather Precipitation");
 						end
 						CalendarManager.adjustMinutes(nMinute);
 						CalendarManager.adjustHours(nHour);
@@ -449,9 +464,12 @@
 							DB.setValue(TimeManager.CAL_CHK_DAY, "number", DB.getValue(TimeManager.CAL_CUR_DAY));
 						end
 						if window.checkweather.getValue() == 1 then
-							TableManager.processTableRoll("", "Weather - Wind");
-							TableManager.processTableRoll("", "Weather - Temperature");
-							TableManager.processTableRoll("", "Weather - Precipitation");
+							local WeatherWind = "Weather - Wind";
+							local WeatherTemp = "Weather - Temperature";
+							local WeatherRain = "Weather - Precipitation";
+							TableManager.processTableRoll("", "Weather Wind");
+							TableManager.processTableRoll("", "Weather Temperature");
+							TableManager.processTableRoll("", "Weather Precipitation");
 						end
 
 						local nHours = getValue() or 0;
@@ -564,9 +582,12 @@
 								end
 							end
 							if window.checkweather.getValue() == 1 then
-								TableManager.processTableRoll("", "Weather - Wind");
-								TableManager.processTableRoll("", "Weather - Temperature");
-								TableManager.processTableRoll("", "Weather - Precipitation");
+								local WeatherWind = "Weather - Wind";
+								local WeatherTemp = "Weather - Temperature";
+								local WeatherRain = "Weather - Precipitation";
+								TableManager.processTableRoll("", "Weather Wind");
+								TableManager.processTableRoll("", "Weather Temperature");
+								TableManager.processTableRoll("", "Weather Precipitation");
 							end
 							if DB.getValue(TimeManager.CAL_CHK_DAY) == nil or DB.getValue(TimeManager.CAL_CHK_DAY) ~= DB.getValue(TimeManager.CAL_CUR_DAY) then
 								CalendarManager.outputDate();
@@ -607,9 +628,12 @@
 								end
 							end
 							if window.checkweather.getValue() == 1 then
-								TableManager.processTableRoll("", "Weather - Wind");
-								TableManager.processTableRoll("", "Weather - Temperature");
-								TableManager.processTableRoll("", "Weather - Precipitation");
+								local WeatherWind = "Weather - Wind";
+								local WeatherTemp = "Weather - Temperature";
+								local WeatherRain = "Weather - Precipitation";
+								TableManager.processTableRoll("", "Weather Wind");
+								TableManager.processTableRoll("", "Weather Temperature");
+								TableManager.processTableRoll("", "Weather Precipitation");
 							end
 							if DB.getValue(TimeManager.CAL_CHK_DAY) == nil or DB.getValue(TimeManager.CAL_CHK_DAY) ~= DB.getValue(TimeManager.CAL_CUR_DAY) then
 								CalendarManager.outputDate();
@@ -650,9 +674,12 @@
 								end
 							end
 							if window.checkweather.getValue() == 1 then
-								TableManager.processTableRoll("", "Weather - Wind");
-								TableManager.processTableRoll("", "Weather - Temperature");
-								TableManager.processTableRoll("", "Weather - Precipitation");
+								local WeatherWind = "Weather - Wind";
+								local WeatherTemp = "Weather - Temperature";
+								local WeatherRain = "Weather - Precipitation";
+								TableManager.processTableRoll("", "Weather Wind");
+								TableManager.processTableRoll("", "Weather Temperature");
+								TableManager.processTableRoll("", "Weather Precipitation");
 							end
 							if DB.getValue(TimeManager.CAL_CHK_DAY) == nil or DB.getValue(TimeManager.CAL_CHK_DAY) ~= DB.getValue(TimeManager.CAL_CUR_DAY) then
 								CalendarManager.outputDate();
@@ -694,9 +721,12 @@
 							end
 
 							if window.checkweather.getValue() == 1 then
-								TableManager.processTableRoll("", "Weather - Wind");
-								TableManager.processTableRoll("", "Weather - Temperature");
-								TableManager.processTableRoll("", "Weather - Precipitation");
+								local WeatherWind = "Weather - Wind";
+								local WeatherTemp = "Weather - Temperature";
+								local WeatherRain = "Weather - Precipitation";
+								TableManager.processTableRoll("", "Weather Wind");
+								TableManager.processTableRoll("", "Weather Temperature");
+								TableManager.processTableRoll("", "Weather Precipitation");
 							end
 							if DB.getValue(TimeManager.CAL_CHK_DAY) == nil or DB.getValue(TimeManager.CAL_CHK_DAY) ~= DB.getValue(TimeManager.CAL_CUR_DAY) then
 								CalendarManager.outputDate();
@@ -740,7 +770,7 @@
 				<values>
 					<maximum>1</maximum>
 				</values>
-				<tooltip text="Check Weather on Time Adjust; NOTE: You must have a table for each 'Weather - Wind', 'Weather - Temperature', and 'Weather - Precipitation'" />
+				<tooltip text="Check Weather on Time Adjust; NOTE: You must have a table for each 'Weather Wind', 'Weather Temperature', and 'Weather Precipitation'" />
 			</button_checkbox>
 		</sheetdata>
 	</windowclass>
