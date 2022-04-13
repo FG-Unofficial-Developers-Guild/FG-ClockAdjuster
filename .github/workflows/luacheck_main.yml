@@ -1,12 +1,17 @@
 on:
   push:
-    tags:
-      - '*'
+    paths:
+      - '**.lua' # Only run if pushed commits include a change to a Lua (.lua) file.
+      - 'extension.xml'
+  pull_request:
+    # Only run if pull request includes a change to a Lua (.lua) file.
+    paths:
+      - '**.lua'
   schedule:
     - cron: 0 0 * * *
   workflow_dispatch:
 
-name: Run Luacheck on Latest Release
+name: Run Luacheck on Default Branch
 
 jobs:
   getnames:
@@ -111,19 +116,10 @@ jobs:
     runs-on: ubuntu-latest
     needs: getnames
     steps:
-      - name: Checkout default branch
+      - name: Checkout repo
         uses: actions/checkout@v3
         with:
-          fetch-depth: 0
-
-      - name: Get Latest tag
-        id: previoustag
-        uses: WyriHaximus/github-action-get-previous-tag@v1
-
-      - name: Checkout latest tag
-        uses: actions/checkout@v3
-        with:
-          ref: ${{ steps.previoustag.outputs.tag }}
+          ref: ${{ github.event.repository.default_branch }}
 
       - name: Install Lua/LuaJIT
         uses: leafo/gh-actions-lua@v9
