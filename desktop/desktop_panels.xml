@@ -9,7 +9,231 @@
 		<dynamic />
 		<locked />
 	</panel>
-
+	<panel name="busylist" modes="client">
+		<class>busywindow</class>
+		<bounds>10,100,300,110</bounds>
+		<dynamic />
+		<locked />
+		<!-- <script>
+			function onInit()
+				if OptionsManager.isOption("BUSYWINDOWOPTION", "disabled") then
+					close();
+					setVisible(false);
+				else
+					setVisible(true);
+				end
+			end
+		</script> -->
+	</panel>
+	
+	<windowclass name="busywindow">
+		<frame>recordsheet</frame>
+		<placement>
+			<size width="500" height="30" />
+			<position x="260" y="30" />
+		</placement>
+		<sizelimits>
+			<dynamic />
+		</sizelimits>
+		<minimize>reminder_button</minimize>
+		<!-- <script>
+			function onInit()
+				if OptionsManager.isOption("BUSYWINDOWOPTION", "disabled") then
+					close();
+				end
+			end
+		</script> -->
+		<sheetdata>
+			<windowlist name="busylist">
+				<anchored>
+					<top offset="15" />
+					<left offset="15" />
+					<right offset="-40" />
+					<bottom offset="-15" />
+				</anchored>
+				<sortby><control>name</control></sortby>
+				<child><backcolor>1A40301E</backcolor></child>
+				<datasource>DB.busylist</datasource>
+				<class>list_busyentry</class>
+				<empty font="reference-r" text="Double-Click to add a Busy Action for active character. Only one per Active Character. Right-Click and navigate radial menu to lock/unlock/minimize" hidereadonly="true" />
+				<acceptdrop>
+					<class>list_busyentry</class>
+					<class>referencetext</class>
+					<class>referencetextwide</class>
+					<field>*</field>
+				</acceptdrop>
+				<allowcreate />
+				<allowdelete />
+				<ownedonly />
+				<script>
+					function onDoubleClick()
+						if not User.isHost() then
+							ReminderManager.notifyAddBusyNode();
+						end
+					end
+					function update()
+						for k,v in pairs(getWindows()) do
+							v.update();
+						end
+					end
+					
+				</script>
+			</windowlist>
+			<scrollbar>
+				<anchored to="busylist" />
+				<target>busylist</target>
+			</scrollbar>
+			<button_iedit name="busylist_iedit">
+				<anchored position="insidetopright" />
+				<target>busylist</target>
+			</button_iedit>
+		</sheetdata>
+	</windowclass>
+	
+	<windowclass name="list_busyentry">
+		<margins control="0,0,0,2" />
+		<softclose />
+		<script>
+			function onInit()
+			end
+			function update()
+				if windowlist.window.busylist_iedit.getValue() == 0 then
+					idelete.setVisible(false);
+				else
+					idelete.setVisible(true);
+				end
+			end
+		</script>
+		<sheetdata>
+			<genericcontrol name="rightanchor">
+				<anchored width="0" height="0">
+					<top />
+					<right />
+				</anchored>
+				<invisible />
+			</genericcontrol>
+			<button_idelete name="idelete">
+				<anchored width="20" height="20">
+					<top offset="2" />
+					<right parent="rightanchor" anchor="left" relation="relative" offset="-5" />
+				</anchored>
+			</button_idelete>
+			<buttonfield name="isgmonly" source=".isgmonly">
+				<anchored width="20" height="20">
+					<top offset="3" />
+					<right parent="rightanchor" anchor="left" relation="relative" offset="-5" />
+				</anchored>
+				<state icon="visibilityon" tooltipres="visibilityon" />
+				<state icon="visibilityoff" tooltipres="visibilityoff" />
+				
+			</buttonfield>
+			
+		
+			<buttoncontrol name="unitsbutton">
+				<anchored width="60" height="20">
+					<top offset="2" />
+					<right parent="rightanchor" anchor="left" relation="relative" offset="-10" />
+				</anchored>
+				<tooltip text="Measurement" />
+				<state text="Minutes" />
+				<state text="Hours" />
+				<state text="Days" />
+				<sourcefields>
+					<current>.units</current>
+				</sourcefields>
+				<frame name="fielddark" offset="0,0,0,0" />
+				<script>
+					function onInit()
+						update();
+					end
+					function onValueChanged()
+						DB.setValue(window.getDatabaseNode(), "units", "number", getValue());
+					end
+					function update()
+						setValue(DB.getValue(window.getDatabaseNode(), "units", 0));
+					end
+				</script>
+			</buttoncontrol>
+			<basicnumber name="units" source=".units">
+				<anchored height="20">
+					<top offset="2" />
+					<right parent="rightanchor" anchor="left" relation="relative" offset="-10" />
+				</anchored>
+				<script>
+					function onInit()
+						update();
+					end
+					function onValueChanged()
+						update();
+					end
+					function update()
+						window.unitsbutton.setValue(getValue());
+					end
+				</script>
+				<invisible />
+			</basicnumber>
+			<basicnumber name="duration" source=".duration">
+				<anchored height="20">
+					<top offset="2" />
+					<right parent="rightanchor" anchor="left" relation="relative" offset="-10" />
+				</anchored>
+				<script>
+					function onInit()
+						setValue(DB.getValue(window.getDatabaseNode(), "duration", 0));
+					end
+					function onValueChanged()
+						local CurrentDate = TimeManager.getCurrentRawDate();
+						local LastDate = TimeManager.getLastDate(window.getDatabaseNode(), CurrentDate);
+					end
+				</script>
+				<tooltip textres="duration_tooltip" />
+			</basicnumber>
+			<stringu name="actorname" source=".actorname">
+				<anchored width="80" height="20">
+					<top offset="2" />
+					<right parent="rightanchor" anchor="left" relation="relative" offset="-10" />
+				</anchored>
+				<invisible />
+				<script>
+					function onInit()
+						onValueChanged();
+					end
+					function onValueChanged()
+					
+						DB.setValue(window.getDatabaseNode(), "displayactorname", "string", DB.getValue(DB.findNode("charsheet." .. DB.getValue(window.getDatabaseNode(), "actorname", "")), "name", ""));
+					end
+				</script>
+			</stringu>
+			<stringu name="displayactorname" source=".displayactorname">
+				<anchored width="80" height="20">
+					<top offset="2" />
+					<right parent="rightanchor" anchor="left" relation="relative" offset="-10" />
+				</anchored>
+				<tooltip text="Actor. Double-Click to delete entry. Double-Click empty space to add entry for active character if one does not exist" />
+				<script>
+					function onDoubleClick()
+						DB.deleteNode(window.getDatabaseNode());
+					end
+				</script>
+				<readonly />
+			</stringu>
+			<stringu name="name" source=".name">
+				<anchored height="20">
+					<top offset="2" />
+					<right parent="rightanchor" anchor="left" relation="relative" offset="-10" />
+					<left offset="10" />
+				</anchored>
+				<tooltip text="Action you are busy with. Double-Click to delete entry. Double-Click empty space to add entry for active character if one does not exist" />
+				<script>
+					
+					function onDoubleClick()
+						DB.deleteNode(window.getDatabaseNode());
+					end
+				</script>
+			</stringu>
+		</sheetdata>
+	</windowclass>
+	
 	<windowclass name="chattime">
 		<frame>recordsheet</frame>
 		<size width="260" height="110" />
@@ -30,14 +254,14 @@
 				triggers to work correctly on campaign open, otherwise they don't work until opened manually. -->
 				<script>
 					function onInit()
-						if not DB.getValue(TimeManager.CAL_NEWCAMPAIGN, 0) == 1 then
+						if not DB.getValue(TimeManager.CAL_NEWCAMPAIGN,0) == 1 then
 							local nYear = DB.getValue(TimeManager.CAL_CUR_YEAR);
 							if not nYear then
-								DB.setValue(TimeManager.CAL_CUR_YEAR, "number", 0);
+								DB.setValue(TimeManager.CAL_CUR_YEAR,"number", 0);
 							end
 							local nMonth = DB.getValue(TimeManager.CAL_CUR_MONTH);
 							if not nMonth or nMonth == 0 then
-								DB.setValue(TimeManager.CAL_CUR_MONTH, "number", 1);
+								DB.setValue(TimeManager.CAL_CUR_MONTH,"number", 1);
 							end
 							local nDay = DB.getValue(TimeManager.CAL_CUR_DAY);
 							if not nDay then
@@ -51,13 +275,11 @@
 							if not nHour then
 								DB.setValue(TimeManager.CAL_CUR_HOUR, "number", 0);
 							end
-							Interface.openWindow("calendar", "DB");
+							Interface.openWindow("calendar", "calendar");
 							DB.setValue(TimeManager.CAL_NEWCAMPAIGN, "number", 1);
 						end
 						DB.addHandler(TimeManager.CAL_CUR_HOUR, "onUpdate", onSourceChanged);
 						onSourceChanged();
-						local nDateinMinutes = TimeManager.getCurrentDateinMinutes();
-						DB.setValue(TimeManager.CAL_DATEINMIN, "number", nDateinMinutes);
 
 						Interface.openWindow("timedevents", "DB");
 						Interface.toggleWindow("timedevents", "DB");
@@ -147,41 +369,31 @@
 					end
 					function onDoubleClick()
 						local nHour = getValue() or 0;
-						local nRounds = nHour * 600;
+						
+						local nTurnLength = tonumber(OptionsManager.getOption("ROUNDLENGTH"));
+						local nRoundMod = 60 / nTurnLength;
+						local nRounds = ((nHour * 60) * 60) / nTurnLength;
 
+						CalendarManager.adjustHours(nHour);
+						
 						if OptionsManager.isOption('TIMEROUNDS', 'slow') and nRounds &lt; 4801 then
 							CombatManager.nextRound(nRounds, true);
 						else
 							LongTermEffects.advanceRoundsOnTimeChanged(nRounds)
 						end
-						CalendarManager.adjustHours(nHour);
-						if window.checkweather.getValue() == 1 then
-							local WeatherWind = "Weather - Wind";
-							local WeatherTemp = "Weather - Temperature";
-							local WeatherRain = "Weather - Precipitation";
-							TableManager.processTableRoll("", "Weather Wind");
-							TableManager.processTableRoll("", "Weather Temperature");
-							TableManager.processTableRoll("", "Weather Precipitation");
-						end
+						TimeManager.TimeChanged();
+						TimeManager.checkWeather();
 						if DB.getValue(TimeManager.CAL_CHK_DAY) == nil or DB.getValue(TimeManager.CAL_CHK_DAY) ~= DB.getValue(TimeManager.CAL_CUR_DAY) then
-							CalendarManager.outputDate();
+							TimeManager.outputDate();
 							DB.setValue(TimeManager.CAL_CHK_DAY, "number", DB.getValue(TimeManager.CAL_CUR_DAY));
 						end
 						if nHour &gt; 0 then
-							CalendarManager.outputTime();
+							TimeManager.outputTime();
 						end
-						onUpdate();
-					end
-					local bTimeStep = false;
-					function onUpdate()
-						bTimeStep = true;
-
-						local nDateinMinutes = TimeManager.getCurrentDateinMinutes();
-						DB.setValue(TimeManager.CAL_DATEINMIN, "number", nDateinMinutes);
 
 						local nCurrentRound = DB.getValue(CombatManager.CT_ROUND, 0);
-						nCurrentRound = nCurrentRound % 10
-						DB.setValue(CombatManager.CT_ROUND, 'number', nCurrentRound);
+						nCurrentRound = nCurrentRound % nRoundMod
+						DB.setValue(CombatManager.CT_ROUND, "number", nCurrentRound);
 
 						DB.setValue("calendar.addhour", "number", getValue() or 0);
 					end
@@ -204,33 +416,28 @@
 					end
 					function onDoubleClick()
 						local nMinute = getValue() or 0;
-						local nRounds = nMinute * 10;
-
+						local nTurnLength = tonumber(OptionsManager.getOption("ROUNDLENGTH"));
+						local nRoundMod = 60 / nTurnLength;
+						
+						local nRounds = (nMinute * 60) / nTurnLength;
+						CalendarManager.adjustMinutes(nMinute);
+						
+						TimeManager.TimeChanged();
 						if OptionsManager.isOption('TIMEROUNDS', 'slow') and nRounds &lt; 4801 then
 							CombatManager.nextRound(nRounds, true);
 						else
 							LongTermEffects.advanceRoundsOnTimeChanged(nRounds)
 						end
-						CalendarManager.adjustMinutes(nMinute);
 						if DB.getValue(TimeManager.CAL_CHK_DAY) == nil or DB.getValue(TimeManager.CAL_CHK_DAY) ~= DB.getValue(TimeManager.CAL_CUR_DAY) then
-							CalendarManager.outputDate();
+							TimeManager.outputDate();
 							DB.setValue(TimeManager.CAL_CHK_DAY, "number", DB.getValue(TimeManager.CAL_CUR_DAY));
 						end
 						if nMinute &gt; 0 then
-							CalendarManager.outputTime();
+							TimeManager.outputTime();
 						end
-						onUpdate();
-					end
-					local bTimeStep = false;
-					function onUpdate()
-						bTimeStep = true;
-
-						local nDateinMinutes = TimeManager.getCurrentDateinMinutes();
-						DB.setValue(TimeManager.CAL_DATEINMIN, "number", nDateinMinutes);
-
 						local nCurrentRound = DB.getValue(CombatManager.CT_ROUND, 0);
-						nCurrentRound = nCurrentRound % 10
-						DB.setValue(CombatManager.CT_ROUND, 'number', nCurrentRound);
+						nCurrentRound = nCurrentRound % nRoundMod
+						DB.setValue(CombatManager.CT_ROUND, "number", nCurrentRound);
 
 						DB.setValue("calendar.addminute", "number", getValue() or 0);
 					end
@@ -254,40 +461,29 @@
 
 					function onDoubleClick()
 						local nDay = getValue() or 0;
-						local nRounds = nDay * 14400;
+						local nTurnLength = tonumber(OptionsManager.getOption("ROUNDLENGTH"));
+						local nRoundMod = 60 / nTurnLength;
+						local nRounds = (nDay * 14400) / nTurnLength;
 
+						CalendarManager.adjustDays(nDay);
+						
 						if OptionsManager.isOption('TIMEROUNDS', 'slow') and nRounds &lt; 4801 then
 							CombatManager.nextRound(nRounds, true);
 						else
 							LongTermEffects.advanceRoundsOnTimeChanged(nRounds)
 						end
-						CalendarManager.adjustDays(nDay);
-						if window.checkweather.getValue() == 1 then
-							local WeatherWind = "Weather - Wind";
-							local WeatherTemp = "Weather - Temperature";
-							local WeatherRain = "Weather - Precipitation";
-							TableManager.processTableRoll("", "Weather Wind");
-							TableManager.processTableRoll("", "Weather Temperature");
-							TableManager.processTableRoll("", "Weather Precipitation");
-						end
+						TimeManager.TimeChanged();
+						TimeManager.checkWeather();
 						if DB.getValue(TimeManager.CAL_CHK_DAY) == nil or DB.getValue(TimeManager.CAL_CHK_DAY) ~= DB.getValue(TimeManager.CAL_CUR_DAY) then
 							DB.setValue(TimeManager.CAL_CHK_DAY, "number", DB.getValue(TimeManager.CAL_CUR_DAY));
 						end
 						if nDay &gt; 0 then
-							CalendarManager.outputDate();
+							TimeManager.outputDate();
 						end
-						onUpdate();
-					end
-					local bTimeStep = false;
-					function onUpdate()
-						bTimeStep = true;
-
-						local nDateinMinutes = TimeManager.getCurrentDateinMinutes();
-						DB.setValue(TimeManager.CAL_DATEINMIN, "number", nDateinMinutes);
 
 						local nCurrentRound = DB.getValue(CombatManager.CT_ROUND, 0);
-						nCurrentRound = nCurrentRound % 10
-						DB.setValue(CombatManager.CT_ROUND, 'number', nCurrentRound);
+						nCurrentRound = nCurrentRound % nRoundMod
+						DB.setValue(CombatManager.CT_ROUND, "number", nCurrentRound);
 
 						DB.setValue("calendar.addday", "number", getValue() or 0);
 					end
@@ -306,38 +502,39 @@
 					end
 					function onDoubleClick()
 						local nMonth = getValue() or 0;
-						local nRounds = nMonth * 432000;
+						
+						local nTurnLength = tonumber(OptionsManager.getOption("ROUNDLENGTH"));
+						local nRoundMod = 60 / nTurnLength;
+						local aCurrentDate = TimeManager.getCurrentRawDate();
+						local aNextDate = TimeManager.getCurrentRawDate();
+						local nMonthsinYear = CalendarManager.getMonthsInYear();
+						if (aNextDate.nMonth + 1) > nMonthsinYear then
+							aNextDate.nMonth = 1;
+							aNextDate.nYear = aNextDate.nYear + 1;
+						else
+							aNextDate.nMonth = aNextDate.nMonth + 1;
+						end
+						local nMinuteDifference = TimeManager.getRawDateDifferences(aNextDate, aCurrentDate);
+						
+						local nRounds = (nMinuteDifference * 60) / nTurnLength;
 
+
+						CalendarManager.adjustMonths(nMonth);
+						TimeManager.TimeChanged();
+						
 						if OptionsManager.isOption('TIMEROUNDS', 'slow') and nRounds &lt; 4801 then
 							CombatManager.nextRound(nRounds, true);
 						else
 							LongTermEffects.advanceRoundsOnTimeChanged(nRounds)
 						end
-
-						CalendarManager.adjustMonths(nMonth);
-						if window.checkweather.getValue() == 1 then
-							local WeatherWind = "Weather - Wind";
-							local WeatherTemp = "Weather - Temperature";
-							local WeatherRain = "Weather - Precipitation";
-							TableManager.processTableRoll("", "Weather Wind");
-							TableManager.processTableRoll("", "Weather Temperature");
-							TableManager.processTableRoll("", "Weather Precipitation");
-						end
+						TimeManager.checkWeather();
 						if nMonth &gt; 0 then
-							CalendarManager.outputDate();
+							TimeManager.outputDate();
 						end
-						onUpdate();
-					end
-					local bTimeStep = false;
-					function onUpdate()
-						bTimeStep = true;
-
-						local nDateinMinutes = TimeManager.getCurrentDateinMinutes();
-						DB.setValue(TimeManager.CAL_DATEINMIN, "number", nDateinMinutes);
 
 						local nCurrentRound = DB.getValue(CombatManager.CT_ROUND, 0);
-						nCurrentRound = nCurrentRound % 10
-						DB.setValue(CombatManager.CT_ROUND, 'number', nCurrentRound);
+						nCurrentRound = nCurrentRound % nRoundMod
+						DB.setValue(CombatManager.CT_ROUND, "number", nCurrentRound);
 
 						DB.setValue("calendar.addmonth", "number", getValue() or 0);
 					end
@@ -356,33 +553,24 @@
 					end
 					function onDoubleClick()
 						local nYear = (window.addyear.getValue() or 0);
-
+						local nTurnLength = tonumber(OptionsManager.getOption("ROUNDLENGTH"));
+						local nRoundMod = 60 / nTurnLength;
+						
 						CalendarManager.adjustYears(nYear);
-						if window.checkweather.getValue() == 1 then
-							local WeatherWind = "Weather - Wind";
-							local WeatherTemp = "Weather - Temperature";
-							local WeatherRain = "Weather - Precipitation";
-							TableManager.processTableRoll("", "Weather Wind");
-							TableManager.processTableRoll("", "Weather Temperature");
-							TableManager.processTableRoll("", "Weather Precipitation");
-						end
+						
+						TimeManager.TimeChanged();
+						TimeManager.checkWeather();
 						if nYear &gt; 0 then
-							CalendarManager.outputDate();
+							TimeManager.outputDate();
 						end
-						onUpdate();
-					end
-					local bTimeStep = false;
-					function onUpdate()
-						bTimeStep = true;
 
-						local nDateinMinutes = TimeManager.getCurrentDateinMinutes();
-						DB.setValue(TimeManager.CAL_DATEINMIN, "number", nDateinMinutes);
 
 						local nCurrentRound = DB.getValue(CombatManager.CT_ROUND, 0);
-						nCurrentRound = nCurrentRound % 10
-						DB.setValue(CombatManager.CT_ROUND, 'number', nCurrentRound);
+						nCurrentRound = nCurrentRound % nRoundMod
+						DB.setValue(CombatManager.CT_ROUND, "number", nCurrentRound);
 
 						DB.setValue("calendar.addyear", "number", getValue() or 0);
+						
 					end
 				</script>
 			</basicnumber>
@@ -398,40 +586,42 @@
 						local nDay = window.addday.getValue() or 0;
 						local nMonth = window.addmonth.getValue() or 0;
 						local nYear = window.addyear.getValue() or 0;
-						local nRounds = (nHour * 600) + (nMinute * 10) + (nDay * 14400) + (nMonth * 403200);
-
-						if OptionsManager.isOption('TIMEROUNDS', 'slow') and nRounds &lt; 4801 then
-							CombatManager.nextRound(nRounds, true);
+						local nTurnLength = tonumber(OptionsManager.getOption("ROUNDLENGTH"));
+						local nRoundMod = 60 / nTurnLength;
+						
+						local aCurrentDate = TimeManager.getCurrentRawDate();
+						local aNextDate = TimeManager.getCurrentRawDate();
+						local nMonthsinYear = CalendarManager.getMonthsInYear();
+						if (aNextDate.nMonth + 1) > nMonthsinYear then
+							aNextDate.nMonth = 1;
+							aNextDate.nYear = aNextDate.nYear + 1;
 						else
-							LongTermEffects.advanceRoundsOnTimeChanged(nRounds)
+							aNextDate.nMonth = aNextDate.nMonth + 1;
 						end
-						if window.checkweather.getValue() == 1 then
-							local WeatherWind = "Weather - Wind";
-							local WeatherTemp = "Weather - Temperature";
-							local WeatherRain = "Weather - Precipitation";
-							TableManager.processTableRoll("", "Weather Wind");
-							TableManager.processTableRoll("", "Weather Temperature");
-							TableManager.processTableRoll("", "Weather Precipitation");
-						end
+						local nMinuteDifference = TimeManager.getRawDateDifferences(aNextDate, aCurrentDate);
+						
+						local nRounds = ((nHour * 600) + (nMinute * 60) + (nDay * 14400) + (nMinuteDifference * 60)) / nTurnLength;
+
+						
+						TimeManager.checkWeather()
 						CalendarManager.adjustMinutes(nMinute);
 						CalendarManager.adjustHours(nHour);
 						CalendarManager.adjustDays(nDay);
 						CalendarManager.adjustMonths(nMonth);
 						CalendarManager.adjustYears(nYear);
-						CalendarManager.outputDate();
-						CalendarManager.outputTime();
-						onUpdate();
-					end
-					local bTimeStep = false;
-					function onUpdate()
-						bTimeStep = true;
+						TimeManager.outputDate();
+						TimeManager.outputTime();
 
-						local nDateinMinutes = TimeManager.getCurrentDateinMinutes();
-						DB.setValue(TimeManager.CAL_DATEINMIN, "number", nDateinMinutes);
-
+						TimeManager.TimeChanged();
+						if OptionsManager.isOption('TIMEROUNDS', 'slow') and nRounds &lt; 4801 then
+							CombatManager.nextRound(nRounds, true);
+						else
+							LongTermEffects.advanceRoundsOnTimeChanged(nRounds)
+						end
 						local nCurrentRound = DB.getValue(CombatManager.CT_ROUND, 0);
-						nCurrentRound = nCurrentRound % 10
-						DB.setValue(CombatManager.CT_ROUND, 'number', nCurrentRound);
+						nCurrentRound = nCurrentRound % nRoundMod
+						DB.setValue(CombatManager.CT_ROUND, "number", nCurrentRound);
+						
 					end
 				</script>
 				<center />
@@ -453,51 +643,47 @@
 						if not bIsbLong and not bIsbShort then
 							setVisible(false);
 						else
-							setValue(DB.getValue(DB.findNode('calendar'), 'lastlongrest', 0))
+							setValue(DB.getValue(DB.findNode("calendar"), "lastlongrest", 0))
  						end
 					end
 					function onDoubleClick()
-						CalendarManager.adjustHours((getValue() or 0));
-
-						if DB.getValue(TimeManager.CAL_CHK_DAY) == nil or DB.getValue(TimeManager.CAL_CHK_DAY) ~= DB.getValue(TimeManager.CAL_CUR_DAY) then
-							CalendarManager.outputDate();
-							DB.setValue(TimeManager.CAL_CHK_DAY, "number", DB.getValue(TimeManager.CAL_CUR_DAY));
-						end
-						if window.checkweather.getValue() == 1 then
-							local WeatherWind = "Weather - Wind";
-							local WeatherTemp = "Weather - Temperature";
-							local WeatherRain = "Weather - Precipitation";
-							TableManager.processTableRoll("", "Weather Wind");
-							TableManager.processTableRoll("", "Weather Temperature");
-							TableManager.processTableRoll("", "Weather Precipitation");
-						end
-
+						
+						local nTurnLength = tonumber(OptionsManager.getOption("ROUNDLENGTH"));
+						local nRoundMod = 60 / nTurnLength;
 						local nHours = getValue() or 0;
-						local nRounds = nHours * 600;
+						local nRounds = ((nHours * 60) * 60) / nTurnLength;
 
-						if OptionsManager.isOption('TIMEROUNDS', 'slow') and nRounds &lt; 4801 then
+						
+
+						DB.setValue(DB.findNode('calendar'), "lastlongrest", "number", nHours)
+						
+						CalendarManager.adjustHours((getValue() or 0));
+						
+						TimeManager.TimeChanged();
+						
+						if OptionsManager.isOption("TIMEROUNDS", "slow") and nRounds &lt; 4801 then
 							CombatManager.nextRound(nRounds, true);
 						else
 							LongTermEffects.advanceRoundsOnTimeChanged(nRounds);
 						end
-
-						DB.setValue(DB.findNode('calendar'), 'lastlongrest', 'number', nHours)
-
-						CalendarManager.outputTime();
+						if DB.getValue(TimeManager.CAL_CHK_DAY) == nil or DB.getValue(TimeManager.CAL_CHK_DAY) ~= DB.getValue(TimeManager.CAL_CUR_DAY) then
+							TimeManager.outputDate();
+							DB.setValue(TimeManager.CAL_CHK_DAY, "number", DB.getValue(TimeManager.CAL_CUR_DAY));
+						end
+						TimeManager.outputTime();
 						ChatManager.Message(Interface.getString("ct_message_restlong") or Interface.getString("ct_message_restovernight") or Interface.getString("ct_message_restextended") or "Long Rest", true);
-
+						
 						if bIsbLong then
 							CombatManager2.rest(true);
 						elseif bIsbShort then
 							CombatManager2.rest();
 						end
-
-						local nDateinMinutes = TimeManager.getCurrentDateinMinutes();
-						DB.setValue(TimeManager.CAL_DATEINMIN, "number", nDateinMinutes);
+						TimeManager.checkWeather();
 
 						local nCurrentRound = DB.getValue(CombatManager.CT_ROUND, 0);
-						nCurrentRound = nCurrentRound % 10
-						DB.setValue(CombatManager.CT_ROUND, 'number', nCurrentRound);
+						nCurrentRound = nCurrentRound % nRoundMod
+						DB.setValue(CombatManager.CT_ROUND, "number", nCurrentRound);
+						
 					end
 				</script>
 			</basicnumber>
@@ -518,29 +704,34 @@
 						if not bIsbLong and not bIsbShort then
 							setVisible(false);
 						else
-							setValue(DB.getValue(DB.findNode('calendar'), 'lastshortrest', 0))
+							setValue(DB.getValue(DB.findNode("calendar"), "lastshortrest", 0))
  						end
 					end
 					function onDoubleClick()
-						CalendarManager.adjustMinutes((getValue() or 0));
 
-						if DB.getValue(TimeManager.CAL_CHK_DAY) == nil or DB.getValue(TimeManager.CAL_CHK_DAY) ~= DB.getValue(TimeManager.CAL_CUR_DAY) then
-							CalendarManager.outputDate();
-							DB.setValue(TimeManager.CAL_CHK_DAY, "number", DB.getValue(TimeManager.CAL_CUR_DAY));
-						end
-
+						local nTurnLength = tonumber(OptionsManager.getOption("ROUNDLENGTH"));
+						local nRoundMod = 60 / nTurnLength;
 						local nMinutes = getValue() or 0
-						local nRounds = nMinutes * 10;
+						local nRounds = (nMinutes * 60) / nTurnLength;
 
+						
+
+						DB.setValue(DB.findNode("calendar"), "lastshortrest", "number", nMinutes)
+						
+						CalendarManager.adjustMinutes((getValue() or 0));
+						
+						TimeManager.TimeChanged();
+						
 						if OptionsManager.isOption('TIMEROUNDS', 'slow') and nRounds &lt; 4801 then
 							CombatManager.nextRound(nRounds, true);
 						else
 							LongTermEffects.advanceRoundsOnTimeChanged(nRounds)
 						end
-
-						DB.setValue(DB.findNode('calendar'), 'lastshortrest', 'number', nMinutes)
-
-						CalendarManager.outputTime();
+						if DB.getValue(TimeManager.CAL_CHK_DAY) == nil or DB.getValue(TimeManager.CAL_CHK_DAY) ~= DB.getValue(TimeManager.CAL_CUR_DAY) then
+							TimeManager.outputDate();
+							DB.setValue(TimeManager.CAL_CHK_DAY, "number", DB.getValue(TimeManager.CAL_CUR_DAY));
+						end
+						TimeManager.outputTime();
 						ChatManager.Message(Interface.getString("ct_message_rest") or Interface.getString("menu_restshort"), true);
 
 						if bIsbLong then
@@ -549,12 +740,9 @@
 							CombatManager2.rest(true);
 						end
 
-						local nDateinMinutes = TimeManager.getCurrentDateinMinutes();
-						DB.setValue(TimeManager.CAL_DATEINMIN, "number", nDateinMinutes);
-
 						local nCurrentRound = DB.getValue(CombatManager.CT_ROUND, 0);
-						nCurrentRound = nCurrentRound % 10
-						DB.setValue(CombatManager.CT_ROUND, 'number', nCurrentRound);
+						nCurrentRound = nCurrentRound % nRoundMod
+						DB.setValue(CombatManager.CT_ROUND, "number", nCurrentRound);
 					end
 				</script>
 			</basicnumber>
@@ -567,7 +755,8 @@
 					function onButtonPress()
 						local nCurrentHour = DB.getValue(TimeManager.CAL_CUR_HOUR, 0);
 						local nCurrentMinute = DB.getValue(TimeManager.CAL_CUR_MIN, 0);
-
+						local nTurnLength = tonumber(OptionsManager.getOption("ROUNDLENGTH"));
+						local nRoundMod = 60 / nTurnLength;
 						if TimeManager.getCurrentDate() then
 							if nCurrentHour &gt;= 6 then
 								DB.setValue(TimeManager.CAL_CUR_HOUR, "number", 6);
@@ -581,26 +770,25 @@
 									DB.setValue(TimeManager.CAL_CUR_MIN, "number", 0);
 								end
 							end
-							if window.checkweather.getValue() == 1 then
-								local WeatherWind = "Weather - Wind";
-								local WeatherTemp = "Weather - Temperature";
-								local WeatherRain = "Weather - Precipitation";
-								TableManager.processTableRoll("", "Weather Wind");
-								TableManager.processTableRoll("", "Weather Temperature");
-								TableManager.processTableRoll("", "Weather Precipitation");
-							end
+							
+							TimeManager.checkWeather();
 							if DB.getValue(TimeManager.CAL_CHK_DAY) == nil or DB.getValue(TimeManager.CAL_CHK_DAY) ~= DB.getValue(TimeManager.CAL_CUR_DAY) then
-								CalendarManager.outputDate();
+								TimeManager.outputDate();
 								DB.setValue(TimeManager.CAL_CHK_DAY, "number", DB.getValue(TimeManager.CAL_CUR_DAY));
 							end
-							CalendarManager.outputTime();
-
-							local nDateinMinutes = TimeManager.getCurrentDateinMinutes();
-							DB.setValue(TimeManager.CAL_DATEINMIN, "number", nDateinMinutes);
+							TimeManager.outputTime();
 
 							local nCurrentRound = DB.getValue(CombatManager.CT_ROUND, 0);
-							nCurrentRound = nCurrentRound % 10
-							DB.setValue(CombatManager.CT_ROUND, 'number', nCurrentRound);
+							nCurrentRound = nCurrentRound % nRoundMod
+							DB.setValue(CombatManager.CT_ROUND, "number", nCurrentRound);
+							local nMinutes = TimeManager.TimeChanged()
+							local nRounds = (nMinutes * 60) / nTurnLength;
+
+							if OptionsManager.isOption('TIMEROUNDS', 'slow') then
+								CombatManager.nextRound(nRounds, true);
+							else
+								LongTermEffects.advanceRoundsOnTimeChanged(nRounds)
+							end
 						end
 					end
 				</script>
@@ -613,6 +801,8 @@
 					function onButtonPress()
 						local nCurrentHour = DB.getValue(TimeManager.CAL_CUR_HOUR, 0);
 						local nCurrentMinute = DB.getValue(TimeManager.CAL_CUR_MIN, 0);
+						local nTurnLength = tonumber(OptionsManager.getOption("ROUNDLENGTH"));
+						local nRoundMod = 60 / nTurnLength;
 
 						if TimeManager.getCurrentDate() then
 							if nCurrentHour &gt;= 12 then
@@ -627,26 +817,26 @@
 									DB.setValue(TimeManager.CAL_CUR_MIN, "number", 0);
 								end
 							end
-							if window.checkweather.getValue() == 1 then
-								local WeatherWind = "Weather - Wind";
-								local WeatherTemp = "Weather - Temperature";
-								local WeatherRain = "Weather - Precipitation";
-								TableManager.processTableRoll("", "Weather Wind");
-								TableManager.processTableRoll("", "Weather Temperature");
-								TableManager.processTableRoll("", "Weather Precipitation");
-							end
+							
+							TimeManager.checkWeather();
 							if DB.getValue(TimeManager.CAL_CHK_DAY) == nil or DB.getValue(TimeManager.CAL_CHK_DAY) ~= DB.getValue(TimeManager.CAL_CUR_DAY) then
-								CalendarManager.outputDate();
+								TimeManager.outputDate();
 								DB.setValue(TimeManager.CAL_CHK_DAY, "number", DB.getValue(TimeManager.CAL_CUR_DAY));
 							end
-							CalendarManager.outputTime();
-
-							local nDateinMinutes = TimeManager.getCurrentDateinMinutes();
-							DB.setValue(TimeManager.CAL_DATEINMIN, "number", nDateinMinutes);
+							TimeManager.outputTime();
+							
 
 							local nCurrentRound = DB.getValue(CombatManager.CT_ROUND, 0);
-							nCurrentRound = nCurrentRound % 10
-							DB.setValue(CombatManager.CT_ROUND, 'number', nCurrentRound);
+							nCurrentRound = nCurrentRound % nRoundMod
+							DB.setValue(CombatManager.CT_ROUND, "number", nCurrentRound);
+							local nMinutes = TimeManager.TimeChanged()
+							local nRounds = (nMinutes * 60) / nTurnLength;
+
+							if OptionsManager.isOption('TIMEROUNDS', 'slow') then
+								CombatManager.nextRound(nRounds, true);
+							else
+								LongTermEffects.advanceRoundsOnTimeChanged(nRounds)
+							end
 						end
 					end
 				</script>
@@ -659,6 +849,8 @@
 					function onButtonPress()
 						local nCurrentHour = DB.getValue(TimeManager.CAL_CUR_HOUR, 0);
 						local nCurrentMinute = DB.getValue(TimeManager.CAL_CUR_MIN, 0);
+						local nTurnLength = tonumber(OptionsManager.getOption("ROUNDLENGTH"));
+						local nRoundMod = 60 / nTurnLength;
 
 						if TimeManager.getCurrentDate() then
 							if nCurrentHour &gt;= 18 then
@@ -673,26 +865,27 @@
 									DB.setValue(TimeManager.CAL_CUR_MIN, "number", 0);
 								end
 							end
-							if window.checkweather.getValue() == 1 then
-								local WeatherWind = "Weather - Wind";
-								local WeatherTemp = "Weather - Temperature";
-								local WeatherRain = "Weather - Precipitation";
-								TableManager.processTableRoll("", "Weather Wind");
-								TableManager.processTableRoll("", "Weather Temperature");
-								TableManager.processTableRoll("", "Weather Precipitation");
-							end
+							
+							TimeManager.checkWeather();
 							if DB.getValue(TimeManager.CAL_CHK_DAY) == nil or DB.getValue(TimeManager.CAL_CHK_DAY) ~= DB.getValue(TimeManager.CAL_CUR_DAY) then
-								CalendarManager.outputDate();
+								TimeManager.outputDate();
 								DB.setValue(TimeManager.CAL_CHK_DAY, "number", DB.getValue(TimeManager.CAL_CUR_DAY));
 							end
-							CalendarManager.outputTime();
+							TimeManager.outputTime();
 
-							local nDateinMinutes = TimeManager.getCurrentDateinMinutes();
-							DB.setValue(TimeManager.CAL_DATEINMIN, "number", nDateinMinutes);
 
 							local nCurrentRound = DB.getValue(CombatManager.CT_ROUND, 0);
-							nCurrentRound = nCurrentRound % 10
-							DB.setValue(CombatManager.CT_ROUND, 'number', nCurrentRound);
+							nCurrentRound = nCurrentRound % nRoundMod
+							DB.setValue(CombatManager.CT_ROUND, "number", nCurrentRound);
+							local nMinutes = TimeManager.TimeChanged()
+							local nRounds = (nMinutes * 60) / nTurnLength;
+
+							if OptionsManager.isOption('TIMEROUNDS', 'slow') then
+								CombatManager.nextRound(nRounds, true);
+							else
+								LongTermEffects.advanceRoundsOnTimeChanged(nRounds)
+							end
+							
 						end
 					end
 				</script>
@@ -705,6 +898,8 @@
 					function onButtonPress()
 						local nCurrentHour = DB.getValue(TimeManager.CAL_CUR_HOUR, 0);
 						local nCurrentMinute = DB.getValue(TimeManager.CAL_CUR_MIN, 0);
+						local nTurnLength = tonumber(OptionsManager.getOption("ROUNDLENGTH"));
+						local nRoundMod = 60 / nTurnLength;
 
 						if TimeManager.getCurrentDate() then
 							if nCurrentHour &gt;= 0 then
@@ -720,26 +915,26 @@
 								end
 							end
 
-							if window.checkweather.getValue() == 1 then
-								local WeatherWind = "Weather - Wind";
-								local WeatherTemp = "Weather - Temperature";
-								local WeatherRain = "Weather - Precipitation";
-								TableManager.processTableRoll("", "Weather Wind");
-								TableManager.processTableRoll("", "Weather Temperature");
-								TableManager.processTableRoll("", "Weather Precipitation");
-							end
+							
+							TimeManager.checkWeather();
 							if DB.getValue(TimeManager.CAL_CHK_DAY) == nil or DB.getValue(TimeManager.CAL_CHK_DAY) ~= DB.getValue(TimeManager.CAL_CUR_DAY) then
-								CalendarManager.outputDate();
+								TimeManager.outputDate();
 								DB.setValue(TimeManager.CAL_CHK_DAY, "number", DB.getValue(TimeManager.CAL_CUR_DAY));
 							end
-							CalendarManager.outputTime();
+							TimeManager.outputTime();
 
-							local nDateinMinutes = TimeManager.getCurrentDateinMinutes();
-							DB.setValue(TimeManager.CAL_DATEINMIN, "number", nDateinMinutes);
 
 							local nCurrentRound = DB.getValue(CombatManager.CT_ROUND, 0);
-							nCurrentRound = nCurrentRound % 10
-							DB.setValue(CombatManager.CT_ROUND, 'number', nCurrentRound);
+							nCurrentRound = nCurrentRound % nRoundMod
+							DB.setValue(CombatManager.CT_ROUND, "number", nCurrentRound);
+							local nMinutes = TimeManager.TimeChanged()
+							local nRounds = (nMinutes * 60) / nTurnLength;
+
+							if OptionsManager.isOption('TIMEROUNDS', 'slow') then
+								CombatManager.nextRound(nRounds, true);
+							else
+								LongTermEffects.advanceRoundsOnTimeChanged(nRounds)
+							end
 						end
 					end
 				</script>
@@ -752,7 +947,7 @@
 				<script file="desktop/scripts/open_subwindow.lua" />
 			</buttoncontrol>
 			<buttoncontrol name="openreminders">
-			<anchored to="openevents" position="righthigh" offset="2,0" width="20" height="20" />
+				<anchored to="openevents" position="righthigh" offset="2,0" width="20" height="20" />
 				<icon normal="reminder_button" pressed="reminder_button_down" />
 				<tooltip textres="desktop_openreminders_tooltip" />
 				<subwindow>timedreminders</subwindow>
@@ -765,1560 +960,36 @@
 				<subwindow>travelmanager</subwindow>
 				<script file="desktop/scripts/open_subwindow.lua" />
 			</buttoncontrol>
-			<button_checkbox name="checkweather">
+			<button_checkbox name="checkweather" source=".checkweather">
 				<anchored to="opentravelmanager" position="righthigh" offset="0,0" width="20" height="20" />
 				<values>
 					<maximum>1</maximum>
 				</values>
+				<sourcefields>
+					<current>checkweatherhidden</current>
+				</sourcefields>
 				<tooltip text="Check Weather on Time Adjust; NOTE: You must have a table for each 'Weather Wind', 'Weather Temperature', and 'Weather Precipitation'" />
+				<script>
+					function onInit()
+						if super and super.onInit() then
+							super.onInit();
+						end
+						setValue(DB.getValue(DB.createNode("DB.checkweather" ,"number"), "", 0));
+					end
+					function onValueChanged()
+						if super and super.onValueChanged() then
+							super.onValueChanged();
+						end
+						DB.setValue(DB.createNode("DB.checkweather" ,"number"), "", "number", getValue());
+					end
+				</script>	
 			</button_checkbox>
-		</sheetdata>
-	</windowclass>
-
-	<windowclass name="timedevents">
-		<frame>recordsheet</frame>
-		<placement>
-			<size width="370" height="30" />
-			<position x="260" y="30" />
-		</placement>
-		<sizelimits>
-			<dynamic />
-		</sizelimits>
-		<nodelete />
-		<softclose />
-		<sheetdata>
-			<windowlist name="eventslist">
-				<anchored>
-					<top offset="15" />
-					<left offset="15" />
-					<right offset="-15" />
-					<bottom offset="-15" />
-				</anchored>
-				<sortby><control>year</control><control>month</control><control>day</control><control>hour</control><control>minute</control></sortby>
-				<child><backcolor>1A40301E</backcolor></child>
-				<datasource>.timedeventlist</datasource>
-				<class>list_timedevent</class>
-				<acceptdrop>
-					<class>timedevent</class>
-					<class>list_timedevent</class>
-					<class>referencetext</class>
-					<class>referencetextwide</class>
-					<field>*</field>
-				</acceptdrop>
-				<empty font="reference-r" text="Right-click to add an event" hidereadonly="true" />
-				<allowcreate />
-				<allowdelete />
-				<script>
-					function onInit()
-						DB.addHandler(TimeManager.CAL_DATEINMIN, "onUpdate", onTimeChanged);
-					end
-					function onClose()
-						DB.removeHandler(TimeManager.CAL_DATEINMIN, "onUpdate", onTimeChanged);
-					end
-					function onTimeChanged()
-						for _,w in pairs(getWindows()) do
-							w.onTimeChanged()
-						end
-					end
-					function update()
-						onTimeChanged();
-					end
-				</script>
-			</windowlist>
-			<scrollbar>
-				<anchored to="eventslist" />
-				<target>eventslist</target>
-			</scrollbar>
-		</sheetdata>
-		<dynamic />
-	</windowclass>
-
-	<windowclass name="list_timedevent">
-		<margins control="0,0,0,2" />
-		<softclose />
-		<script>
-			function onInit()
-			end
-			function update()
-				windowlist.update();
-				if isgmonly.getValue() == 1 then
-					if not Session.IsHost == true then
-						setVisible(false);
-					end
-				end
-				completed.setValue(0);
-			end
-			function onTimeChanged()
-				local nCurrentDateinMinutes = TimeManager.getCurrentDateinMinutes();
-				local nMyMinute = (minute.getValue() or 0);
-				local nMyHour = (hour.getValue() or 0);
-				local nMyDay = (day.getValue() or 0);
-				local nMyMonth = (month.getValue() or 0);
-				local nMyYear = (year.getValue() or 0);
-				local Visible = isgmonly.getValue();
-				local sName = (name.getValue() or "");
-				local nCompleted = completed.getValue();
-				local nHoursinMinutes = TimeManager.convertHourstoMinutes(nMyHour);
-				local nDaysinMinutes = TimeManager.convertDaystoMinutes(nMyDay);
-				local nMonthsinMinutes = TimeManager.convertMonthssnowtoMinutes(nMyMonth, nMyYear);
-				local nYearsinMinutes = TimeManager.convertYearsnowtoMinutes(nMyYear);
-				local nDateinMinutes = nHoursinMinutes + nDaysinMinutes + nMonthsinMinutes + nYearsinMinutes + nMyMinute;
-
-				if Visible == 1 then
-					bBoolean = true;
-				elseif Visible == 0 then
-					bBoolean = false;
-				end
-				if nCurrentDateinMinutes &gt;= nDateinMinutes then
-					if nCompleted == 0 then
-						local msg = {font = "reference-r", text = "[" .. nMyHour .. ":" .. nMyMinute .. "/" .. nMyDay .. "/" .. nMyMonth .. "/" .. nMyYear .. "] " .. sName .. "", secret = bBoolean};
-						Comm.deliverChatMessage(msg);
-						completed.setValue(1);
-						if TableManager.findTable(sName) then
-							TableManager.processTableRoll("", sName);
-						end
-					end
-				elseif nCurrentDateinMinutes &lt; nDateinMinutes then
-					completed.setValue(0);
-				end
-			end
-		</script>
-		<sheetdata>
-			<genericcontrol name="rightanchor">
-				<anchored width="0" height="0">
-					<top />
-					<right />
-				</anchored>
-				<invisible />
-			</genericcontrol>
-			<button_idelete name="idelete">
-				<anchored width="20" height="20">
-					<top offset="2" />
-					<right parent="rightanchor" anchor="left" relation="relative" offset="-5" />
-				</anchored>
-			</button_idelete>
-			<linkcontrol_id name="shortcut">
-				<anchored width="20" height="20">
-					<top offset="2" />
-					<right parent="rightanchor" anchor="left" relation="relative" offset="-2" />
-				</anchored>
-				<class>timedevent</class>
-				<readonly />
-			</linkcontrol_id>
-			<buttonfield name="isgmonly">
-				<anchored width="20" height="20">
-					<top offset="3" />
-					<right parent="rightanchor" anchor="left" relation="relative" offset="-5" />
-				</anchored>
-				<gmvisibleonly />
-				<state icon="visibilityon" tooltipres="visibilityon" />
-				<state icon="visibilityoff" tooltipres="visibilityoff" />
-			</buttonfield>
-			<buttongroup_counter name="completedbutton">
-				<anchored width="20" height="20">
-					<top offset="3" />
-					<right parent="rightanchor" anchor="left" relation="relative" offset="-5" />
-				</anchored>
-				<sourcefields>
-					<current>completed</current>
-				</sourcefields>
-				<values>
-					<maximum>1</maximum>
-				</values>
-				<tooltip text="Completed" />
-
-			</buttongroup_counter>
-			<basicnumber name="completed" source="completed">
-				<anchored width="40" height="20">
-					<top offset="2" />
-					<right parent="rightanchor" anchor="left" relation="relative" offset="-10" />
-				</anchored>
-				<delaykeyupdate />
-				<tabtarget prev="location" />
+			<basicnumber name="checkweatherhidden" source=".checkweather">
+				<anchored to="opentravelmanager" position="righthigh" offset="0,0" width="20" height="20" />
 				<invisible />
 			</basicnumber>
-			<basicnumber name="year" source="year">
-				<anchored width="40" height="20">
-					<top offset="2" />
-					<right parent="rightanchor" anchor="left" relation="relative" offset="-10" />
-				</anchored>
-				<delaykeyupdate />
-				<tabtarget prev="location" />
-				<tooltip textres="year_tooltip" />
-			</basicnumber>
-
-			<basicnumber name="month" source="month">
-				<anchored width="20" height="20">
-					<top offset="2" />
-					<right parent="rightanchor" anchor="left" relation="relative" offset="-10" />
-				</anchored>
-				<delaykeyupdate />
-				<tooltip textres="month_tooltip" />
-			</basicnumber>
-			<basicnumber name="day" source="day">
-				<anchored width="20" height="20">
-					<top offset="2" />
-					<right parent="rightanchor" anchor="left" relation="relative" offset="-10" />
-				</anchored>
-				<delaykeyupdate />
-				<tooltip textres="day_tooltip" />
-			</basicnumber>
-			<basicnumber name="minute" source="minute">
-				<anchored width="20" height="20">
-					<top offset="2" />
-					<right parent="rightanchor" anchor="left" relation="relative" offset="-10" />
-				</anchored>
-				<delaykeyupdate />
-				<tooltip textres="minute_tooltip" />
-			</basicnumber>
-			<basicnumber name="hour" source="hour">
-				<anchored width="20" height="20">
-					<top offset="2" />
-					<right parent="rightanchor" anchor="left" relation="relative" offset="-10" />
-				</anchored>
-				<delaykeyupdate />
-				<tooltip textres="hour_tooltip" />
-			</basicnumber>
-			<stringu name="name">
-				<anchored height="20">
-					<top offset="2" />
-					<right parent="rightanchor" anchor="left" relation="relative" offset="-10" />
-					<left offset="10" />
-				</anchored>
-				<tabtarget next="nonid_name" prev="count" />
-			</stringu>
 		</sheetdata>
 	</windowclass>
 
-
-	<windowclass name="timedevent">
-		<frame>referencepage</frame>
-		<placement>
-			<size width="400" height="350" />
-		</placement>
-		<sizelimits>
-			<dynamic />
-		</sizelimits>
-		<minimize>minimized_reference</minimize>
-		<tooltip field="value" />
-		<softclose />
-		<sharable />
-		<script>
-			nString = "";
-			function onLockChanged()
-
-				local bReadOnly = WindowManager.getReadOnlyState(getDatabaseNode());
-				text.setReadOnly(bReadOnly);
-				hour.setReadOnly(bReadOnly);
-				minute.setReadOnly(bReadOnly);
-				day.setReadOnly(bReadOnly);
-				month.setReadOnly(bReadOnly);
-				year.setReadOnly(bReadOnly);
-				nMonth = (month.getValue() or 0);
-				nDay = (day.getValue() or 0);
-				nYear = (year.getValue() or 0);
-				if bDone == nil then
-					bDone = false;
-				end
-				if bDone == false then
-					if bReadOnly == true then
-						nString = (text.getValue() or "");
-						TimeManager.addLogEntry(nMonth, nDay, nYear, nString);
-						bDone = true;
-					end
-				end
-			end
-		</script>
-		<sheetdata>
-			<sub_record_header name="header">
-				<class>timedevents_header</class>
-			</sub_record_header>
-
-			<frame_record_content name="contentframe" />
-			<basicnumber name="hour" source="hour">
-				<anchored width="20" height="20">
-					<top parent="header" anchor="bottom" offset="10" />
-					<left offset="80" />
-				</anchored>
-				<delaykeyupdate />
-				<tabtarget prev="location" />
-				<tooltip textres="hour_tooltip" />
-			</basicnumber>
-
-			<basicnumber name="minute" source="minute">
-				<anchored to="hour" width="20" height="20">
-					<top />
-					<left parent="hour" anchor="right" offset="10" />
-				</anchored>
-				<delaykeyupdate />
-				<tabtarget prev="location" />
-				<tooltip textres="minute_tooltip" />
-			</basicnumber>
-			<basicnumber name="day" source="day">
-				<anchored to="minute" width="20" height="20">
-					<top />
-					<left parent="minute" anchor="right" offset="10" />
-				</anchored>
-				<delaykeyupdate />
-				<tabtarget prev="location" />
-				<tooltip textres="day_tooltip" />
-			</basicnumber>
-			<basicnumber name="month" source="month">
-				<anchored to="day" width="20" height="20">
-					<top />
-					<left parent="day" anchor="right" offset="10" />
-				</anchored>
-				<delaykeyupdate />
-				<tabtarget prev="location" />
-				<tooltip textres="month_tooltip" />
-			</basicnumber>
-			<basicnumber name="year" source="year">
-				<anchored to="month" width="40" height="20">
-					<top />
-					<left parent="month" anchor="right" offset="10" />
-				</anchored>
-				<delaykeyupdate />
-				<tabtarget prev="location" />
-				<tooltip textres="year_tooltip" />
-			</basicnumber>
-			<buttonfield name="isgmonly">
-				<anchored to="year" width="40" height="20">
-					<top />
-					<left parent="year" anchor="right" offset="10" />
-				</anchored>
-				<gmvisibleonly />
-				<state icon="visibilityon" tooltipres="visibilityon" />
-				<state icon="visibilityoff" tooltipres="visibilityoff" />
-			</buttonfield>
-			<buttoncontrol name="openlogentry">
-				<anchored to="isgmonly" position="right" offset="3,0" width="20" height="20" />
-				<icon normal="add_logentry" pressed="add_logentry_down" />
-				<tooltip textres="desktop_openlog_tooltip" />
-				<script>
-					function onButtonPress()
-						nMonth = (window.month.getValue() or 0);
-						nDay = (window.day.getValue() or 0);
-						nYear = (window.year.getValue() or 0);
-						if window.isgmonly.getValue() == 1 then
-							bGMVisible = true;
-						elseif window.isgmonly.getValue() == 0 then
-							bGMVisible = false;
-						end
-						local sName = DB.getValue(window.getDatabaseNode(), "name", "");
-						local nodeOld = TimeManager.addLogEntry(nMonth, nDay, nYear, bGMVisible, window.getDatabaseNode());
-
-					end
-				</script>
-			</buttoncontrol>
-			<button_text name="button_viewall">
-				<anchored to="openlogentry" position="righthigh" offset="5,0" width="70" height="20" />
-				<state text="View Logs" />
-				<script>
-					function onButtonPress()
-						Interface.openWindow("loglist", "calendar.log");
-					end
-				</script>
-			</button_text>
-
-			<ft_record name="text">
-				<anchored>
-					<top offset="110" />
-					<left offset="30" />
-					<right offset="-30" />
-					<bottom offset="-30" />
-				</anchored>
-				<empty textres="ft_empty" hidereadonly="true" />
-			</ft_record>
-			<scrollbar_record>
-				<target>text</target>
-			</scrollbar_record>
-
-			<resize_referencepage />
-			<close_referencepage />
-		</sheetdata>
-	</windowclass>
-
-	<windowclass name="timedevents_header">
-		<margins control="0,0,0,7" />
-		<softclose />
-		<sheetdata>
-			<link_record_header>
-				<class>timedevent</class>
-				<description field="name" />
-			</link_record_header>
-
-			<anchor_record_header_right name="rightanchor" />
-			<icon_record_locked />
-			<button_record_locked />
-
-			<string_record_name name="name" />
-		</sheetdata>
-	</windowclass>
-
-	<windowclass name="travelmanager">
-		<frame>recordsheet</frame>
-		<size width="250" height="250" />
-		<placement>
-			<position x="10" y="30" />
-			<size width="250" height="250" />
-		</placement>
-		<sizelimits>
-			<maximum height="250" width="250" />
-		</sizelimits>
-		<nodelete />
-		<softclose />
-		<resize />
-		<sheetdata>
-			<label name="traveledlabel">
-				<anchored position="insidetopleft" offset="10,10" height="20" width="70" />
-				<static text="Traveled" />
-			</label>
-			<label name="totallabel">
-				<anchored to="traveledlabel" position="belowleft" offset="0,10" height="20" width="70" />
-				<static text="Distance:" />
-			</label>
-			<label name="remaininglabel">
-				<anchored to="totallabel" position="belowleft" offset="0,10" height="20" width="70" />
-				<static text="Remaining:" />
-			</label>
-			<label name="travelspeedlabel">
-				<anchored to="remaininglabel" position="belowleft" offset="0,10" height="20" width="70" />
-				<static text="Speed:" />
-			</label>
-			<label name="travelbylabel">
-				<anchored to="travelspeedlabel" position="belowleft" offset="0,10" height="20" width="70" />
-				<static text="Travel by:" />
-			</label>
-			<simplenumber name="distanceremaining" source="distance.remaining">
-				<anchored to="remaininglabel" position="righthigh" height="20" width="20" offset="5" />
-				<tooltip text="Distance Remaining" />
-				<script>
-					function onInit()
-						DB.addHandler("distance.traveled", "onUpdate", calculateDistanceRemaining);
-						DB.addHandler("distance.destination", "onUpdate", calculateDistanceRemaining);
-					end
-					function onClose()
-						DB.removeHandler("distance.traveled", "onUpdate", calculateDistanceRemaining);
-						DB.removeHandler("distance.destination", "onUpdate", calculateDistanceRemaining);
-					end
-					function calculateDistanceRemaining()
-						local nDistance = (window.destination.getValue() or 0);
-						local nDistanceTraveled = (window.distancetraveled.getValue() or 0);
-						local nDistanceRemaining = nDistance - nDistanceTraveled;
-						setValue(nDistanceRemaining);
-					end
-					function onValueChanged()
-						local nDistance = (window.destination.getValue() or 0);
-						local nDistanceTraveled = (window.distancetraveled.getValue() or 0);
-						nDistanceRemaining = nDistance - nDistanceTraveled;
-						DB.setValue("distance.remaining", "number", nDistanceRemaining);
-					end
-				</script>
-				<readonly />
-			</simplenumber>
-
-			<basicnumber name="distancetraveled" source="distance.traveled">
-				<anchored to="traveledlabel" position="righthigh" height="20" width="20" offset="5" />
-				<delaykeyupdate />
-				<tooltip text="Distance Traveled" />
-				<script>
-					function onValueChanged()
-						DB.setValue("distance.traveled", "number", (getValue() or 0));
-					end
-				</script>
-			</basicnumber>
-			<basicnumber name="destination" source="distance.destination">
-				<anchored to="totallabel" position="righthigh" height="20" width="20" offset="5" />
-				<delaykeyupdate />
-				<tooltip text="Total Travel Distance" />
-				<script>
-					function onValueChanged()
-						DB.setValue("distance.destination", "number", (getValue() or 0));
-					end
-				</script>
-			</basicnumber>
-			<buttoncontrol name="destinationmeasurement">
-				<anchored height="30" width="60">
-					<left parent="destination" anchor="right" offset="10" />
-					<top parent="destination" anchor="top" />
-				</anchored>
-				<tooltip text="Distance in Miles/Kilometers" />
-				<state text="Mile(s)" />
-				<state text="Kilometer(s)" />
-				<default>0</default>
-				<sourcefields>
-					<current>distance.speedunit</current>
-				</sourcefields>
-				<frame name="fielddark" offset="0,0,0,0" />
-				<script>
-					function onValueChanged()
-						DB.setValue("distance.speedunit", "number", (getValue() or 0));
-						window.unitofmeasurement.setValue(getValue() or 0);
-					end
-				</script>
-			</buttoncontrol>
-			<basicnumber name="travelspeed" source="distance.speed">
-				<anchored to="travelspeedlabel" position="righthigh" height="20" width="20" offset="5" />
-				<tooltip text="Speed" />
-				<default>6</default>
-				<script>
-					function onValueChanged()
-						DB.setValue("distance.speed", "number", (getValue() or 6));
-					end
-				</script>
-			</basicnumber>
-
-
-			<buttoncontrol name="unitofmeasurement">
-				<anchored height="30" width="60">
-					<left parent="travelspeed" anchor="right" offset="10" />
-					<top parent="travelspeed" anchor="top" />
-				</anchored>
-				<state text="Mile(s)" />
-				<state text="Kilometer(s)" />
-				<default>0</default>
-				<sourcefields>
-					<current>distance.speedunit</current>
-				</sourcefields>
-				<frame name="fielddark" offset="0,0,0,0" />
-				<tooltip text="Length Factor of Speed" />
-				<script>
-					function onValueChanged()
-						DB.setValue("distance.speedunit", "number", (getValue() or 0));
-						window.destinationmeasurement.setValue((getValue() or 0));
-					end
-				</script>
-			</buttoncontrol>
-			<buttoncontrol name="perlimit">
-				<anchored height="30" width="60">
-					<left parent="unitofmeasurement" anchor="right" offset="0" />
-					<top parent="unitofmeasurement" anchor="top" />
-				</anchored>
-				<tooltip text="Time Factor of Speed" />
-				<state text="/hour" />
-				<state text="/day" />
-				<default>0</default>
-				<sourcefields>
-					<current>distance.perlimit</current>
-				</sourcefields>
-				<frame name="fielddark" offset="0,0,0,0" />
-				<script>
-					function onValueChanged()
-						DB.setValue("distance.perlimit", "number", (getValue() or 0));
-						window.traveltime.setValue((getValue() or 0));
-					end
-				</script>
-			</buttoncontrol>
-			<basicnumber name="travelbyhours" source="travel.byhours">
-				<anchored to="travelbylabel" position="righthigh" height="20" width="20" offset="5" />
-				<tooltip text="Travel by # of Hours/Days" />
-				<script>
-					function TravelByPace(NewHourSpeed, NewDaySpeed)
-						local bAllow = true;
-						local nValue = getValue();
-						local nDistanceTotaled = 0;
-						local nTimePassed = 0;
-						local nTravelCount = 0;
-						local UseSpeed = window.travelspeed.getValue()
-						if window.isgmonly.getValue() == 0 then
-							isGMonly = false;
-						elseif window.isgmonly.getValue() == 1 then
-							isGMonly = true;
-						end
-						if window.unitofmeasurement.getValue() == 0 then
-							MilesorKilometers = "miles";
-						elseif window.unitofmeasurement.getValue() == 1 then
-							MilesorKilometers = "kilometers";
-						end
-						for i=1,nValue do
-							local nDistance = window.destination.getValue();
-							local nDistanceTraveled = window.distancetraveled.getValue() + window.travelspeed.getValue();
-							local nTraveledBefore = window.distancetraveled.getValue();
-							if nDistance &gt; nTraveledBefore then
-								if window.perlimit.getValue() == 0 then
-									DaysorHours = "hours";
-									CalendarManager.adjustHours(1);
-								elseif window.perlimit.getValue() == 1 then
-									DaysorHours = "days";
-									CalendarManager.adjustDays(1);
-								end
-								nTimePassed = nTimePassed + 1;
-								if NewHourSpeed ~= nil then
-									UseSpeed = NewHourSpeed;
-									MilesorKilometers = "miles";
-								end
-								if NewDaySpeed ~= nil then
-									UseSpeed = NewDaySpeed;
-									MilesorKilometers = "miles";
-									window.unitofmeasurement.setValue(0);
-									window.traveltime.setValue(0);
-								end
-								for i=1,UseSpeed do
-									if nDistance &gt; window.distancetraveled.getValue() then
-										nTravelCount = nTravelCount + 1;
-										nDistanceTotaled = window.distancetraveled.getValue() + 1;
-										window.distancetraveled.setValue(nDistanceTotaled);
-
-									end
-								end
-
-							end
-						end
-						if DB.getValue("checkweather", 0) == 1 then
-							local WeatherToday = "Weather Today";
-
-							TableManager.processTableRoll("", WeatherToday);
-						end
-						if window.perlimit.getValue() == 0 then
-							DaysorHours = "hours";
-						elseif window.perlimit.getValue() == 1 then
-							DaysorHours = "days";
-						end
-
-						local nDistance = window.destination.getValue();
-						local nDistanceTraveled = window.travelspeed.getValue() * getValue();
-						local nTraveledBefore = window.distancetraveled.getValue();
-						if nDistance &gt; nTraveledBefore then
-							local msg = {font = "reference-r", text = "The Party has traveled " .. nTravelCount .. " " .. MilesorKilometers .. " in " .. getValue() .. " " .. DaysorHours .. ". They have " .. window.distanceremaining.getValue() .. " " .. MilesorKilometers .. " left to go.", secret = isGMonly};
-							Comm.deliverChatMessage(msg);
-						elseif nDistance &lt;= nTraveledBefore then
-							local msg = {font = "reference-r", text = "The Party has traveled " .. nTravelCount .. " " .. MilesorKilometers .. " in " .. nTimePassed .. " " .. DaysorHours .. " and has reached their destination", secret = isGMonly};
-							Comm.deliverChatMessage(msg);
-							local bAllow = false;
-						end
-					end
-					function onDoubleClick()
-						local bAllow = true;
-						local nValue = getValue();
-						local nDistanceTotaled = 0;
-						local nTimePassed = 0;
-						local nTravelCount = 0;
-						if window.isgmonly.getValue() == 0 then
-							isGMonly = false;
-						elseif window.isgmonly.getValue() == 1 then
-							isGMonly = true;
-						end
-						for i=1,nValue do
-							local nDistance = (window.destination.getValue() or 0);
-							local nDistanceTraveled = (window.distancetraveled.getValue() or 0) + (window.travelspeed.getValue() or 0);
-							local nTraveledBefore = (window.distancetraveled.getValue() or 0);
-							if nDistance &gt; nTraveledBefore then
-								if window.perlimit.getValue() == 0 then
-									DaysorHours = "hours";
-									CalendarManager.adjustHours(1);
-								elseif window.perlimit.getValue() == 1 then
-									DaysorHours = "days";
-									CalendarManager.adjustDays(1);
-								end
-								nTimePassed = nTimePassed + 1;
-								for i=1,(window.travelspeed.getValue() or 0) do
-									if nDistance &gt; (window.distancetraveled.getValue() or 0) then
-										nTravelCount = nTravelCount + 1;
-										nDistanceTotaled = (window.distancetraveled.getValue() or 0) + 1;
-										window.distancetraveled.setValue(nDistanceTotaled);
-									end
-								end
-							end
-						end
-						if window.perlimit.getValue() == 0 then
-							DaysorHours = "hours";
-						elseif window.perlimit.getValue() == 1 then
-							DaysorHours = "days";
-						end
-						if window.unitofmeasurement.getValue() == 0 then
-							MilesorKilometers = "miles";
-						elseif window.unitofmeasurement.getValue() == 1 then
-							MilesorKilometers = "kilometers";
-						end
-
-						local nDistance = (window.destination.getValue() or 0);
-						local nDistanceTraveled = (window.travelspeed.getValue() or 0) * (getValue() or 0);
-						local nTraveledBefore = (window.distancetraveled.getValue() or 0);
-						if nDistance &gt; nTraveledBefore then
-							local msg = {font = "reference-r", text = "The Party has traveled " .. nTravelCount .. " " .. MilesorKilometers .. " in " .. getValue() .. " " .. DaysorHours .. ". They have " .. window.distanceremaining.getValue() .. " " .. MilesorKilometers .. " left to go.", secret = isGMonly};
-							Comm.deliverChatMessage(msg);
-						elseif nDistance &lt;= nTraveledBefore then
-							local msg = {font = "reference-r", text = "The Party has traveled " .. nTravelCount .. " " .. MilesorKilometers .. " in " .. nTimePassed .. " " .. DaysorHours .. " and has reached their destination", secret = isGMonly};
-							Comm.deliverChatMessage(msg);
-							local bAllow = false;
-						end
-					end
-
-				</script>
-			</basicnumber>
-			<buttoncontrol name="traveltime">
-				<anchored height="30" width="60">
-					<left parent="travelbyhours" anchor="right" offset="0" />
-					<top parent="travelbyhours" anchor="top" />
-				</anchored>
-				<tooltip text="" />
-				<state text="hours" />
-				<state text="days" />
-				<default>0</default>
-				<sourcefields>
-					<current>distance.perlimit</current>
-				</sourcefields>
-				<script>
-					function onValueChanged()
-						DB.setValue("distance.perlimit", "number", getValue());
-						window.perlimit.setValue(getValue());
-					end
-				</script>
-			</buttoncontrol>
-			<buttonfield name="isgmonly">
-				<anchored height="20" width="50">
-					<left parent="traveltime" anchor="right" offset="0" />
-					<top parent="traveltime" anchor="top" />
-				</anchored>
-				<gmvisibleonly />
-				<state icon="visibilityon" tooltipres="visibilityon" />
-				<state icon="visibilityoff" tooltipres="visibilityoff" />
-			</buttonfield>
-
-			<label name="travellabel">
-				<anchored to="travelbylabel" position="belowleft" offset="0,10" height="20" width="70" />
-				<static text="Travel" />
-			</label>
-			<buttoncontrol name="travel">
-				<anchored to="travellabel" position="righthigh" offset="0,0" width="20" height="20" />
-				<icon normal="atob_button" pressed="atob_button_down" />
-				<tooltip text="Travel" />
-				<script>
-					function onButtonPress()
-						window.travelbyhours.onDoubleClick();
-					end
-				</script>
-			</buttoncontrol>
-			<buttoncontrol name="slowtravel">
-				<anchored to="travel" position="righthigh" offset="0,0" width="20" height="20" />
-				<icon normal="atob_button" pressed="atob_button_down" />
-				<tooltip text="Click to Travel at a Slow Pace; NOTE: You must have a table named 'Encounter Chance Slow Travel Pace'" />
-				<script>
-					function onInit()
-						sRuleset = User.getRulesetName();
-						if sRuleset == "PFRPG" or sRuleset == "PFRPG2" or sRuleset == "3.5E" then
-							bLong = false;
-						elseif sRuleset == "5E" then
-							bLong = true;
-						else
-							setVisible(false);
- 						end
-					end
-
-					function onButtonPress()
-						local aViableMap = {};
-						local NewHourSpeed = 2;
-						local NewDaySpeed = 18;
-						if window.perlimit.getValue() == 0 then
-							window.travelbyhours.TravelByPace(NewHourSpeed);
-						elseif window.perlimit.getValue() == 1 then
-							window.travelbyhours.TravelByPace(NewDaySpeed);
-						end
-						local EncounterChance = "Encounter Chance Slow Travel Pace";
-						if window.encounterchance.getValue() == 1 then
-							if REGeneratorManager then
-								local sD100xrp = "1d100";
-								local BiomeTypesNode = DB.getChild("regenerator", "biometypes");
-								local sBiomeTypes = DB.getValue(BiomeTypesNode, "", "");
-								local sBiomeTypes = string.gsub(sBiomeTypes, "%W", " ");
-								Debug.console("sBiomeTypes", sBiomeTypes);
-								local nEncounterChance = window.encounterchancenum.getValue();
-								local nBattleChance = window.battlechance.getValue();
-								local sChanceExpr = sD100xrp:gsub("$PC", tostring(PartyManager.getPartyCount()));
-								local nEncounterChanceResult = DiceManager.evalDiceMathExpression(sChanceExpr);
-								local nBattleChanceResult = DiceManager.evalDiceMathExpression(sChanceExpr);
-								local aTableClasses = LibraryData.getMappings("table");
-								if nEncounterChanceResult &lt; nEncounterChance then
-									if nBattleChanceResult &lt; nBattleChance then
-
-										Interface.openWindow("new_regenerator", "regenerator");
-										local REGenWin = Interface.findWindow("new_regenerator", "regenerator");
-										local aGeneratedNPCS = REGeneratorManager.generatePreview();
-										if REGenWin then
-											local aBiomeClasses = LibraryData.getMappings("biome");
-											local aImageClasses = LibraryData.getMappings("image");
-											local aViableBiome = {};
-
-
-											for _,ClassNode in pairs(aBiomeClasses) do
-												for _,vNode in pairs(DB.getChildrenGlobal(ClassNode)) do
-													local vNodeNameNode = DB.getChild(vNode, "name");
-													local vName = DB.getValue(vNodeNameNode, "", "");
-													local vName = string.gsub(vName, "%W", " ");
-
-													if string.find(sBiomeTypes, vName) then
-														local aMapListNode = DB.getChild(vNode, "maplist");
-
-
-														for _,vMap in pairs(DB.getChildren(aMapListNode, "")) do
-															local vMapLinkNode = DB.getChild(vMap, "link");
-															local sClass, sRecord = DB.getValue(vMapLinkNode, "");
-															local sRecordNode = DB.getChild(sRecord, "");
-															table.insert(aViableMap, sRecordNode);
-														end
-													end
-												end
-											end
-											nCount = 0;
-											for k,v in pairs(aViableMap) do
-												nCount = nCount + 1;
-											end
-											if nCount == 0 or nCount == nil then
-												nCount = 1;
-											end
-											local sExpr = "1d" .. nCount;
-
-											sExpr = sExpr:gsub("$PC", tostring(PartyManager.getPartyCount()));
-
-											nCount = DiceManager.evalDiceMathExpression(sExpr);
-											for k,v in pairs(aViableMap) do
-												local sPath = DB.getPath(v);
-												local vClass = LibraryData.getRecordDisplayClass("image", sPath);
-
-												if k == nCount then
-													Interface.openWindow(vClass, sPath);
-												end
-											end
-											REGenWin.close();
-										end
-										REGeneratorManager.generateFromPreview(aGeneratedNPCS);
-									else
-										if sBiomeTypes ~= "" and sBiomeTypes ~= nil then
-											local bTableRolled = false;
-											local aTableNames = {};
-											for _,TableClassNode in pairs(aTableClasses) do
-												for _,vTableNode in pairs(DB.getChildrenGlobal(TableClassNode)) do
-													local vTableNameNode = DB.getChild(vTableNode, "name");
-													local sTableName = DB.getValue(vTableNameNode, "", "");
-													local sTableName2 = sTableName;
-													local sTableName = string.lower(sTableName);
-													local sTableName = string.gsub(sTableName, "%W", " ");
-													local nStarts, nEnds, sEncounterTableBiome = string.find(sTableName, "non combat ([%w+%s*]+) encounter");
-													if sEncounterTableBiome ~= nil and sEncounterTableBiome ~= "" and sBiomeTypes ~= nil and sBiomeTypes ~= "" then
-														sBiomeTypes = string.lower(sBiomeTypes);
-														if string.find(sBiomeTypes, sEncounterTableBiome) then
-															table.insert(aTableNames, sTableName2);
-														end
-													end
-												end
-											end
-											local nTableNames = 0;
-											for kTableName,vTableName in pairs(aTableNames) do
-												nTableNames = nTableNames + 1;
-											end
-											local sTableExpr = "1d" .. nTableNames;
-											sTableExpr = sTableExpr:gsub("$PC", tostring(PartyManager.getPartyCount()));
-											nTableCount = DiceManager.evalDiceMathExpression(sTableExpr);
-											for kTableName,vTableName in pairs(aTableNames) do
-												if kTableName == nTableCount then
-													TableManager.processTableRoll("", vTableName);
-													bTableRolled = true;
-													break;
-												end
-											end
-										end
-										if TableManager.findTable("Non Combat Encounter") and bTableRolled == false then
-											TableManager.processTableRoll("", "Non Combat Encounter");
-										end
-									end
-								end
-							else
-								TableManager.processTableRoll("", EncounterChance);
-							end
-						end
-					end
-				</script>
-			</buttoncontrol>
-			<buttoncontrol name="normaltravel">
-				<anchored to="slowtravel" position="righthigh" offset="0,0" width="20" height="20" />
-				<icon normal="atob_button" pressed="atob_button_down" />
-				<tooltip text="Click to Travel at a Normal Pace; NOTE: You must have a table named 'Encounter Chance Normal Travel Pace'" />
-				<script>
-					function onInit()
-						sRuleset = User.getRulesetName();
-						if sRuleset == "PFRPG" or sRuleset == "PFRPG2" or sRuleset == "3.5E" then
-							bLong = false;
-						elseif sRuleset == "5E" then
-							bLong = true;
-						else
-							setVisible(false);
- 						end
-					end
-					function onButtonPress()
-						local aViableMap = {};
-						local NewHourSpeed = 3;
-						local NewDaySpeed = 24;
-						if window.perlimit.getValue() == 0 then
-							window.travelbyhours.TravelByPace(NewHourSpeed);
-						elseif window.perlimit.getValue() == 1 then
-							window.travelbyhours.TravelByPace(NewDaySpeed);
-						end
-						local EncounterChance = "Encounter Chance Normal Travel Pace";
-						if window.encounterchance.getValue() == 1 then
-							if REGeneratorManager then
-								local sD100xrp = "1d100";
-								local BiomeTypesNode = DB.getChild("regenerator", "biometypes");
-								local sBiomeTypes = DB.getValue(BiomeTypesNode, "", "");
-								local sBiomeTypes = string.gsub(sBiomeTypes, "%W", " ");
-								Debug.console("sBiomeTypes", sBiomeTypes);
-								local nEncounterChance = window.encounterchancenum.getValue();
-								local nBattleChance = window.battlechance.getValue();
-								local sChanceExpr = sD100xrp:gsub("$PC", tostring(PartyManager.getPartyCount()));
-								local nEncounterChanceResult = DiceManager.evalDiceMathExpression(sChanceExpr);
-								local nBattleChanceResult = DiceManager.evalDiceMathExpression(sChanceExpr);
-								local aTableClasses = LibraryData.getMappings("table");
-								if nEncounterChanceResult &lt; nEncounterChance then
-									if nBattleChanceResult &lt; nBattleChance then
-
-										Interface.openWindow("new_regenerator", "regenerator");
-										local REGenWin = Interface.findWindow("new_regenerator", "regenerator");
-										local aGeneratedNPCS = REGeneratorManager.generatePreview();
-										if REGenWin then
-											local aBiomeClasses = LibraryData.getMappings("biome");
-											local aImageClasses = LibraryData.getMappings("image");
-											local aViableBiome = {};
-
-
-											for _,ClassNode in pairs(aBiomeClasses) do
-												for _,vNode in pairs(DB.getChildrenGlobal(ClassNode)) do
-													local vNodeNameNode = DB.getChild(vNode, "name");
-													local vName = DB.getValue(vNodeNameNode, "", "");
-													local vName = string.gsub(vName, "%W", " ");
-
-													if string.find(sBiomeTypes, vName) then
-														local aMapListNode = DB.getChild(vNode, "maplist");
-
-
-														for _,vMap in pairs(DB.getChildren(aMapListNode, "")) do
-															local vMapLinkNode = DB.getChild(vMap, "link");
-															local sClass, sRecord = DB.getValue(vMapLinkNode, "");
-															local sRecordNode = DB.getChild(sRecord, "");
-															table.insert(aViableMap, sRecordNode);
-														end
-													end
-												end
-											end
-											nCount = 0;
-											for k,v in pairs(aViableMap) do
-												nCount = nCount + 1;
-											end
-											if nCount == 0 or nCount == nil then
-												nCount = 1;
-											end
-											local sExpr = "1d" .. nCount;
-
-											sExpr = sExpr:gsub("$PC", tostring(PartyManager.getPartyCount()));
-
-											nCount = DiceManager.evalDiceMathExpression(sExpr);
-											for k,v in pairs(aViableMap) do
-												local sPath = DB.getPath(v);
-												local vClass = LibraryData.getRecordDisplayClass("image", sPath);
-
-												if k == nCount then
-													Interface.openWindow(vClass, sPath);
-												end
-											end
-											REGenWin.close();
-										end
-										REGeneratorManager.generateFromPreview(aGeneratedNPCS);
-									else
-										if sBiomeTypes ~= "" and sBiomeTypes ~= nil then
-											local bTableRolled = false;
-											local aTableNames = {};
-											for _,TableClassNode in pairs(aTableClasses) do
-												for _,vTableNode in pairs(DB.getChildrenGlobal(TableClassNode)) do
-													local vTableNameNode = DB.getChild(vTableNode, "name");
-													local sTableName = DB.getValue(vTableNameNode, "", "");
-													local sTableName2 = sTableName;
-													local sTableName = string.lower(sTableName);
-													local sTableName = string.gsub(sTableName, "%W", " ");
-													local nStarts, nEnds, sEncounterTableBiome = string.find(sTableName, "non combat ([%w+%s*]+) encounter");
-													if sEncounterTableBiome ~= nil and sEncounterTableBiome ~= "" and sBiomeTypes ~= nil and sBiomeTypes ~= "" then
-														sBiomeTypes = string.lower(sBiomeTypes);
-														if string.find(sBiomeTypes, sEncounterTableBiome) then
-															table.insert(aTableNames, sTableName2);
-														end
-													end
-												end
-											end
-											local nTableNames = 0;
-											for kTableName,vTableName in pairs(aTableNames) do
-												nTableNames = nTableNames + 1;
-											end
-											local sTableExpr = "1d" .. nTableNames;
-											sTableExpr = sTableExpr:gsub("$PC", tostring(PartyManager.getPartyCount()));
-											nTableCount = DiceManager.evalDiceMathExpression(sTableExpr);
-											for kTableName,vTableName in pairs(aTableNames) do
-												if kTableName == nTableCount then
-													TableManager.processTableRoll("", vTableName);
-													bTableRolled = true;
-													break;
-												end
-											end
-										end
-										if TableManager.findTable("Non Combat Encounter") and bTableRolled == false then
-											TableManager.processTableRoll("", "Non Combat Encounter");
-										end
-									end
-								end
-							else
-								TableManager.processTableRoll("", EncounterChance);
-							end
-						end
-					end
-				</script>
-			</buttoncontrol>
-			<buttoncontrol name="fasttravel">
-				<anchored to="normaltravel" position="righthigh" offset="0,0" width="20" height="20" />
-				<icon normal="atob_button" pressed="atob_button_down" />
-				<tooltip text="Click to Travel at a Fast Pace; NOTE: You must have a table named 'Encounter Chance Fast Travel Pace'" />
-				<script>
-					function onInit()
-						sRuleset = User.getRulesetName();
-						if sRuleset == "PFRPG" or sRuleset == "PFRPG2" or sRuleset == "3.5E" then
-							bLong = false;
-						elseif sRuleset == "5E" then
-							bLong = true;
-						else
-							setVisible(false);
- 						end
-					end
-					function onButtonPress()
-						local aViableMap = {};
-						local NewHourSpeed = 4;
-						local NewDaySpeed = 30;
-						if window.perlimit.getValue() == 0 then
-							window.travelbyhours.TravelByPace(NewHourSpeed);
-						elseif window.perlimit.getValue() == 1 then
-							window.travelbyhours.TravelByPace(NewDaySpeed);
-						end
-						local EncounterChance = "Encounter Chance Fast Travel Pace";
-						if window.encounterchance.getValue() == 1 then
-							if REGeneratorManager then
-								local sD100xrp = "1d100";
-								local BiomeTypesNode = DB.getChild("regenerator", "biometypes");
-								local sBiomeTypes = DB.getValue(BiomeTypesNode, "", "");
-								local sBiomeTypes = string.gsub(sBiomeTypes, "%W", " ");
-								Debug.console("sBiomeTypes", sBiomeTypes);
-								local nEncounterChance = window.encounterchancenum.getValue();
-								local nBattleChance = window.battlechance.getValue();
-								local sChanceExpr = sD100xrp:gsub("$PC", tostring(PartyManager.getPartyCount()));
-								local nEncounterChanceResult = DiceManager.evalDiceMathExpression(sChanceExpr);
-								local nBattleChanceResult = DiceManager.evalDiceMathExpression(sChanceExpr);
-								local aTableClasses = LibraryData.getMappings("table");
-								if nEncounterChanceResult &lt; nEncounterChance then
-									if nBattleChanceResult &lt; nBattleChance then
-
-										Interface.openWindow("new_regenerator", "regenerator");
-										local REGenWin = Interface.findWindow("new_regenerator", "regenerator");
-										local aGeneratedNPCS = REGeneratorManager.generatePreview();
-										if REGenWin then
-											local aBiomeClasses = LibraryData.getMappings("biome");
-											local aImageClasses = LibraryData.getMappings("image");
-											local aViableBiome = {};
-
-
-											for _,ClassNode in pairs(aBiomeClasses) do
-												for _,vNode in pairs(DB.getChildrenGlobal(ClassNode)) do
-													local vNodeNameNode = DB.getChild(vNode, "name");
-													local vName = DB.getValue(vNodeNameNode, "", "");
-													local vName = string.gsub(vName, "%W", " ");
-
-													if string.find(sBiomeTypes, vName) then
-														local aMapListNode = DB.getChild(vNode, "maplist");
-
-
-														for _,vMap in pairs(DB.getChildren(aMapListNode, "")) do
-															local vMapLinkNode = DB.getChild(vMap, "link");
-															local sClass, sRecord = DB.getValue(vMapLinkNode, "");
-															local sRecordNode = DB.getChild(sRecord, "");
-															table.insert(aViableMap, sRecordNode);
-														end
-													end
-												end
-											end
-											nCount = 0;
-											for k,v in pairs(aViableMap) do
-												nCount = nCount + 1;
-											end
-											if nCount == 0 or nCount == nil then
-												nCount = 1;
-											end
-											local sExpr = "1d" .. nCount;
-
-											sExpr = sExpr:gsub("$PC", tostring(PartyManager.getPartyCount()));
-
-											nCount = DiceManager.evalDiceMathExpression(sExpr);
-											for k,v in pairs(aViableMap) do
-												local sPath = DB.getPath(v);
-												local vClass = LibraryData.getRecordDisplayClass("image", sPath);
-
-												if k == nCount then
-													Interface.openWindow(vClass, sPath);
-												end
-											end
-											REGenWin.close();
-										end
-										REGeneratorManager.generateFromPreview(aGeneratedNPCS);
-									else
-										if sBiomeTypes ~= "" and sBiomeTypes ~= nil then
-											local bTableRolled = false;
-											local aTableNames = {};
-											for _,TableClassNode in pairs(aTableClasses) do
-												for _,vTableNode in pairs(DB.getChildrenGlobal(TableClassNode)) do
-													local vTableNameNode = DB.getChild(vTableNode, "name");
-													local sTableName = DB.getValue(vTableNameNode, "", "");
-													local sTableName2 = sTableName;
-													local sTableName = string.lower(sTableName);
-													local sTableName = string.gsub(sTableName, "%W", " ");
-													local nStarts, nEnds, sEncounterTableBiome = string.find(sTableName, "non combat ([%w+%s*]+) encounter");
-													if sEncounterTableBiome ~= nil and sEncounterTableBiome ~= "" and sBiomeTypes ~= nil and sBiomeTypes ~= "" then
-														sBiomeTypes = string.lower(sBiomeTypes);
-														if string.find(sBiomeTypes, sEncounterTableBiome) then
-															table.insert(aTableNames, sTableName2);
-														end
-													end
-												end
-											end
-											local nTableNames = 0;
-											for kTableName,vTableName in pairs(aTableNames) do
-												nTableNames = nTableNames + 1;
-											end
-											local sTableExpr = "1d" .. nTableNames;
-											sTableExpr = sTableExpr:gsub("$PC", tostring(PartyManager.getPartyCount()));
-											nTableCount = DiceManager.evalDiceMathExpression(sTableExpr);
-											for kTableName,vTableName in pairs(aTableNames) do
-												if kTableName == nTableCount then
-													TableManager.processTableRoll("", vTableName);
-													bTableRolled = true;
-													break;
-												end
-											end
-										end
-										if TableManager.findTable("Non Combat Encounter") and bTableRolled == false then
-											TableManager.processTableRoll("", "Non Combat Encounter");
-										end
-									end
-								end
-							else
-								TableManager.processTableRoll("", EncounterChance);
-							end
-						end
-					end
-				</script>
-			</buttoncontrol>
-			<button_checkbox name="encounterchance">
-				<anchored width="20" height="20">
-					<top parent="fasttravel" anchor="top" offset="0" />
-					<right parent="fasttravel" anchor="right" offset="15" />
-				</anchored>
-				<values>
-					<maximum>1</maximum>
-				</values>
-				<tooltip text="Rolls an encounter chance when using Travel Speed Buttons to the left; Note: Looks for tablenames: Encounter Chance Slow Travel Pace, Encounter Chance Normal Travel Pace, or Encounter Chance Fast Travel Pace" />
-
-			</button_checkbox>
-			<label name="encounterchance_label">
-				<anchored to="travellabel" position="belowleft" offset="0,10" height="20" width="70" />
-				<static text="Chances" />
-			</label>
-			<basicnumber name="encounterchancenum">
-				<anchored to="encounterchance_label" position="righthigh" offset="0,0" width="20" height="30" />
-				<tooltip text="Chance of Encounter while traveling" />
-				<maximum>100</maximum>
-				<minimum>0</minimum>
-				<script>
-					function onInit()
-						if DB.findNode("regenerator") then
-							setVisible(true);
-						else
-							setVisible(false);
- 						end
-					end
-				</script>
-			</basicnumber>
-			<basicnumber name="battlechance">
-				<anchored to="encounterchancenum" position="righthigh" offset="20,0" width="20" height="30" />
-				<maximum>100</maximum>
-				<minimum>0</minimum>
-				<tooltip text="Chance Encounter is a battle. If no battle, then rolls on table 'Non Combat Encounter' if it exists." />
-				<script>
-					function onInit()
-						if DB.findNode("regenerator") then
-							setVisible(true);
-						else
-							setVisible(false);
- 						end
-					end
-				</script>
-			</basicnumber>
-		</sheetdata>
-	</windowclass>
-
-	<windowclass name="timedreminders">
-		<frame>recordsheet</frame>
-		<placement>
-			<size width="370" height="30" />
-			<position x="260" y="30" />
-		</placement>
-		<sizelimits>
-			<dynamic />
-		</sizelimits>
-		<nodelete />
-		<softclose />
-		<sheetdata>
-			<windowlist name="reminderslist">
-				<anchored>
-					<top offset="15" />
-					<left offset="15" />
-					<right offset="-15" />
-					<bottom offset="-15" />
-				</anchored>
-				<sortby><control>name</control></sortby>
-				<child><backcolor>1A40301E</backcolor></child>
-				<datasource>.timedreminderlist</datasource>
-				<class>list_timedreminder</class>
-				<empty font="reference-r" text="Right-click to add a reminder" hidereadonly="true" />
-				<acceptdrop>
-					<class>timedreminder</class>
-					<class>list_timedreminder</class>
-					<class>referencetext</class>
-					<class>referencetextwide</class>
-					<field>*</field>
-				</acceptdrop>
-				<allowcreate />
-				<allowdelete />
-				<script>
-					function onInit()
-						DB.addHandler(TimeManager.CAL_DATEINMIN, "onUpdate", onTimeChanged);
-					end
-					function onClose()
-						DB.removeHandler(TimeManager.CAL_DATEINMIN, "onUpdate", onTimeChanged);
-					end
-					function onTimeChanged()
-						for _,w in pairs(getWindows()) do
-							w.onTimeChanged()
-						end
-					end
-					function update()
-						onTimeChanged();
-					end
-				</script>
-			</windowlist>
-			<scrollbar>
-				<anchored to="reminderslist" />
-				<target>reminderslist</target>
-			</scrollbar>
-		</sheetdata>
-		<dynamic />
-	</windowclass>
-
-	<windowclass name="list_timedreminder">
-		<margins control="0,0,0,2" />
-		<softclose />
-		<script>
-			function update()
-				windowlist.update();
-				if isgmonly.getValue() == 1 then
-					if not Session.IsHost == true then
-						setVisible(false);
-					end
-				end
-				completed.setValue(0);
-			end
-			function onTimeChanged()
-				local rActor = getDatabaseNode();
-				local nDate = CalendarManager.getCurrentDateString();
-				local nTime = CalendarManager.getCurrentTimeString();
-				local nDateAndTime = "" .. nTime .. " " .. nDate .. "";
-				local nCurrentDateinMinutes = TimeManager.getCurrentDateinMinutes();
-				local ReminderCycle = remindercycle.getValue();
-				local RepeatTime = repeattime.getValue();
-				local Visible = isgmonly.getValue();
-				local sName = name.getValue();
-				local nActive = active.getValue();
-				if RepeatTime == 0 then
-					Time = ReminderCycle;
-				elseif RepeatTime == 1 then
-					Time = (ReminderCycle * 60);
-				elseif RepeatTime == 2 then
-					Time = ((ReminderCycle * 60) * 24);
-				end
-
-				if Visible == 1 then
-					bBoolean = true;
-				elseif Visible == 0 then
-					bBoolean = false;
-				end
-				Debug.console("" .. TimeManager.getTimeDifference(rActor, sName) .. "");
-				if TimeManager.isTimeGreaterThan(rActor, sName, Time) then
-					if nActive == 1 then
-						local msg = {font = "reference-r", text = "[" .. nDateAndTime .. "] " .. sName .. "", secret = bBoolean};
-						Comm.deliverChatMessage(msg);
-						if TableManager.findTable(sName) then
-							TableManager.processTableRoll("", sName);
-						end
-						TimeManager.setStartTime(rActor, sName);
-					end
-				end
-			end
-		</script>
-		<sheetdata>
-			<genericcontrol name="rightanchor">
-				<anchored width="0" height="0">
-					<top />
-					<right />
-				</anchored>
-				<invisible />
-			</genericcontrol>
-			<button_idelete name="idelete">
-				<anchored width="20" height="20">
-					<top offset="2" />
-					<right parent="rightanchor" anchor="left" relation="relative" offset="-5" />
-				</anchored>
-			</button_idelete>
-			<linkcontrol_id name="shortcut">
-				<anchored width="20" height="20">
-					<top offset="2" />
-					<right parent="rightanchor" anchor="left" relation="relative" offset="-2" />
-				</anchored>
-				<class>timedreminder</class>
-				<readonly />
-			</linkcontrol_id>
-			<buttongroup_counter name="activebutton">
-				<anchored width="20" height="20">
-					<top offset="3" />
-					<right parent="rightanchor" anchor="left" relation="relative" offset="-5" />
-				</anchored>
-				<sourcefields>
-					<current>active</current>
-				</sourcefields>
-				<values>
-					<maximum>1</maximum>
-				</values>
-				<tooltip text="Active" />
-			</buttongroup_counter>
-			<basicnumber name="active" source="active">
-				<anchored width="40" height="20">
-					<top offset="2" />
-					<right parent="rightanchor" anchor="left" relation="relative" offset="-10" />
-				</anchored>
-				<script>
-					function onValueChanged()
-						local rActor = window.getDatabaseNode();
-						local sName = window.name.getValue();
-						TimeManager.setStartTime(rActor, sName);
-					end
-				</script>
-				<invisible />
-			</basicnumber>
-			<buttonfield name="isgmonly">
-				<anchored width="20" height="20">
-					<top offset="3" />
-					<right parent="rightanchor" anchor="left" relation="relative" offset="-5" />
-				</anchored>
-				<gmvisibleonly />
-				<state icon="visibilityon" tooltipres="visibilityon" />
-				<state icon="visibilityoff" tooltipres="visibilityoff" />
-			</buttonfield>
-			<basicnumber name="remindercycle" source=".remindercycle">
-				<anchored width="40" height="20">
-					<top offset="2" />
-					<right parent="rightanchor" anchor="left" relation="relative" offset="-10" />
-				</anchored>
-				<delaykeyupdate />
-				<tabtarget prev="location" />
-				<tooltip textres="remindercycle_tooltip" />
-			</basicnumber>
-			<buttoncontrol name="repeattimebutton" source=".repeattime">
-				<anchored width="60" height="30">
-					<top offset="2" />
-					<right parent="rightanchor" anchor="left" relation="relative" offset="-10" />
-				</anchored>
-				<tooltip text="Remind every number of minutes/hours/days" />
-				<state text="minutes" />
-				<state text="hours" />
-				<state text="days" />
-				<default>0</default>
-				<sourcefields>
-					<current>.repeattime</current>
-				</sourcefields>
-				<script>
-					function onInit()
-						local rActor = window.getDatabaseNode();
-						local nodeActor = rActor;
-						setValue(DB.getValue(nodeActor, "repeattime", 0));
-					end
-					function onButtonPress()
-						local rActor = window.getDatabaseNode();
-						local nodeActor = rActor;
-						DB.setValue(nodeActor, "repeattime", "number", getValue());
-						window.repeattime.setValue(getValue());
-					end
-				</script>
-			</buttoncontrol>
-			<basicnumber name="repeattime" source=".repeattime">
-				<anchored width="40" height="20">
-					<top offset="2" />
-					<right parent="rightanchor" anchor="left" relation="relative" offset="-10" />
-				</anchored>
-				<script>
-					function onInit()
-						local rActor = window.getDatabaseNode();
-						local nodeActor = rActor;
-						setValue(DB.getValue(nodeActor, "repeattime", 0));
-					end
-					function onValueChanged()
-						local rActor = window.getDatabaseNode();
-						local nodeActor = rActor;
-						DB.setValue(nodeActor, "repeattime", "number", getValue());
-						window.repeattimebutton.setValue(getValue());
-					end
-				</script>
-				<invisible />
-			</basicnumber>
-			<stringu name="name">
-				<anchored height="20">
-					<top offset="2" />
-					<right parent="rightanchor" anchor="left" relation="relative" offset="-10" />
-					<left offset="10" />
-				</anchored>
-				<tabtarget next="nonid_name" prev="count" />
-			</stringu>
-		</sheetdata>
-	</windowclass>
-
-	<windowclass name="timedreminder">
-		<frame>referencepage</frame>
-		<placement>
-			<size width="400" height="350" />
-		</placement>
-		<sizelimits>
-			<dynamic />
-		</sizelimits>
-		<minimize>minimized_reference</minimize>
-		<tooltip field="value" />
-		<softclose />
-		<sharable />
-		<script>
-			nString = "";
-			function onLockChanged()
-				local bReadOnly = WindowManager.getReadOnlyState(getDatabaseNode());
-				text.setReadOnly(bReadOnly);
-				remindercycle.setReadOnly(bReadOnly);
-				repeattime.setReadOnly(bReadOnly);
-				isgmonly.setReadOnly(bReadOnly);
-			end
-		</script>
-		<sheetdata>
-			<sub_record_header name="header">
-				<class>timedreminders_header</class>
-			</sub_record_header>
-
-			<frame_record_content name="contentframe" />
-			<label name="reminderlabel">
-				<anchored>
-					<top parent="header" anchor="bottom" offset="10" />
-					<left offset="40" />
-				</anchored>
-				<static text="Remind every" />
-			</label>
-			<basicnumber name="remindercycle" source="remindercycle">
-				<anchored width="20" height="20">
-					<top parent="header" anchor="bottom" offset="10" />
-					<left parent="reminderlabel" anchor="right" offset="10" />
-				</anchored>
-				<delaykeyupdate />
-				<tooltip textres="remindercycle_tooltip" />
-			</basicnumber>
-
-			<basicnumber name="repeattime" source="reminder.repeattime">
-				<anchored to="remindercycle" width="30" height="30">
-					<top />
-					<left parent="remindercycle" anchor="right" offset="10" />
-				</anchored>
-				<script>
-					function onInit()
-						local rActor = window.getDatabaseNode();
-						local nodeActor = rActor;
-						setValue(DB.getValue(nodeActor, "reminder.repeattime", 0));
-					end
-					function onValueChanged()
-						local rActor = window.getDatabaseNode();
-						local nodeActor = rActor;
-						DB.setValue(nodeActor, "reminder.repeattime", "number", getValue());
-						window.repeattimebutton.setValue(getValue());
-					end
-				</script>
-				<invisible />
-			</basicnumber>
-			<buttoncontrol name="repeattimebutton" source="reminder.repeattime">
-				<anchored to="repeattime" width="60" height="20">
-					<top />
-					<left parent="repeattime" anchor="right" offset="10" />
-				</anchored>
-				<tooltip text="Remind every number of minutes/hours/days" />
-				<state text="minutes" />
-				<state text="hours" />
-				<state text="days" />
-				<default>0</default>
-				<sourcefields>
-					<current>reminder.repeattime</current>
-				</sourcefields>
-				<script>
-					function onInit()
-						local rActor = window.getDatabaseNode();
-						local nodeActor = rActor;
-						setValue(DB.getValue(nodeActor, "reminder.repeattime", 0));
-					end
-					function onButtonPress()
-						local rActor = window.getDatabaseNode();
-						local nodeActor = rActor;
-						DB.setValue(nodeActor, "reminder.repeattime", "number", getValue());
-						window.repeattime.setValue(getValue());
-					end
-				</script>
-			</buttoncontrol>
-			<buttonfield name="isgmonly">
-				<anchored to="repeattimebutton" width="40" height="20">
-					<top />
-					<left parent="repeattimebutton" anchor="right" offset="10" />
-				</anchored>
-				<gmvisibleonly />
-				<state icon="visibilityon" tooltipres="visibilityon" />
-				<state icon="visibilityoff" tooltipres="visibilityoff" />
-			</buttonfield>
-			<ft_record name="text">
-				<anchored>
-					<top offset="110" />
-					<left offset="30" />
-					<right offset="-30" />
-					<bottom offset="-30" />
-				</anchored>
-				<empty textres="ft_empty" hidereadonly="true" />
-			</ft_record>
-			<scrollbar_record>
-				<target>text</target>
-			</scrollbar_record>
-			<playerowned />
-			<resize_referencepage />
-			<close_referencepage />
-		</sheetdata>
-	</windowclass>
-
-	<windowclass name="timedreminders_header">
-		<margins control="0,0,0,7" />
-		<sheetdata>
-			<link_record_header>
-				<class>timedreminder</class>
-				<description field="name" />
-			</link_record_header>
-
-			<anchor_record_header_right name="rightanchor" />
-			<icon_record_locked />
-			<button_record_locked />
-
-			<string_record_name name="name" />
-		</sheetdata>
-	</windowclass>
+	
 </root>
