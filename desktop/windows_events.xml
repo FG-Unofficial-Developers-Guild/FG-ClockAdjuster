@@ -109,7 +109,7 @@
 				<tooltip text="Annual. Repeats every year." />
 
 			</buttongroup_counter>
-			<buttongroup_counter name=".completedbutton">
+			<buttongroup_counter name="completedbutton">
 				<anchored width="20" height="20">
 					<top offset="3" />
 					<right parent="rightanchor" anchor="left" relation="relative" offset="-5" />
