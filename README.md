@@ -1,5 +1,3 @@
-[![Luacheck](https://github.com/FG-Unofficial-Developers-Guild/FG-ClockAdjuster/actions/workflows/luacheck.yml/badge.svg)](https://github.com/FG-Unofficial-Developers-Guild/FG-ClockAdjuster/actions/workflows/luacheck.yml)
-
 # Clock Adjuster
 This extension is a GM tool which provides an interface for easy time tracking and management.
 
