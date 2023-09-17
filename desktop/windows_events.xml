@@ -78,14 +78,14 @@
 					<right parent="rightanchor" anchor="left" relation="relative" offset="-5" />
 				</anchored>
 			</button_idelete>
-			<linkcontrol_id name="shortcut">
+			<linkcontrol name="shortcut">
 				<anchored width="20" height="20">
 					<top offset="2" />
 					<right parent="rightanchor" anchor="left" relation="relative" offset="-2" />
 				</anchored>
 				<class>timedevent</class>
 				<readonly />
-			</linkcontrol_id>
+			</linkcontrol>
 			<buttonfield name="isgmonly" source=".isgmonly">
 				<anchored width="20" height="20">
 					<top offset="3" />

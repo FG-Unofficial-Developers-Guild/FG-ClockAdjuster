@@ -77,14 +77,14 @@
 					<right parent="rightanchor" anchor="left" relation="relative" offset="-5" />
 				</anchored>
 			</button_idelete>
-			<linkcontrol_id name="shortcut">
+			<linkcontrol name="shortcut">
 				<anchored width="20" height="20">
 					<top offset="2" />
 					<right parent="rightanchor" anchor="left" relation="relative" offset="-2" />
 				</anchored>
 				<class>timedreminder</class>
 				<readonly />
-			</linkcontrol_id>
+			</linkcontrol>
 			<buttongroup_counter name="activebutton">
 				<anchored width="20" height="20">
 					<top offset="3" />
