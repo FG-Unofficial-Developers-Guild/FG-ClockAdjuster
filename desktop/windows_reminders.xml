@@ -1,0 +1,277 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+
+<!-- Please see the LICENSE.md file included with this distribution for attribution and copyright information. -->
+
+<root version="3.0">
+	<windowclass name="timedreminders">
+		<frame>recordsheet</frame>
+		<placement>
+			<size width="370" height="30" />
+			<position x="260" y="30" />
+		</placement>
+		<sizelimits>
+			<dynamic />
+		</sizelimits>
+		<nodelete />
+		<softclose />
+		<sheetdata>
+			<windowlist name="reminderslist">
+				<anchored>
+					<top offset="15" />
+					<left offset="15" />
+					<right offset="-15" />
+					<bottom offset="-15" />
+				</anchored>
+				<sortby><control>name</control></sortby>
+				<child><backcolor>1A40301E</backcolor></child>
+				<datasource>DB.timedreminderlist</datasource>
+				<class>list_timedreminder</class>
+				<empty font="reference-r" text="Right-click to add a reminder" hidereadonly="true" />
+				<acceptdrop>
+					<class>timedreminder</class>
+					<class>list_timedreminder</class>
+					<class>referencetext</class>
+					<class>referencetextwide</class>
+					<field>*</field>
+				</acceptdrop>
+				<allowcreate />
+				<allowdelete />
+				<script>
+					
+				</script>
+			</windowlist>
+			<scrollbar>
+				<anchored to="reminderslist" />
+				<target>reminderslist</target>
+			</scrollbar>
+		</sheetdata>
+		<dynamic />
+	</windowclass>
+
+	<windowclass name="list_timedreminder">
+		<margins control="0,0,0,2" />
+		<softclose />
+		<script>
+			function update()
+				windowlist.update();
+				if isgmonly.getValue() == 1 then
+					if not Session.IsHost == true then
+						setVisible(false);
+					end
+				end
+				completed.setValue(0);
+			end
+			
+		</script>
+		<sheetdata>
+			<genericcontrol name="rightanchor">
+				<anchored width="0" height="0">
+					<top />
+					<right />
+				</anchored>
+				<invisible />
+			</genericcontrol>
+			<button_idelete name="idelete">
+				<anchored width="20" height="20">
+					<top offset="2" />
+					<right parent="rightanchor" anchor="left" relation="relative" offset="-5" />
+				</anchored>
+			</button_idelete>
+			<linkcontrol_id name="shortcut">
+				<anchored width="20" height="20">
+					<top offset="2" />
+					<right parent="rightanchor" anchor="left" relation="relative" offset="-2" />
+				</anchored>
+				<class>timedreminder</class>
+				<readonly />
+			</linkcontrol_id>
+			<buttongroup_counter name="activebutton">
+				<anchored width="20" height="20">
+					<top offset="3" />
+					<right parent="rightanchor" anchor="left" relation="relative" offset="-5" />
+				</anchored>
+				<sourcefields>
+					<current>active</current>
+				</sourcefields>
+				<values>
+					<maximum>1</maximum>
+				</values>
+				<tooltip text="Active" />
+			</buttongroup_counter>
+			<basicnumber name="active" source=".active">
+				<anchored width="40" height="20">
+					<top offset="2" />
+					<right parent="rightanchor" anchor="left" relation="relative" offset="-10" />
+				</anchored>
+				<script>
+					function onValueChanged()
+						local rActor = window.getDatabaseNode();
+						local sName = window.name.getValue();
+						local Date1 = TimeManager.getCurrentRawDate();
+						TimeManager.setLastDate(rActor, Date1);
+
+					end
+				</script>
+				<invisible />
+			</basicnumber>
+			<buttonfield name="isgmonly" source=".isgmonly">
+				<anchored width="20" height="20">
+					<top offset="3" />
+					<right parent="rightanchor" anchor="left" relation="relative" offset="-5" />
+				</anchored>
+				<gmvisibleonly />
+				<state icon="visibilityon" tooltipres="visibilityon" />
+				<state icon="visibilityoff" tooltipres="visibilityoff" />
+			</buttonfield>
+			<basicnumber name="remindercycle" source=".remindercycle">
+				<anchored width="40" height="20">
+					<top offset="2" />
+					<right parent="rightanchor" anchor="left" relation="relative" offset="-10" />
+				</anchored>
+				<delaykeyupdate />
+				<tabtarget prev="location" />
+				<tooltip textres="remindercycle_tooltip" />
+			</basicnumber>
+			<buttoncontrol name="repeattime" source=".repeattime">
+				<anchored width="60" height="30">
+					<top offset="2" />
+					<right parent="rightanchor" anchor="left" relation="relative" offset="-10" />
+				</anchored>
+				<tooltip text="Remind every number of minutes/hours/days" />
+				<state text="minutes" />
+				<state text="hours" />
+				<state text="days" />
+				<default>0</default>
+				<sourcefields>
+					<current>.repeattime</current>
+				</sourcefields>
+				<script>
+					function onInit()
+						setValue(DB.getValue(window.getDatabaseNode(), "repeattime", 0));
+					end
+					function onButtonPress()
+						DB.setValue(window.getDatabaseNode(), "repeattime", "number", getValue());
+					end
+				</script>
+			</buttoncontrol>
+			<stringu name="name" source=".name">
+				<anchored height="20">
+					<top offset="2" />
+					<right parent="rightanchor" anchor="left" relation="relative" offset="-10" />
+					<left offset="10" />
+				</anchored>
+				<tabtarget next="nonid_name" prev="count" />
+			</stringu>
+		</sheetdata>
+	</windowclass>
+
+	<windowclass name="timedreminder">
+		<frame>referencepage</frame>
+		<placement>
+			<size width="400" height="350" />
+		</placement>
+		<sizelimits>
+			<dynamic />
+		</sizelimits>
+		<minimize>minimized_reference</minimize>
+		<tooltip field="value" />
+		<softclose />
+		<sharable />
+		<script>
+			nString = "";
+			function onLockChanged()
+				local bReadOnly = WindowManager.getReadOnlyState(getDatabaseNode());
+				text.setReadOnly(bReadOnly);
+				remindercycle.setReadOnly(bReadOnly);
+				repeattime.setReadOnly(bReadOnly);
+				isgmonly.setReadOnly(bReadOnly);
+			end
+		</script>
+		<sheetdata>
+			<sub_record_header name="header">
+				<class>timedreminders_header</class>
+			</sub_record_header>
+
+			<frame_record_content name="contentframe" />
+			<label name="reminderlabel">
+				<anchored>
+					<top parent="header" anchor="bottom" offset="10" />
+					<left offset="40" />
+				</anchored>
+				<static text="Remind every" />
+			</label>
+			<basicnumber name="remindercycle" source=".remindercycle">
+				<anchored width="20" height="20">
+					<top parent="header" anchor="bottom" offset="10" />
+					<left parent="reminderlabel" anchor="right" offset="10" />
+				</anchored>
+				<delaykeyupdate />
+				<tooltip textres="remindercycle_tooltip" />
+			</basicnumber>
+
+			
+			<buttoncontrol name="repeattime" source=".repeattime">
+				<anchored to="remindercycle" width="60" height="20">
+					<top />
+					<left parent="remindercycle" anchor="right" offset="10" />
+				</anchored>
+				<tooltip text="Remind every number of minutes/hours/days" />
+				<state text="minutes" />
+				<state text="hours" />
+				<state text="days" />
+				<default>0</default>
+				<sourcefields>
+					<current>.repeattime</current>
+				</sourcefields>
+				<script>
+					function onInit()
+						setValue(DB.getValue(window.getDatabaseNode(), ".repeattime", 0));
+					end
+					function onButtonPress()
+						DB.setValue(window.getDatabaseNode(), ".repeattime", "number", getValue());
+					end
+				</script>
+			</buttoncontrol>
+			<buttonfield name="isgmonly" source=".isgmonly">
+				<anchored to="repeattime" width="40" height="20">
+					<top />
+					<left parent="repeattime" anchor="right" offset="10" />
+				</anchored>
+				<gmvisibleonly />
+				<state icon="visibilityon" tooltipres="visibilityon" />
+				<state icon="visibilityoff" tooltipres="visibilityoff" />
+			</buttonfield>
+			<ft_record name="text">
+				<anchored>
+					<top offset="110" />
+					<left offset="30" />
+					<right offset="-30" />
+					<bottom offset="-30" />
+				</anchored>
+				<empty textres="ft_empty" hidereadonly="true" />
+			</ft_record>
+			<scrollbar_record>
+				<target>text</target>
+			</scrollbar_record>
+			<playerowned />
+			<resize_referencepage />
+			<close_referencepage />
+		</sheetdata>
+	</windowclass>
+
+	<windowclass name="timedreminders_header">
+		<margins control="0,0,0,7" />
+		<sheetdata>
+			<link_record_header>
+				<class>timedreminder</class>
+				<description field="name" />
+			</link_record_header>
+
+			<anchor_record_header_right name="rightanchor" />
+			<icon_record_locked />
+			<button_record_locked />
+
+			<string_record_name name="name" />
+		</sheetdata>
+	</windowclass>
+</root>

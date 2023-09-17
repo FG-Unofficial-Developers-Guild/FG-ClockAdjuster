@@ -5,8 +5,47 @@
 <root>
 	<!-- options titles -->
 	<string name="opt_lab_time_rounds">Time Manager Rounds Mode</string>
+	<string name="opt_busylimit">Player: Limit Busy Entries</string>
+	<string name="option_header_clockadjuster">Clock Adjuster</string>
+	<string name="opt_ringbusydone">Ring when Busy Action Completes</string>
+	<string name="opt_ringreminderdone">Ring when Reminder occurs</string>
+	<string name="opt_ringeventdone">Ring when Event occurs</string>
+	
+	<string name="opt_chat_logging">Chat Logging</string>
+	<string name="opt_action_logging">Action Logging</string>
+	
+	<string name="opt_roundlength">Round Length in seconds</string>
+	<string name="opt_alienturnlength">Alien: Turn Length in Minutes</string>
+	<string name="opt_alienturnlength_10">10</string>
+	<string name="opt_alienturnlength_5">5</string>
+	
+	<string name="opt_busywindow">Busy Window</string>
+	<string name="opt_busywindow_enabled">enabled</string>
+	<string name="opt_busywindow_disabled">disabled</string>
+	
+	<string name="opt_display_time">Notify Date/Time/Phase:</string>
+	
+	<string name="opt_slowencountertravelspeed_day">Encounter Chance: Slow Travel Speed per Day</string>
+	<string name="opt_slowencountertravelspeed_hour">Encounter Chance: Slow Travel Speed per Hour</string>
+	<string name="opt_normalencountertravelspeed_day">Encounter Chance: Normal Travel Speed per Day</string>
+	<string name="opt_normalencountertravelspeed_hour">Encounter Chance: Normal Travel Speed per Hour</string>
+	<string name="opt_fastencountertravelspeed_day">Encounter Chance: Fast Travel Speed per Day</string>
+	<string name="opt_fastencountertravelspeed_hour">Encounter Chance: Fast Travel Speed per Hour</string>
 
 	<!-- option states -->
 	<string name="enc_opt_time_rounds_fast">Quick Mode</string>
 	<string name="enc_opt_time_rounds_slow">Full Process</string>
+	<string name="opt_busylimit_0">Unlimited</string>
+	<string name="opt_busylimit_1">1</string>
+	<string name="opt_busylimit_2">2</string>
+	<string name="opt_busylimit_3">3</string>
+	<string name="opt_busylimit_4">4</string>
+	<string name="opt_busylimit_5">5</string>
+	<string name="opt_busylimit_6">6</string>
+	<string name="opt_busylimit_7">7</string>
+	<string name="opt_busylimit_8">8</string>
+	<string name="opt_busylimit_9">9</string>
+	<string name="opt_busylimit_10">10</string>
+	<string name="opt_ringbusydone_on">on</string>
+	<string name="opt_ringbusydone_off">off</string>
 </root>

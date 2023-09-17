@@ -6,6 +6,7 @@
 	<properties>
 		<name>Feature: Clock Adjuster</name>
 		<author>PR6I6E6ST, bmos, PokeyCA, MeAndUnique, Corun-Kail, and JustinFreitas</author>
+		<version>3.5</version>
 		<description>Provides an interface for easy time tracking and management</description>
 	</properties>
 	
@@ -13,12 +14,21 @@
 	
 	<base>
 		<includefile source="desktop/desktop_panels.xml" />
+		<includefile source="desktop/windows_reminders.xml" />
+		<includefile source="desktop/windows_events.xml" />
+		<includefile source="desktop/windows_travel.xml" />
+		
 		<includefile source="graphics/graphics_frames.xml" />
 		<includefile source="graphics/graphics_icons.xml" />
+		
 		<includefile source="strings/strings_clock.xml" />
 		<includefile source="strings/strings_options.xml" />
 		<includefile source="strings/strings_timedevents.xml" />
+		
 		<script name="TimeManager" file="scripts/manager_time.lua" />
+		<script name="TimeManagerARPG" file="scripts/manager_arpg_time.lua" />
 		<script name="LongTermEffects" file="scripts/longtermeffects.lua" />
+		<script name="ReminderManager" file="scripts/manager_reminders.lua" />
+		<script name="TravelManager" file="scripts/manager_travel.lua" />
 	</base>
 </root>
