@@ -11,4 +11,6 @@
 	<string name="month_tooltip">Month of Event</string>
 	<string name="year_tooltip">Year of Event</string>
 	<string name="desktop_openlog_tooltip">Creates a Calendar Log</string>
+    <string name="reminders_window_title">Reminders</string>
+    <string name="events_window_title">Events</string>
 </root>
